@@ -40,9 +40,11 @@ wget -qO /opt/tmp/cassandra.tgz ${MIRROR}cassandra/${CASSANDRA_VERSION}/apache-c
 tar -xf /opt/tmp/cassandra.tgz -C /opt
 mv /opt/apache-cassandra-* /opt/cassandra
 rm /opt/tmp/cassandra.tgz
-MORPHL_SERVER_IP_ADDRESS=$(ip route get 8.8.8.8 | awk '{print $NF; exit}')
+cp /opt/orchestrator/bootstrap/runasairflow/*_cassandra.sh /opt/cassandra/bin/
 echo "sed 's/MORPHL_SERVER_IP_ADDRESS/${MORPHL_SERVER_IP_ADDRESS}/g' /opt/orchestrator/bootstrap/runasairflow/cassandra.yaml.template" | bash > /opt/cassandra/conf/cassandra.yaml
-
+start_cassandra.sh
+cqlsh ${MORPHL_SERVER_IP_ADDRESS} -u cassandra -p cassandra -e "CREATE USER morphl WITH PASSWORD '${MORPHL_CASSANDRA_PASSWORD}' SUPERUSER;"
+cqlsh ${MORPHL_SERVER_IP_ADDRESS} -u cassandra -p cassandra -e "ALTER USER cassandra WITH PASSWORD '${NONDEFAULT_SUPERUSER_CASSANDRA_PASSWORD}';"
 
 mkdir -p /home/airflow/airflow/dags
 cat /opt/orchestrator/bootstrap/runasairflow/airflow.cfg.template > /home/airflow/airflow/airflow.cfg

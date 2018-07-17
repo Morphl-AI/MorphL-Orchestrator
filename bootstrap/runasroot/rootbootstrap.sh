@@ -28,9 +28,12 @@ sudo -Hiu postgres psql -c "CREATE USER morphl PASSWORD 'morphl';"
 sudo -Hiu postgres psql -c "CREATE DATABASE morphl;"
 sudo -Hiu postgres psql -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO morphl;"
 
+MORPHL_SERVER_IP_ADDRESS=$(ip route get 8.8.8.8 | awk '{print $NF; exit}')
 AIRFLOW_OS_PASSWORD=$(openssl rand -base64 32 | sha512sum | cut -c1-20)
 MORPHL_OS_PASSWORD=$(openssl rand -base64 32 | sha512sum | cut -c1-20)
-rm /etc/profile.d/secrets.sh 2>/dev/null && touch /etc/profile.d/secrets.sh
+MORPHL_CASSANDRA_PASSWORD=$(openssl rand -base64 32 | sha512sum | cut -c1-20)
+NONDEFAULT_SUPERUSER_CASSANDRA_PASSWORD=$(openssl rand -base64 32 | sha512sum | cut -c1-20)
+
 echo "airflow:${AIRFLOW_OS_PASSWORD}::::/home/airflow:/bin/bash" > /tmp/newusers.txt
 echo "morphl:${MORPHL_OS_PASSWORD}::::/home/morphl:/bin/bash" >> /tmp/newusers.txt
 newusers /tmp/newusers.txt
@@ -42,13 +45,16 @@ chmod 660 /home/airflow/.profile /home/airflow/.morphl_environment.sh /home/airf
 chown airflow /home/airflow/.profile /home/airflow/.morphl_environment.sh /home/airflow/.morphl_secrets.sh
 echo "airflow ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 echo "morphl ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-echo "export AIRFLOW_HOME=/home/airflow/airflow" > /home/airflow/.morphl_environment.sh
+echo "export MORPHL_SERVER_IP_ADDRESS=${MORPHL_SERVER_IP_ADDRESS}" >> /home/airflow/.morphl_environment.sh
+echo "export AIRFLOW_HOME=/home/airflow/airflow" >> /home/airflow/.morphl_environment.sh
 echo "export JAVA_HOME=/opt/jdk" >> /home/airflow/.morphl_environment.sh
 echo "export SPARK_HOME=/opt/spark" >> /home/airflow/.morphl_environment.sh
 echo "export LD_LIBRARY_PATH=/opt/hadoop/lib/native:\$LD_LIBRARY_PATH" >> /home/airflow/.morphl_environment.sh
 echo "export PATH=/opt/anaconda/bin:/opt/jdk/bin:/opt/spark/bin:/opt/cassandra/bin:\$PATH" >> /home/airflow/.morphl_environment.sh
 echo "export AIRFLOW_OS_PASSWORD=${AIRFLOW_OS_PASSWORD}" >> /home/airflow/.morphl_secrets.sh
 echo "export MORPHL_OS_PASSWORD=${MORPHL_OS_PASSWORD}" >> /home/airflow/.morphl_secrets.sh
+echo "export MORPHL_CASSANDRA_PASSWORD=${MORPHL_CASSANDRA_PASSWORD}" >> /home/airflow/.morphl_secrets.sh
+echo "export NONDEFAULT_SUPERUSER_CASSANDRA_PASSWORD=${NONDEFAULT_SUPERUSER_CASSANDRA_PASSWORD}" >> /home/airflow/.morphl_secrets.sh
 echo ". /home/airflow/.morphl_environment.sh" >> /home/airflow/.profile
 echo ". /home/airflow/.morphl_secrets.sh" >> /home/airflow/.profile
 chmod 775 /opt
