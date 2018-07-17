@@ -1,4 +1,4 @@
-cassandra > /dev/null
+cassandra > /dev/null 2>/dev/null
 while true
 do
   sleep 1
