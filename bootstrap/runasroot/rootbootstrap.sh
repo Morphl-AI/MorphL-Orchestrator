@@ -19,7 +19,7 @@ chgrp sudo /etc/kubernetes/admin.conf
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 kubectl taint nodes --all node-role.kubernetes.io/master-
 
-apt -y install binutils openssl sudo wget lynx htop nethogs tmux jq
+apt -y install build-essential binutils openssl sudo wget lynx htop nethogs tmux jq
 apt -y install postgresql postgresql-contrib postgresql-client postgresql-client-common
 sudo -Hiu postgres psql -c "CREATE USER airflow PASSWORD 'airflow';"
 sudo -Hiu postgres psql -c "CREATE DATABASE airflow;"
