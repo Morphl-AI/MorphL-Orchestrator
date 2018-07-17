@@ -19,8 +19,8 @@ chgrp sudo /etc/kubernetes/admin.conf
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 kubectl taint nodes --all node-role.kubernetes.io/master-
 
-apt -y install build-essential binutils gcc make openssl sudo wget htop nethogs tmux
-apt -y install postgresql postgresql-contrib libpq-dev postgresql-client postgresql-client-common
+apt -y install binutils openssl sudo wget lynx htop nethogs tmux jq
+apt -y install postgresql postgresql-contrib postgresql-client postgresql-client-common
 sudo -Hiu postgres psql -c "CREATE USER airflow PASSWORD 'airflow';"
 sudo -Hiu postgres psql -c "CREATE DATABASE airflow;"
 sudo -Hiu postgres psql -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO airflow;"
@@ -30,20 +30,28 @@ sudo -Hiu postgres psql -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public 
 
 AIRFLOW_OS_PASSWORD=$(openssl rand -base64 32 | sha512sum | cut -c1-20)
 MORPHL_OS_PASSWORD=$(openssl rand -base64 32 | sha512sum | cut -c1-20)
-rm /etc/profile.d/secrets.sh && touch /etc/profile.d/secrets.sh
-echo "export AIRFLOW_OS_PASSWORD=${AIRFLOW_OS_PASSWORD}" >> /etc/profile.d/secrets.sh
-echo "export MORPHL_OS_PASSWORD=${MORPHL_OS_PASSWORD}" >> /etc/profile.d/secrets.sh
+rm /etc/profile.d/secrets.sh 2>/dev/null && touch /etc/profile.d/secrets.sh
 echo "airflow:${AIRFLOW_OS_PASSWORD}::::/home/airflow:/bin/bash" > /tmp/newusers.txt
 echo "morphl:${MORPHL_OS_PASSWORD}::::/home/morphl:/bin/bash" >> /tmp/newusers.txt
 newusers /tmp/newusers.txt
 shred /tmp/newusers.txt
 usermod -aG sudo airflow
 usermod -aG sudo morphl
+touch /home/airflow/.profile /home/airflow/.morphl_environment.sh /home/airflow/.morphl_secrets.sh
+chmod 660 /home/airflow/.profile /home/airflow/.morphl_environment.sh /home/airflow/.morphl_secrets.sh
+chown airflow /home/airflow/.profile /home/airflow/.morphl_environment.sh /home/airflow/.morphl_secrets.sh
 echo "airflow ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 echo "morphl ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-echo "export AIRFLOW_HOME=/home/airflow/airflow" > /etc/profile.d/airflow.sh
-echo "export PATH=/opt/anaconda/bin:\$PATH" >> /etc/profile.d/airflow.sh
-mkdir /opt/tmp /opt/anaconda /opt/spark /opt/cassandra
-chown airflow /opt/tmp /opt/anaconda /opt/spark /opt/cassandra
+echo "export AIRFLOW_HOME=/home/airflow/airflow" > /home/airflow/.morphl_environment.sh
+echo "export JAVA_HOME=/opt/jdk" >> /home/airflow/.morphl_environment.sh
+echo "export SPARK_HOME=/opt/spark" >> /home/airflow/.morphl_environment.sh
+echo "export LD_LIBRARY_PATH=/opt/hadoop/lib/native:\$LD_LIBRARY_PATH" >> /home/airflow/.morphl_environment.sh
+echo "export PATH=/opt/anaconda/bin:/opt/jdk/bin:/opt/spark/bin:/opt/cassandra/bin:\$PATH" >> /home/airflow/.morphl_environment.sh
+echo "export AIRFLOW_OS_PASSWORD=${AIRFLOW_OS_PASSWORD}" >> /home/airflow/.morphl_secrets.sh
+echo "export MORPHL_OS_PASSWORD=${MORPHL_OS_PASSWORD}" >> /home/airflow/.morphl_secrets.sh
+echo ". /home/airflow/.morphl_environment.sh" >> /home/airflow/.profile
+echo ". /home/airflow/.morphl_secrets.sh" >> /home/airflow/.profile
+chmod 775 /opt
+chgrp airflow /opt
 sudo -Hiu airflow bash -c /opt/orchestrator/bootstrap/runasairflow/airflowbootstrap.sh
 

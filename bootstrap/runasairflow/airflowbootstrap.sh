@@ -1,13 +1,49 @@
 mkdir /home/airflow/.kube
 cat /etc/kubernetes/admin.conf > /home/airflow/.kube/config
 
-wget -qO /opt/tmp/Anaconda.sh https://repo.continuum.io/archive/Anaconda3-5.2.0-Linux-x86_64.sh
-bash /opt/tmp/Anaconda.sh -b -u -p /opt/anaconda
+mkdir /opt/tmp
+
+ANACONDA_VERSION=5.2.0
+SPARK_VERSION=2.3.1
+CASSANDRA_VERSION=3.11.2
+
+wget -qO /opt/tmp/Anaconda.sh https://repo.continuum.io/archive/Anaconda3-${ANACONDA_VERSION}-Linux-x86_64.sh
+bash /opt/tmp/Anaconda.sh -b -p /opt/anaconda
 rm /opt/tmp/Anaconda.sh
 mv /opt/anaconda/bin/sqlite3 /opt/anaconda/bin/sqlite3.orig
 pip install msgpack
 pip install --upgrade pip
 pip install psycopg2-binary apache-airflow
+
+wget -qO /opt/tmp/zzzjdk.tgz https://cdn.azul.com/zulu/bin/zulu8.30.0.1-jdk8.0.172-linux_x64.tar.gz
+tar -xf /opt/tmp/zzzjdk.tgz -C /opt
+mv /opt/zulu* /opt/jdk
+rm /opt/tmp/zzzjdk.tgz
+
+CLOSER="https://www.apache.org/dyn/closer.cgi?as_json=1"
+MIRROR=$(curl --stderr /dev/null ${CLOSER} | jq -r '.preferred')
+
+wget -qO /opt/tmp/zzzspark.tgz ${MIRROR}spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop2.7.tgz
+tar -xf /opt/tmp/zzzspark.tgz -C /opt
+mv /opt/spark-* /opt/spark
+rm /opt/tmp/zzzspark.tgz
+cd /opt/spark/conf
+sed 's/INFO/FATAL/;s/WARN/FATAL/;s/ERROR/FATAL/' log4j.properties.template > log4j.properties
+
+HADOOP_TGZ_URL=$(lynx -dump ${MIRROR}/hadoop/common/stable/ | grep -o http.*gz$ | grep -v src)
+wget -qO /opt/tmp/zzzhadoop.tgz ${HADOOP_TGZ_URL}
+tar -xf /opt/tmp/zzzhadoop.tgz -C /opt
+mv /opt/hadoop-* /opt/hadoop
+rm /opt/tmp/zzzhadoop.tgz
+
+wget -qO /opt/tmp/cassandra.tgz ${MIRROR}cassandra/${CASSANDRA_VERSION}/apache-cassandra-${CASSANDRA_VERSION}-bin.tar.gz
+tar -xf /opt/tmp/cassandra.tgz -C /opt
+mv /opt/apache-cassandra-* /opt/cassandra
+rm /opt/tmp/cassandra.tgz
+MORPHL_SERVER_IP_ADDRESS=$(ip route get 8.8.8.8 | awk '{print $NF; exit}')
+echo "sed 's/MORPHL_SERVER_IP_ADDRESS/${MORPHL_SERVER_IP_ADDRESS}/g' /opt/orchestrator/bootstrap/runasairflow/cassandra.yaml.template" | bash > /opt/cassandra/conf/cassandra.yaml
+
+
 mkdir -p /home/airflow/airflow/dags
 cat /opt/orchestrator/bootstrap/runasairflow/airflow.cfg.template > /home/airflow/airflow/airflow.cfg
 airflow version
