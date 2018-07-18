@@ -6,6 +6,7 @@ mkdir /opt/tmp
 ANACONDA_VERSION=5.2.0
 SPARK_VERSION=2.3.1
 CASSANDRA_VERSION=3.11.2
+SP_CASS_CONN_VERSION=2.3.1
 
 wget -qO /opt/tmp/Anaconda.sh https://repo.continuum.io/archive/Anaconda3-${ANACONDA_VERSION}-Linux-x86_64.sh
 bash /opt/tmp/Anaconda.sh -b -p /opt/anaconda
@@ -30,6 +31,8 @@ rm /opt/tmp/zzzspark.tgz
 cd /opt/spark/conf
 sed 's/INFO/FATAL/;s/WARN/FATAL/;s/ERROR/FATAL/' log4j.properties.template > log4j.properties
 
+wget -qO /opt/spark/jars/spark-cassandra-connector.jar https://repo1.maven.org/maven2/com/datastax/spark/spark-cassandra-connector_2.11/${SP_CASS_CONN_VERSION}/spark-cassandra-connector_2.11-${SP_CASS_CONN_VERSION}.jar
+
 HADOOP_TGZ_URL=$(lynx -dump ${MIRROR}/hadoop/common/stable/ | grep -o http.*gz$ | grep -v src)
 wget -qO /opt/tmp/zzzhadoop.tgz ${HADOOP_TGZ_URL}
 tar -xf /opt/tmp/zzzhadoop.tgz -C /opt
@@ -46,7 +49,6 @@ start_cassandra.sh
 cqlsh ${MORPHL_SERVER_IP_ADDRESS} -u cassandra -p cassandra -e "CREATE USER morphl WITH PASSWORD '${MORPHL_CASSANDRA_PASSWORD}' SUPERUSER;"
 cqlsh ${MORPHL_SERVER_IP_ADDRESS} -u cassandra -p cassandra -e "ALTER USER cassandra WITH PASSWORD '${NONDEFAULT_SUPERUSER_CASSANDRA_PASSWORD}';"
 cqlsh ${MORPHL_SERVER_IP_ADDRESS} -u morphl -p ${MORPHL_CASSANDRA_PASSWORD} -f /opt/orchestrator/bootstrap/runasairflow/cassandra_schema.cql
-
 
 mkdir -p /home/airflow/airflow/dags
 cat /opt/orchestrator/bootstrap/runasairflow/airflow.cfg.template > /home/airflow/airflow/airflow.cfg

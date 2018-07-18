@@ -28,6 +28,8 @@ sudo -Hiu postgres psql -c "CREATE USER morphl PASSWORD 'morphl';"
 sudo -Hiu postgres psql -c "CREATE DATABASE morphl;"
 sudo -Hiu postgres psql -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO morphl;"
 
+cat /opt/orchestrator/bootstrap/runasroot/rc.local > /etc/rc.local
+
 MORPHL_SERVER_IP_ADDRESS=$(ip route get 8.8.8.8 | awk '{print $NF; exit}')
 AIRFLOW_OS_PASSWORD=$(openssl rand -base64 32 | sha512sum | cut -c1-20)
 MORPHL_OS_PASSWORD=$(openssl rand -base64 32 | sha512sum | cut -c1-20)
