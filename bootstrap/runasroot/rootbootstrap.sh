@@ -1,3 +1,5 @@
+set -e
+
 apt -y install docker.io apt-transport-https curl
 echo 'DOCKER_OPTS="--insecure-registry localhost:5000"' > /etc/default/docker
 service docker restart
