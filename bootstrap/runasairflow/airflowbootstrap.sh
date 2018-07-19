@@ -52,6 +52,9 @@ cqlsh ${MORPHL_SERVER_IP_ADDRESS} -u morphl -p ${MORPHL_CASSANDRA_PASSWORD} -f /
 
 mkdir -p /home/airflow/airflow/dags
 cat /opt/orchestrator/bootstrap/runasairflow/airflow.cfg.template > /home/airflow/airflow/airflow.cfg
+cp /opt/anaconda/bin/airflow /opt/anaconda/bin/airflow_scheduler
+cp /opt/anaconda/bin/airflow /opt/anaconda/bin/airflow_webserver
+cp /opt/orchestrator/bootstrap/runasairflow/*_airflow.sh /opt/anaconda/bin/
 airflow version
 airflow initdb
 
