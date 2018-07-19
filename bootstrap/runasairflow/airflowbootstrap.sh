@@ -57,4 +57,5 @@ cp /opt/anaconda/bin/airflow /opt/anaconda/bin/airflow_webserver
 cp /opt/orchestrator/bootstrap/runasairflow/*_airflow.sh /opt/anaconda/bin/
 airflow version
 airflow initdb
+start_airflow.sh
 
