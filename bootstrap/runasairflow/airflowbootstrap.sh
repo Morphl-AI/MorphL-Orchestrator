@@ -14,7 +14,7 @@ rm /opt/tmp/Anaconda.sh
 mv /opt/anaconda/bin/sqlite3 /opt/anaconda/bin/sqlite3.orig
 pip install msgpack
 pip install --upgrade pip
-pip install psycopg2-binary apache-airflow
+pip install psycopg2-binary apache-airflow Flask-Bcrypt
 
 wget -qO /opt/tmp/zzzjdk.tgz https://cdn.azul.com/zulu/bin/zulu8.30.0.1-jdk8.0.172-linux_x64.tar.gz
 tar -xf /opt/tmp/zzzjdk.tgz -C /opt
@@ -57,5 +57,6 @@ cp /opt/anaconda/bin/airflow /opt/anaconda/bin/airflow_webserver
 cp /opt/orchestrator/bootstrap/runasairflow/*_airflow.sh /opt/anaconda/bin/
 airflow version
 airflow initdb
+python /opt/orchestrator/bootstrap/runasairflow/set_up_airflow_authenticatication.py
 start_airflow.sh
 

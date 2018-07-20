@@ -21,7 +21,7 @@ chgrp sudo /etc/kubernetes/admin.conf
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 kubectl taint nodes --all node-role.kubernetes.io/master-
 
-apt -y install build-essential binutils openssl sudo wget lynx htop nethogs tmux jq
+apt -y install build-essential binutils ntp openssl sudo wget lynx htop nethogs tmux jq
 apt -y install postgresql postgresql-contrib postgresql-client postgresql-client-common
 sudo -Hiu postgres psql -c "CREATE USER airflow PASSWORD 'airflow';"
 sudo -Hiu postgres psql -c "CREATE DATABASE airflow;"
@@ -34,6 +34,7 @@ cat /opt/orchestrator/bootstrap/runasroot/rc.local > /etc/rc.local
 
 MORPHL_SERVER_IP_ADDRESS=$(ip route get 8.8.8.8 | awk '{print $NF; exit}')
 AIRFLOW_OS_PASSWORD=$(openssl rand -base64 32 | sha512sum | cut -c1-20)
+AIRFLOW_WEB_UI_PASSWORD=$(openssl rand -base64 32 | sha512sum | cut -c1-20)
 MORPHL_OS_PASSWORD=$(openssl rand -base64 32 | sha512sum | cut -c1-20)
 MORPHL_CASSANDRA_PASSWORD=$(openssl rand -base64 32 | sha512sum | cut -c1-20)
 NONDEFAULT_SUPERUSER_CASSANDRA_PASSWORD=$(openssl rand -base64 32 | sha512sum | cut -c1-20)
@@ -56,6 +57,7 @@ echo "export SPARK_HOME=/opt/spark" >> /home/airflow/.morphl_environment.sh
 echo "export LD_LIBRARY_PATH=/opt/hadoop/lib/native:\$LD_LIBRARY_PATH" >> /home/airflow/.morphl_environment.sh
 echo "export PATH=/opt/anaconda/bin:/opt/jdk/bin:/opt/spark/bin:/opt/cassandra/bin:\$PATH" >> /home/airflow/.morphl_environment.sh
 echo "export AIRFLOW_OS_PASSWORD=${AIRFLOW_OS_PASSWORD}" >> /home/airflow/.morphl_secrets.sh
+echo "export AIRFLOW_WEB_UI_PASSWORD=${AIRFLOW_WEB_UI_PASSWORD}" >> /home/airflow/.morphl_secrets.sh
 echo "export MORPHL_OS_PASSWORD=${MORPHL_OS_PASSWORD}" >> /home/airflow/.morphl_secrets.sh
 echo "export MORPHL_CASSANDRA_PASSWORD=${MORPHL_CASSANDRA_PASSWORD}" >> /home/airflow/.morphl_secrets.sh
 echo "export NONDEFAULT_SUPERUSER_CASSANDRA_PASSWORD=${NONDEFAULT_SUPERUSER_CASSANDRA_PASSWORD}" >> /home/airflow/.morphl_secrets.sh
