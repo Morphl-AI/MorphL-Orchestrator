@@ -39,10 +39,14 @@ MORPHL_OS_PASSWORD=$(openssl rand -base64 32 | sha512sum | cut -c1-20)
 MORPHL_CASSANDRA_PASSWORD=$(openssl rand -base64 32 | sha512sum | cut -c1-20)
 NONDEFAULT_SUPERUSER_CASSANDRA_PASSWORD=$(openssl rand -base64 32 | sha512sum | cut -c1-20)
 
-echo "airflow:${AIRFLOW_OS_PASSWORD}::::/home/airflow:/bin/bash" > /tmp/newusers.txt
-echo "morphl:${MORPHL_OS_PASSWORD}::::/home/morphl:/bin/bash" >> /tmp/newusers.txt
-newusers /tmp/newusers.txt
-shred /tmp/newusers.txt
+useradd airflow
+useradd morphl
+
+# echo "airflow:${AIRFLOW_OS_PASSWORD}::::/home/airflow:/bin/bash" > /tmp/newusers.txt
+# echo "morphl:${MORPHL_OS_PASSWORD}::::/home/morphl:/bin/bash" >> /tmp/newusers.txt
+# newusers /tmp/newusers.txt
+# shred /tmp/newusers.txt
+
 usermod -aG sudo airflow
 usermod -aG sudo morphl
 touch /home/airflow/.profile /home/airflow/.morphl_environment.sh /home/airflow/.morphl_secrets.sh
