@@ -16,7 +16,8 @@ pip install msgpack
 pip install --upgrade pip
 pip install psycopg2-binary apache-airflow Flask-Bcrypt
 
-wget -qO /opt/tmp/zzzjdk.tgz https://cdn.azul.com/zulu/bin/zulu8.30.0.1-jdk8.0.172-linux_x64.tar.gz
+JDK_TGZ_URL=$(lynx -dump https://www.azul.com/downloads/zulu/zulu-linux/ | grep -o http.*jdk8.*x64.*gz$ | head -1)
+wget -qO /opt/tmp/zzzjdk.tgz ${JDK_TGZ_URL}
 tar -xf /opt/tmp/zzzjdk.tgz -C /opt
 mv /opt/zulu* /opt/jdk
 rm /opt/tmp/zzzjdk.tgz
@@ -33,7 +34,7 @@ sed 's/INFO/FATAL/;s/WARN/FATAL/;s/ERROR/FATAL/' log4j.properties.template > log
 
 wget -qO /opt/spark/jars/spark-cassandra-connector.jar https://repo1.maven.org/maven2/com/datastax/spark/spark-cassandra-connector_2.11/${SP_CASS_CONN_VERSION}/spark-cassandra-connector_2.11-${SP_CASS_CONN_VERSION}.jar
 
-HADOOP_TGZ_URL=$(lynx -dump ${MIRROR}/hadoop/common/stable/ | grep -o http.*gz$ | grep -v src)
+HADOOP_TGZ_URL=$(lynx -dump ${MIRROR}/hadoop/common/stable/ | grep -o http.*gz$ | grep -v src | head -1)
 wget -qO /opt/tmp/zzzhadoop.tgz ${HADOOP_TGZ_URL}
 tar -xf /opt/tmp/zzzhadoop.tgz -C /opt
 mv /opt/hadoop-* /opt/hadoop
