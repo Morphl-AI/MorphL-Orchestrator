@@ -3,12 +3,12 @@ cat /etc/kubernetes/admin.conf > /home/airflow/.kube/config
 
 mkdir /opt/tmp
 
-ANACONDA_VERSION=5.2.0
 SPARK_VERSION=2.3.1
 CASSANDRA_VERSION=3.11.2
 SP_CASS_CONN_VERSION=2.3.1
 
-wget -qO /opt/tmp/Anaconda.sh https://repo.continuum.io/archive/Anaconda3-${ANACONDA_VERSION}-Linux-x86_64.sh
+ANACONDA_SH_URL=$(lynx -dump https://repo.continuum.io/archive/ | grep -o http.*Anaconda3.*Linux.x86_64.sh$ | head -1)
+wget -qO /opt/tmp/Anaconda.sh ${ANACONDA_SH_URL}
 bash /opt/tmp/Anaconda.sh -b -p /opt/anaconda
 rm /opt/tmp/Anaconda.sh
 mv /opt/anaconda/bin/sqlite3 /opt/anaconda/bin/sqlite3.orig
