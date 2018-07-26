@@ -9,11 +9,12 @@ docker run -d --name registry --restart=always    \
            -v /var/lib/registry:/var/lib/registry \
            registry:2
 
+STABLE_KUBERNETES_VERSION=$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
 echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" > /etc/apt/sources.list.d/kubernetes.list
 apt update -qq && apt -y install kubelet kubeadm kubectl
-kubeadm config images pull --kubernetes-version=v1.11.1
-kubeadm init --kubernetes-version=v1.11.1 --pod-network-cidr=10.244.0.0/16
+kubeadm config images pull --kubernetes-version=${STABLE_KUBERNETES_VERSION}
+kubeadm init --kubernetes-version=${STABLE_KUBERNETES_VERSION} --pod-network-cidr=10.244.0.0/16
 export KUBECONFIG=/etc/kubernetes/admin.conf
 echo -e '\nexport KUBECONFIG=/etc/kubernetes/admin.conf' >> /root/.bashrc
 chmod g+r /etc/kubernetes/admin.conf
