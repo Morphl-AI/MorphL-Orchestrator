@@ -14,7 +14,7 @@ rm /opt/tmp/Anaconda.sh
 mv /opt/anaconda/bin/sqlite3 /opt/anaconda/bin/sqlite3.orig
 pip install msgpack
 pip install --upgrade pip
-pip install psycopg2-binary apache-airflow Flask-Bcrypt
+pip install psycopg2-binary apache-airflow Flask-Bcrypt cassandra-driver
 
 JDK_TGZ_URL=$(lynx -dump https://www.azul.com/downloads/zulu/zulu-linux/ | grep -o http.*jdk8.*x64.*gz$ | head -1)
 wget -qO /opt/tmp/zzzjdk.tgz ${JDK_TGZ_URL}
