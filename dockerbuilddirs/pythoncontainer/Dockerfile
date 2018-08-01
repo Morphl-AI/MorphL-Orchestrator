@@ -6,7 +6,9 @@ COPY runasroot.sh /usr/bin/runasroot.sh
 
 COPY runasnonroot.sh /usr/bin/runasnonroot.sh
 
-RUN chmod +x /usr/bin/runas*.sh && bash runasroot.sh
+COPY runconnector.sh /usr/bin/runconnector.sh
+
+RUN chmod +x /usr/bin/run*.sh && bash runasroot.sh
 
 USER developer
 
