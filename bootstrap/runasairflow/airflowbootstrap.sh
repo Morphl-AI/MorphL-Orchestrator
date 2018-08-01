@@ -27,7 +27,9 @@ CLOSER="https://www.apache.org/dyn/closer.cgi?as_json=1"
 MIRROR=$(curl --stderr /dev/null ${CLOSER} | jq -r '.preferred')
 
 echo 'Setting up Spark ...'
-wget -qO /opt/tmp/zzzspark.tgz ${MIRROR}spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop2.7.tgz
+SPARK_DIR_URL=$(lynx -dump ${MIRROR}spark/ | grep -o http.*spark-2.*$ | tail -1)
+SPARK_TGZ_URL=$(lynx -dump ${SPARK_DIR_URL} | grep -o http.*bin-hadoop.*tgz$ | tail -1)
+wget -qO /opt/tmp/zzzspark.tgz ${SPARK_TGZ_URL}
 tar -xf /opt/tmp/zzzspark.tgz -C /opt
 mv /opt/spark-* /opt/spark
 rm /opt/tmp/zzzspark.tgz
