@@ -5,7 +5,6 @@ cat /etc/kubernetes/admin.conf > /home/airflow/.kube/config
 
 mkdir /opt/tmp
 
-SPARK_VERSION=2.3.1
 SP_CASS_CONN_VERSION=2.3.1
 
 ANACONDA_SH_URL=$(lynx -dump https://repo.continuum.io/archive/ | grep -o http.*Anaconda3.*Linux.x86_64.sh$ | head -1)
