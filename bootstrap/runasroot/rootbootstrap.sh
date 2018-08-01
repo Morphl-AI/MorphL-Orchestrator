@@ -42,11 +42,11 @@ NONDEFAULT_SUPERUSER_CASSANDRA_PASSWORD=$(openssl rand -base64 32 | sha512sum | 
 
 useradd -m airflow
 echo "airflow:${AIRFLOW_OS_PASSWORD}" | chpasswd
-usermod -aG sudo airflow
+usermod -aG docker,sudo airflow
 
 useradd -m morphl
 echo "morphl:${MORPHL_OS_PASSWORD}" | chpasswd
-usermod -aG sudo morphl
+usermod -aG docker,sudo morphl
 
 touch /home/airflow/.profile /home/airflow/.morphl_environment.sh /home/airflow/.morphl_secrets.sh
 chmod 660 /home/airflow/.profile /home/airflow/.morphl_environment.sh /home/airflow/.morphl_secrets.sh
@@ -72,6 +72,8 @@ chmod 775 /opt
 chmod -R 775 /opt/dockerbuilddirs
 chgrp airflow /opt
 chgrp -R airflow /opt/dockerbuilddirs
+
+git clone https://github.com/Morphl-Project/Sample-Code /opt/samplecode
 
 sudo -Hiu airflow bash -c /opt/orchestrator/bootstrap/runasairflow/airflowbootstrap.sh
 
