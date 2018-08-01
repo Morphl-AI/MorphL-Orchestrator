@@ -66,7 +66,10 @@ echo "export MORPHL_CASSANDRA_PASSWORD=${MORPHL_CASSANDRA_PASSWORD}" >> /home/ai
 echo "export NONDEFAULT_SUPERUSER_CASSANDRA_PASSWORD=${NONDEFAULT_SUPERUSER_CASSANDRA_PASSWORD}" >> /home/airflow/.morphl_secrets.sh
 echo ". /home/airflow/.morphl_environment.sh" >> /home/airflow/.profile
 echo ". /home/airflow/.morphl_secrets.sh" >> /home/airflow/.profile
-chmod 775 /opt
-chgrp airflow /opt
+
+cp -r /opt/orchestrator/dockerbuilddirs /opt/
+chmod -R 775 /opt
+chgrp -R airflow /opt
+
 sudo -Hiu airflow bash -c /opt/orchestrator/bootstrap/runasairflow/airflowbootstrap.sh
 
