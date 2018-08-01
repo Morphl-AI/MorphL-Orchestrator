@@ -6,7 +6,6 @@ cat /etc/kubernetes/admin.conf > /home/airflow/.kube/config
 mkdir /opt/tmp
 
 SPARK_VERSION=2.3.1
-CASSANDRA_VERSION=3.11.2
 SP_CASS_CONN_VERSION=2.3.1
 
 ANACONDA_SH_URL=$(lynx -dump https://repo.continuum.io/archive/ | grep -o http.*Anaconda3.*Linux.x86_64.sh$ | head -1)
@@ -45,7 +44,9 @@ mv /opt/hadoop-* /opt/hadoop
 rm /opt/tmp/zzzhadoop.tgz
 
 echo 'Setting up Cassandra ...'
-wget -qO /opt/tmp/cassandra.tgz ${MIRROR}cassandra/${CASSANDRA_VERSION}/apache-cassandra-${CASSANDRA_VERSION}-bin.tar.gz
+CASSANDRA_DIR_URL=$(lynx -dump ${MIRROR}cassandra/ | grep -o http.*cassandra/3.*$ | tail -1)
+CASSANDRA_TGZ_URL=$(lynx -dump ${CASSANDRA_DIR_URL} | grep -o http.*bin.tar.gz$ | head -1)
+wget -qO /opt/tmp/cassandra.tgz ${CASSANDRA_TGZ_URL}
 tar -xf /opt/tmp/cassandra.tgz -C /opt
 mv /opt/apache-cassandra-* /opt/cassandra
 rm /opt/tmp/cassandra.tgz
