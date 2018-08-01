@@ -10,7 +10,6 @@ SP_CASS_CONN_VERSION=2.3.1
 ANACONDA_SH_URL=$(lynx -dump https://repo.continuum.io/archive/ | grep -o http.*Anaconda3.*Linux.x86_64.sh$ | head -1)
 wget -qO /opt/dockerbuilddirs/pythoncontainer/Anaconda.sh ${ANACONDA_SH_URL}
 bash /opt/dockerbuilddirs/pythoncontainer/Anaconda.sh -b -p /opt/anaconda
-# rm /opt/tmp/Anaconda.sh
 mv /opt/anaconda/bin/sqlite3 /opt/anaconda/bin/sqlite3.orig
 pip install msgpack
 pip install --upgrade pip
@@ -60,4 +59,7 @@ airflow version
 airflow initdb
 python /opt/orchestrator/bootstrap/runasairflow/set_up_airflow_authenticatication.py
 start_airflow.sh
+
+cd /opt/dockerbuilddirs/pythoncontainer
+sudo docker build -t pythoncontainer .
 

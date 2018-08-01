@@ -1,6 +1,6 @@
 FROM ubuntu:16.04
 
-COPY Anaconda.sh /opt/tmp/Anaconda.sh
+COPY Anaconda.sh /opt/Anaconda.sh
 
 COPY runasroot.sh /usr/bin/runasroot.sh
 

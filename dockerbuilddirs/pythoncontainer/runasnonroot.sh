@@ -1,4 +1,5 @@
-bash /opt/tmp/Anaconda.sh -b -p /opt/anaconda
+bash /opt/Anaconda.sh -b -p /opt/anaconda
+rm /opt/Anaconda.sh
 mv /opt/anaconda/bin/sqlite3 /opt/anaconda/bin/sqlite3.orig
 pip install msgpack
 pip install --upgrade pip
