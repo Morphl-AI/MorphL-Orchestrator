@@ -1,3 +1,5 @@
+set -e
+
 mkdir /home/airflow/.kube
 cat /etc/kubernetes/admin.conf > /home/airflow/.kube/config
 
@@ -15,6 +17,7 @@ pip install msgpack
 pip install --upgrade pip
 pip install psycopg2-binary apache-airflow Flask-Bcrypt cassandra-driver
 
+echo 'Setting up the JDK ...'
 JDK_TGZ_URL=$(lynx -dump https://www.azul.com/downloads/zulu/zulu-linux/ | grep -o http.*jdk8.*x64.*gz$ | head -1)
 wget -qO /opt/tmp/zzzjdk.tgz ${JDK_TGZ_URL}
 tar -xf /opt/tmp/zzzjdk.tgz -C /opt
@@ -24,6 +27,7 @@ rm /opt/tmp/zzzjdk.tgz
 CLOSER="https://www.apache.org/dyn/closer.cgi?as_json=1"
 MIRROR=$(curl --stderr /dev/null ${CLOSER} | jq -r '.preferred')
 
+echo 'Setting up Spark ...'
 wget -qO /opt/tmp/zzzspark.tgz ${MIRROR}spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop2.7.tgz
 tar -xf /opt/tmp/zzzspark.tgz -C /opt
 mv /opt/spark-* /opt/spark
@@ -33,12 +37,14 @@ sed 's/INFO/FATAL/;s/WARN/FATAL/;s/ERROR/FATAL/' log4j.properties.template > log
 
 wget -qO /opt/spark/jars/spark-cassandra-connector.jar https://repo1.maven.org/maven2/com/datastax/spark/spark-cassandra-connector_2.11/${SP_CASS_CONN_VERSION}/spark-cassandra-connector_2.11-${SP_CASS_CONN_VERSION}.jar
 
+echo 'Setting up Hadoop ...'
 HADOOP_TGZ_URL=$(lynx -dump ${MIRROR}/hadoop/common/stable/ | grep -o http.*gz$ | grep -v src | head -1)
 wget -qO /opt/tmp/zzzhadoop.tgz ${HADOOP_TGZ_URL}
 tar -xf /opt/tmp/zzzhadoop.tgz -C /opt
 mv /opt/hadoop-* /opt/hadoop
 rm /opt/tmp/zzzhadoop.tgz
 
+echo 'Setting up Cassandra ...'
 wget -qO /opt/tmp/cassandra.tgz ${MIRROR}cassandra/${CASSANDRA_VERSION}/apache-cassandra-${CASSANDRA_VERSION}-bin.tar.gz
 tar -xf /opt/tmp/cassandra.tgz -C /opt
 mv /opt/apache-cassandra-* /opt/cassandra
