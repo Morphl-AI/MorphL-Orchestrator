@@ -3,7 +3,7 @@ set -e
 mkdir /home/airflow/.kube
 cat /etc/kubernetes/admin.conf > /home/airflow/.kube/config
 
-mkdir /opt/tmp
+mkdir /opt/{secrets,tmp}
 
 SP_CASS_CONN_VERSION=2.3.1
 
