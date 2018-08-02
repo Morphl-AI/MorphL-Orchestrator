@@ -8,7 +8,9 @@ touch /opt/secrets/keyfile.json
 
 SP_CASS_CONN_VERSION=2.3.1
 
+echo 'Setting up Anaconda ...'
 ANACONDA_SH_URL=$(lynx -dump https://repo.continuum.io/archive/ | grep -o http.*Anaconda3.*Linux.x86_64.sh$ | head -1)
+echo "From ${ANACONDA_SH_URL}"
 wget -qO /opt/dockerbuilddirs/pythoncontainer/Anaconda.sh ${ANACONDA_SH_URL}
 bash /opt/dockerbuilddirs/pythoncontainer/Anaconda.sh -b -p /opt/anaconda
 mv /opt/anaconda/bin/sqlite3 /opt/anaconda/bin/sqlite3.orig
@@ -18,6 +20,7 @@ pip install psycopg2-binary apache-airflow Flask-Bcrypt cassandra-driver
 
 echo 'Setting up the JDK ...'
 JDK_TGZ_URL=$(lynx -dump https://www.azul.com/downloads/zulu/zulu-linux/ | grep -o http.*jdk8.*x64.*gz$ | head -1)
+echo "From ${JDK_TGZ_URL}"
 wget -qO /opt/tmp/zzzjdk.tgz ${JDK_TGZ_URL}
 tar -xf /opt/tmp/zzzjdk.tgz -C /opt
 mv /opt/zulu* /opt/jdk
@@ -29,6 +32,7 @@ MIRROR=$(curl --stderr /dev/null ${CLOSER} | jq -r '.preferred')
 echo 'Setting up Spark ...'
 SPARK_DIR_URL=$(lynx -dump ${MIRROR}spark/ | grep -o http.*spark-2.*$ | tail -1)
 SPARK_TGZ_URL=$(lynx -dump ${SPARK_DIR_URL} | grep -o http.*bin-hadoop.*tgz$ | tail -1)
+echo "From ${SPARK_TGZ_URL}"
 wget -qO /opt/tmp/zzzspark.tgz ${SPARK_TGZ_URL}
 tar -xf /opt/tmp/zzzspark.tgz -C /opt
 mv /opt/spark-* /opt/spark
@@ -40,6 +44,7 @@ wget -qO /opt/spark/jars/spark-cassandra-connector.jar https://repo1.maven.org/m
 
 echo 'Setting up Hadoop ...'
 HADOOP_TGZ_URL=$(lynx -dump ${MIRROR}/hadoop/common/stable/ | grep -o http.*gz$ | grep -v src | head -1)
+echo "From ${HADOOP_TGZ_URL}"
 wget -qO /opt/tmp/zzzhadoop.tgz ${HADOOP_TGZ_URL}
 tar -xf /opt/tmp/zzzhadoop.tgz -C /opt
 mv /opt/hadoop-* /opt/hadoop
@@ -48,6 +53,7 @@ rm /opt/tmp/zzzhadoop.tgz
 echo 'Setting up Cassandra ...'
 CASSANDRA_DIR_URL=$(lynx -dump ${MIRROR}cassandra/ | grep -o http.*cassandra/3.*$ | tail -1)
 CASSANDRA_TGZ_URL=$(lynx -dump ${CASSANDRA_DIR_URL} | grep -o http.*bin.tar.gz$ | head -1)
+echo "From ${CASSANDRA_TGZ_URL}"
 wget -qO /opt/tmp/cassandra.tgz ${CASSANDRA_TGZ_URL}
 tar -xf /opt/tmp/cassandra.tgz -C /opt
 mv /opt/apache-cassandra-* /opt/cassandra
