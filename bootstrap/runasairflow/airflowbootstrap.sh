@@ -72,7 +72,7 @@ cp /opt/anaconda/bin/airflow /opt/anaconda/bin/airflow_webserver
 cp /opt/orchestrator/bootstrap/runasairflow/*_airflow.sh /opt/anaconda/bin/
 airflow version
 airflow initdb
-python /opt/orchestrator/bootstrap/runasairflow/set_up_airflow_authenticatication.py
+python /opt/orchestrator/bootstrap/runasairflow/set_up_airflow_authentication.py
 start_airflow.sh
 
 cd /opt/dockerbuilddirs/pythoncontainer
