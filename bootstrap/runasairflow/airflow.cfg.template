@@ -51,13 +51,13 @@ sql_alchemy_pool_recycle = 3600
 # The amount of parallelism as a setting to the executor. This defines
 # the max number of task instances that should run simultaneously
 # on this airflow installation
-parallelism = 32
+parallelism = 1
 
 # The number of task instances allowed to run concurrently by the scheduler
-dag_concurrency = 16
+dag_concurrency = 1
 
 # Are DAGs paused by default at creation
-dags_are_paused_at_creation = True
+dags_are_paused_at_creation = False
 
 # When not using pools, tasks are run in the "default pool",
 # whose size is guided by this config element
@@ -69,7 +69,7 @@ max_active_runs_per_dag = 16
 # Whether to load the examples that ship with Airflow. It's good to
 # get started, but you probably want to set this to False in a production
 # environment
-load_examples = True
+load_examples = False
 
 # Where your Airflow plugins are stored
 plugins_folder = /home/airflow/airflow/plugins
@@ -123,7 +123,7 @@ auth_backend = airflow.api.auth.backend.default
 [operators]
 # The default owner assigned to each new operator, unless
 # provided explicitly or passed via `default_args`
-default_owner = Airflow
+default_owner = airflow
 default_cpus = 1
 default_ram = 512
 default_disk = 512
@@ -162,7 +162,7 @@ worker_refresh_interval = 30
 secret_key = temporary_key
 
 # Number of workers to run the Gunicorn web server
-workers = 4
+workers = 1
 
 # The worker class gunicorn should use. Choices include
 # sync (default), eventlet, gevent
