@@ -1,3 +1,4 @@
+export DEBIAN_FRONTEND=noninteractive
 apt update -qq
 apt -y install locales apt-utils
 echo 'en_US.UTF-8 UTF-8' > /etc/locale.gen
