@@ -6,4 +6,6 @@ if [ ${rc} -eq 0 ]; then
   stop_airflow.sh
   echo "sed 's/START_DATE_AS_PY_CODE/${START_DATE_AS_PY_CODE}/g' /opt/orchestrator/bootstrap/runasairflow/templates/ga_churned_users_dag.py.template" | bash > /home/airflow/airflow/dags/ga_churned_users_dag.py
   start_airflow.sh
+  echo "The data load has been initiated."
+  echo
 fi
