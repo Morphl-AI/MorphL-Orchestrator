@@ -2,7 +2,7 @@ import datetime
 from sys import argv, exit
 
 def get_record(i, num_days_ago, n):
-    dt = n - datetime.timedelta(days=num_days_ago)
+    dt = n - datetime.timedelta(days=num_days_ago+1)
     return (i, {'asYYYY-MM-DD': dt.strftime('%Y-%m-%d'),
                 'as_py_code': dt.__repr__()})
 
