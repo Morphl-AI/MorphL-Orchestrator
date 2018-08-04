@@ -7,6 +7,7 @@ COPY install.sh /usr/bin/install.sh
 COPY runconnector.sh /usr/bin/runconnector.sh
 
 ENV PATH=/opt/anaconda/bin:$PATH \
+    LC_ALL=en_US.UTF-8           \
     LANG=en_US.UTF-8
 
 RUN chmod +x /usr/bin/install.sh && bash install.sh
