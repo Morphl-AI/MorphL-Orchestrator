@@ -43,7 +43,7 @@ sed 's/INFO/FATAL/;s/WARN/FATAL/;s/ERROR/FATAL/' log4j.properties.template > log
 wget -qO /opt/spark/jars/spark-cassandra-connector.jar https://repo1.maven.org/maven2/com/datastax/spark/spark-cassandra-connector_2.11/${SP_CASS_CONN_VERSION}/spark-cassandra-connector_2.11-${SP_CASS_CONN_VERSION}.jar
 
 echo 'Setting up Hadoop ...'
-HADOOP_TGZ_URL=$(lynx -dump ${MIRROR}/hadoop/common/stable/ | grep -o http.*gz$ | grep -v src | head -1)
+HADOOP_TGZ_URL=$(lynx -dump ${MIRROR}hadoop/common/stable/ | grep -o http.*gz$ | grep -v src | head -1)
 echo "From ${HADOOP_TGZ_URL}"
 wget -qO /opt/tmp/zzzhadoop.tgz ${HADOOP_TGZ_URL}
 tar -xf /opt/tmp/zzzhadoop.tgz -C /opt
