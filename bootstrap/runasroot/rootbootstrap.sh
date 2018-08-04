@@ -67,7 +67,7 @@ echo "export NONDEFAULT_SUPERUSER_CASSANDRA_PASSWORD=${NONDEFAULT_SUPERUSER_CASS
 echo ". /home/airflow/.morphl_environment.sh" >> /home/airflow/.profile
 echo ". /home/airflow/.morphl_secrets.sh" >> /home/airflow/.profile
 
-cp -r /opt/orchestrator/dockerbuilddirs /opt/
+mkdir -p /opt/dockerbuilddirs/pythoncontainer
 chmod 775 /opt
 chmod -R 775 /opt/dockerbuilddirs
 chgrp airflow /opt
@@ -76,4 +76,3 @@ chgrp -R airflow /opt/dockerbuilddirs
 git clone https://github.com/Morphl-Project/Sample-Code /opt/samplecode
 
 sudo -Hiu airflow bash -c /opt/orchestrator/bootstrap/runasairflow/airflowbootstrap.sh
-
