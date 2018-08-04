@@ -58,7 +58,7 @@ wget -qO /opt/tmp/cassandra.tgz ${CASSANDRA_TGZ_URL}
 tar -xf /opt/tmp/cassandra.tgz -C /opt
 mv /opt/apache-cassandra-* /opt/cassandra
 rm /opt/tmp/cassandra.tgz
-cp /opt/orchestrator/bootstrap/runasairflow/*_cassandra.sh /opt/cassandra/bin/
+cp /opt/orchestrator/bootstrap/runasairflow/bash/cassandra/*_cassandra.sh /opt/cassandra/bin/
 echo "sed 's/MORPHL_SERVER_IP_ADDRESS/${MORPHL_SERVER_IP_ADDRESS}/g' /opt/orchestrator/bootstrap/runasairflow/templates/cassandra.yaml.template" | bash > /opt/cassandra/conf/cassandra.yaml
 start_cassandra.sh
 cqlsh ${MORPHL_SERVER_IP_ADDRESS} -u cassandra -p cassandra -e "CREATE USER morphl WITH PASSWORD '${MORPHL_CASSANDRA_PASSWORD}' SUPERUSER;"
@@ -69,7 +69,7 @@ mkdir -p /home/airflow/airflow/dags
 cat /opt/orchestrator/bootstrap/runasairflow/templates/airflow.cfg.template > /home/airflow/airflow/airflow.cfg
 cp /opt/anaconda/bin/airflow /opt/anaconda/bin/airflow_scheduler
 cp /opt/anaconda/bin/airflow /opt/anaconda/bin/airflow_webserver
-cp /opt/orchestrator/bootstrap/runasairflow/*_airflow.sh /opt/anaconda/bin/
+cp /opt/orchestrator/bootstrap/runasairflow/bash/airflow/*_airflow.sh /opt/anaconda/bin/
 airflow version
 airflow initdb
 python /opt/orchestrator/bootstrap/runasairflow/python/set_up_airflow_authentication.py
