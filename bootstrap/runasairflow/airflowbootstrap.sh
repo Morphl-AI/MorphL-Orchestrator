@@ -3,9 +3,6 @@ set -e
 mkdir /home/airflow/.kube
 cat /etc/kubernetes/admin.conf > /home/airflow/.kube/config
 
-mkdir /opt/{secrets,tmp}
-touch /opt/secrets/{keyfile.json,viewid.txt}
-
 SP_CASS_CONN_VERSION=2.3.1
 
 echo 'Setting up Anaconda ...'
