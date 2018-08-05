@@ -30,7 +30,7 @@ CLOSER="https://www.apache.org/dyn/closer.cgi?as_json=1"
 MIRROR=$(curl --stderr /dev/null ${CLOSER} | jq -r '.preferred')
 
 echo 'Setting up Spark ...'
-SPARK_DIR_URL=$(lynx -dump ${MIRROR}spark/ | grep -o 'http.*/spark/spark-[0-9].*$' | sort -V | tail -1
+SPARK_DIR_URL=$(lynx -dump ${MIRROR}spark/ | grep -o 'http.*/spark/spark-[0-9].*$' | sort -V | tail -1)
 SPARK_TGZ_URL=$(lynx -dump ${SPARK_DIR_URL} | grep -o http.*bin-hadoop.*tgz$ | tail -1)
 echo "From ${SPARK_TGZ_URL}"
 wget -qO /opt/tmp/zzzspark.tgz ${SPARK_TGZ_URL}
