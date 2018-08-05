@@ -73,8 +73,6 @@ airflow initdb
 python /opt/orchestrator/bootstrap/runasairflow/python/set_up_airflow_authentication.py
 start_airflow.sh
 
-# cp /opt/orchestrator/bootstrap/runasairflow/bash/load_historical_data.sh /opt/anaconda/bin/
-
 cd /opt/orchestrator && sudo git pull
 sudo cp /opt/orchestrator/dockerbuilddirs/pythoncontainer/Dockerfile /opt/dockerbuilddirs/pythoncontainer/Dockerfile
 sudo cp /opt/orchestrator/dockerbuilddirs/pythoncontainer/install.sh /opt/dockerbuilddirs/pythoncontainer/install.sh
