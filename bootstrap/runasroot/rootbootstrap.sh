@@ -70,9 +70,12 @@ echo ". /home/airflow/.morphl_environment.sh" >> /home/airflow/.profile
 echo ". /home/airflow/.morphl_secrets.sh" >> /home/airflow/.profile
 
 mkdir -p /opt/dockerbuilddirs/pythoncontainer
-chmod 775 /opt
+mkdir /opt/{secrets,tmp}
+touch /opt/secrets/{keyfile.json,viewid.txt}
+chmod 775 /opt /opt/{secrets,tmp}
+chmod 660 /opt/secrets/{keyfile.json,viewid.txt}
 chmod -R 775 /opt/dockerbuilddirs
-chgrp airflow /opt
+chgrp airflow /opt /opt/{secrets,tmp} /opt/secrets/{keyfile.json,viewid.txt}
 chgrp -R airflow /opt/dockerbuilddirs
 
 git clone https://github.com/Morphl-Project/Sample-Code /opt/samplecode
