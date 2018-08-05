@@ -58,6 +58,7 @@ rm /opt/tmp/cassandra.tgz
 cp /opt/orchestrator/bootstrap/runasairflow/bash/cassandra/*_cassandra.sh /opt/cassandra/bin/
 echo "sed 's/MORPHL_SERVER_IP_ADDRESS/${MORPHL_SERVER_IP_ADDRESS}/g' /opt/orchestrator/bootstrap/runasairflow/templates/cassandra.yaml.template" | bash > /opt/cassandra/conf/cassandra.yaml
 start_cassandra.sh
+sleep 10
 cqlsh ${MORPHL_SERVER_IP_ADDRESS} -u cassandra -p cassandra -e "CREATE USER morphl WITH PASSWORD '${MORPHL_CASSANDRA_PASSWORD}' SUPERUSER;"
 cqlsh ${MORPHL_SERVER_IP_ADDRESS} -u cassandra -p cassandra -e "ALTER USER cassandra WITH PASSWORD '${NONDEFAULT_SUPERUSER_CASSANDRA_PASSWORD}';"
 cqlsh ${MORPHL_SERVER_IP_ADDRESS} -u morphl -p ${MORPHL_CASSANDRA_PASSWORD} -f /opt/orchestrator/bootstrap/runasairflow/cql/cassandra_schema.cql
