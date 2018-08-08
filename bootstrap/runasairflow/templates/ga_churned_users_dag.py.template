@@ -20,7 +20,10 @@ docker_cmd_parts = [
     '-e DAY_OF_DATA_CAPTURE',
     '-e KEY_FILE_LOCATION',
     '-e VIEW_ID',
+    '-e ENVIRONMENT_TYPE',
     '-e MORPHL_SERVER_IP_ADDRESS',
+    '-e MORPHL_CASSANDRA_USERNAME',
+    '-e MORPHL_CASSANDRA_KEYSPACE',
     '-e MORPHL_CASSANDRA_PASSWORD',
     'pythoncontainer',
     'bash /opt/samplecode/python/cassandra/ga_cassandra_connector_churned/runconnector.sh ']
