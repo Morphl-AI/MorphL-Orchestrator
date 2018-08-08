@@ -53,10 +53,14 @@ chmod 660 /home/airflow/.profile /home/airflow/.morphl_environment.sh /home/airf
 chown airflow /home/airflow/.profile /home/airflow/.morphl_environment.sh /home/airflow/.morphl_secrets.sh
 echo "airflow ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 echo "morphl ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+echo "export ENVIRONMENT_TYPE=production" >> /home/airflow/.morphl_environment.sh
 echo "export MORPHL_SERVER_IP_ADDRESS=${MORPHL_SERVER_IP_ADDRESS}" >> /home/airflow/.morphl_environment.sh
 echo "export AIRFLOW_HOME=/home/airflow/airflow" >> /home/airflow/.morphl_environment.sh
 echo "export JAVA_HOME=/opt/jdk" >> /home/airflow/.morphl_environment.sh
 echo "export SPARK_HOME=/opt/spark" >> /home/airflow/.morphl_environment.sh
+echo "export CASSANDRA_HOME=/opt/cassandra" >> /home/airflow/.morphl_environment.sh
+echo "export MORPHL_CASSANDRA_USERNAME=morphl" >> /home/airflow/.morphl_environment.sh
+echo "export MORPHL_CASSANDRA_KEYSPACE=morphl" >> /home/airflow/.morphl_environment.sh
 echo "export LD_LIBRARY_PATH=/opt/hadoop/lib/native:\$LD_LIBRARY_PATH" >> /home/airflow/.morphl_environment.sh
 echo "export PATH=/opt/orchestrator/bootstrap/runasairflow/bash:/opt/anaconda/bin:/opt/jdk/bin:/opt/spark/bin:/opt/cassandra/bin:\$PATH" >> /home/airflow/.morphl_environment.sh
 echo "export KEY_FILE_LOCATION=/opt/secrets/keyfile.json" >> /home/airflow/.morphl_secrets.sh
