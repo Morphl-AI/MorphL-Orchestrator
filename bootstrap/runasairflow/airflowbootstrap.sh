@@ -26,6 +26,18 @@ rm /opt/tmp/zzzjdk.tgz
 CLOSER="https://www.apache.org/dyn/closer.cgi?as_json=1"
 MIRROR=$(curl --stderr /dev/null ${CLOSER} | jq -r '.preferred')
 
+echo 'Setting up Cassandra ...'
+CASSANDRA_DIR_URL=$(lynx -dump ${MIRROR}cassandra/ | grep -o 'http.*/cassandra/[0-9].*$' | sort -V | tail -1)
+CASSANDRA_TGZ_URL=$(lynx -dump ${CASSANDRA_DIR_URL} | grep -o http.*bin.tar.gz$ | head -1)
+echo "From ${CASSANDRA_TGZ_URL}"
+wget -qO /opt/tmp/cassandra.tgz ${CASSANDRA_TGZ_URL}
+tar -xf /opt/tmp/cassandra.tgz -C /opt
+mv /opt/apache-cassandra-* /opt/cassandra
+rm /opt/tmp/cassandra.tgz
+cp /opt/orchestrator/bootstrap/runasairflow/bash/cassandra/*_cassandra.sh /opt/cassandra/bin/
+echo "sed 's/MORPHL_SERVER_IP_ADDRESS/${MORPHL_SERVER_IP_ADDRESS}/g' /opt/orchestrator/bootstrap/runasairflow/templates/cassandra.yaml.template" | bash > /opt/cassandra/conf/cassandra.yaml
+start_cassandra.sh
+
 echo 'Setting up Spark ...'
 SPARK_DIR_URL=$(lynx -dump ${MIRROR}spark/ | grep -o 'http.*/spark/spark-[0-9].*$' | sort -V | tail -1)
 SPARK_TGZ_URL=$(lynx -dump ${SPARK_DIR_URL} | grep -o http.*bin-hadoop.*tgz$ | tail -1)
@@ -47,18 +59,6 @@ tar -xf /opt/tmp/zzzhadoop.tgz -C /opt
 mv /opt/hadoop-* /opt/hadoop
 rm /opt/tmp/zzzhadoop.tgz
 
-echo 'Setting up Cassandra ...'
-CASSANDRA_DIR_URL=$(lynx -dump ${MIRROR}cassandra/ | grep -o 'http.*/cassandra/[0-9].*$' | sort -V | tail -1)
-CASSANDRA_TGZ_URL=$(lynx -dump ${CASSANDRA_DIR_URL} | grep -o http.*bin.tar.gz$ | head -1)
-echo "From ${CASSANDRA_TGZ_URL}"
-wget -qO /opt/tmp/cassandra.tgz ${CASSANDRA_TGZ_URL}
-tar -xf /opt/tmp/cassandra.tgz -C /opt
-mv /opt/apache-cassandra-* /opt/cassandra
-rm /opt/tmp/cassandra.tgz
-cp /opt/orchestrator/bootstrap/runasairflow/bash/cassandra/*_cassandra.sh /opt/cassandra/bin/
-echo "sed 's/MORPHL_SERVER_IP_ADDRESS/${MORPHL_SERVER_IP_ADDRESS}/g' /opt/orchestrator/bootstrap/runasairflow/templates/cassandra.yaml.template" | bash > /opt/cassandra/conf/cassandra.yaml
-start_cassandra.sh
-sleep 10
 cqlsh ${MORPHL_SERVER_IP_ADDRESS} -u cassandra -p cassandra -e "CREATE USER morphl WITH PASSWORD '${MORPHL_CASSANDRA_PASSWORD}' SUPERUSER;"
 cqlsh ${MORPHL_SERVER_IP_ADDRESS} -u cassandra -p cassandra -e "ALTER USER cassandra WITH PASSWORD '${NONDEFAULT_SUPERUSER_CASSANDRA_PASSWORD}';"
 cqlsh ${MORPHL_SERVER_IP_ADDRESS} -u morphl -p ${MORPHL_CASSANDRA_PASSWORD} -f /opt/orchestrator/bootstrap/runasairflow/cql/cassandra_schema.cql
