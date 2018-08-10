@@ -80,8 +80,8 @@ Initiating the data load ...
 
 The data load has been initiated.
 ```
-Open [http://PUBLIC_SERVER_IP:8181/admin/](http://PUBLIC_SERVER_IP:8181/admin/) in a browser.  
-`PUBLIC_SERVER_IP` is the Internet-facing IP address of the Ubuntu machine.  
+Open [http://???.???.???.???:8181/admin/](http://???.???.???.???:8181/admin/) in a browser.  
+`???.???.???.???` is the Internet-facing IP address of the Ubuntu machine.  
 You should be able to get this IP address from your cloud management interface or by running:
 ```
 dig +short myip.opendns.com @resolver1.opendns.com
@@ -99,4 +99,17 @@ Keep refreshing the UI page until all the data for the number of days you specif
 Should you need the connection details for Cassandra, the user name is `morphl` and you can find the password with:
 ```
 env | grep MORPHL_CASSANDRA_PASSWORD
+```
+
+### PySpark development
+
+To start developing PySpark applications, you need to run the Jupyter Notebook with a very specific configuration.  
+To do that, you have at your disposal a script that sets up that environment:
+```
+run_pyspark_notebook.sh
+```
+Look for these messages in the output:
+```
+[I 14:01:20.091 NotebookApp] The Jupyter Notebook is running at:
+[I 14:01:20.091 NotebookApp] http://???.???.???.???:8282/?token=2501b8f79e8f128a01e83a457311514e021f0e33c70690cb
 ```
