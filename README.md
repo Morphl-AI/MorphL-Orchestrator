@@ -113,3 +113,30 @@ Look for these messages in the output:
 [I 14:01:20.091 NotebookApp] The Jupyter Notebook is running at:
 [I 14:01:20.091 NotebookApp] http://???.???.???.???:8282/?token=2501b8f79e8f128a01e83a457311514e021f0e33c70690cb
 ```
+It is recommended that every PySpark notebook should have this snippet at the top:
+```
+from os import getenv
+
+MASTER_URL = 'local[*]'
+APPLICATION_NAME = 'preprocessor'
+
+MORPHL_SERVER_IP_ADDRESS = getenv('MORPHL_SERVER_IP_ADDRESS')
+MORPHL_CASSANDRA_USERNAME = getenv('MORPHL_CASSANDRA_USERNAME')
+MORPHL_CASSANDRA_PASSWORD = getenv('MORPHL_CASSANDRA_PASSWORD')
+MORPHL_CASSANDRA_KEYSPACE = getenv('MORPHL_CASSANDRA_KEYSPACE')
+
+spark.stop()
+
+spark_session = (
+    SparkSession.builder
+                .appName(APPLICATION_NAME)
+                .master(MASTER_URL)
+                .config('spark.cassandra.connection.host', MORPHL_SERVER_IP_ADDRESS)
+                .config('spark.cassandra.auth.username', MORPHL_CASSANDRA_USERNAME)
+                .config('spark.cassandra.auth.password', MORPHL_CASSANDRA_PASSWORD)
+                .config('spark.sql.shuffle.partitions', 16)
+                .getOrCreate())
+
+log4j = spark_session.sparkContext._jvm.org.apache.log4j
+log4j.LogManager.getRootLogger().setLevel(log4j.Level.ERROR)
+```
