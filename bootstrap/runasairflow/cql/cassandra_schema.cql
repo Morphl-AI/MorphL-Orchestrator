@@ -33,3 +33,12 @@ VALUES ('GA1','2018-07-05',4);
 INSERT INTO morphl.ps_area (client_id,day_of_data_capture,days_since_last_seen)
 VALUES ('GA2','2018-07-10',6);
 
+CREATE TABLE morphl.config_parameters (
+  morphl_component_name text,
+  parameter_name text,
+  parameter_value text,
+  PRIMARY KEY ((morphl_component_name, parameter_name))
+);
+
+INSERT INTO morphl.config_parameters (morphl_component_name,parameter_name,parameter_value)
+VALUES ('ga_pyspark','days_worth_of_data_to_load','60');
