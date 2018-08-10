@@ -82,6 +82,4 @@ chmod -R 775 /opt/dockerbuilddirs
 chgrp airflow /opt /opt/{secrets,tmp} /opt/secrets/{keyfile.json,viewid.txt}
 chgrp -R airflow /opt/dockerbuilddirs
 
-git clone https://github.com/Morphl-Project/Sample-Code /opt/samplecode
-
 sudo -Hiu airflow bash -c /opt/orchestrator/bootstrap/runasairflow/airflowbootstrap.sh
