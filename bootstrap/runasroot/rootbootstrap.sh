@@ -83,3 +83,5 @@ chgrp airflow /opt /opt/{secrets,tmp} /opt/secrets/{keyfile.json,viewid.txt}
 chgrp -R airflow /opt/dockerbuilddirs
 
 sudo -Hiu airflow bash -c /opt/orchestrator/bootstrap/runasairflow/airflowbootstrap.sh
+
+echo 'The installation has completed successfully.'
