@@ -17,6 +17,40 @@ CREATE TABLE morphl.ga_churned_users_sessions (
   PRIMARY KEY ((client_id), day_of_data_capture, session_id)
 ) WITH CLUSTERING ORDER BY (day_of_data_capture DESC);
 
+CREATE TABLE morphl.ga_churned_users_features (
+  client_id text,
+  day_of_data_capture date,
+  session_id text,
+  session_count double,
+  days_since_last_session double,
+  s_sessions double,
+  pageviews double,
+  unique_pageviews double,
+  screen_views double,
+  hits double,
+  time_on_page double,
+  device_category text,
+  u_sessions double,
+  session_duration double,
+  entrances double,
+  bounces double,
+  exits double,
+  page_value double,
+  page_load_time double,
+  page_load_sample double,
+  PRIMARY KEY ((client_id), day_of_data_capture, session_id)
+) WITH CLUSTERING ORDER BY (day_of_data_capture DESC);
+
+CREATE TABLE morphl.config_parameters (
+  morphl_component_name text,
+  parameter_name text,
+  parameter_value text,
+  PRIMARY KEY ((morphl_component_name, parameter_name))
+);
+
+INSERT INTO morphl.config_parameters (morphl_component_name,parameter_name,parameter_value)
+VALUES ('ga_pyspark','days_worth_of_data_to_load','60');
+
 CREATE TABLE morphl.ps_area (
   client_id text,
   day_of_data_capture date,
@@ -32,13 +66,3 @@ INSERT INTO morphl.ps_area (client_id,day_of_data_capture,days_since_last_seen)
 VALUES ('GA1','2018-07-05',4);
 INSERT INTO morphl.ps_area (client_id,day_of_data_capture,days_since_last_seen)
 VALUES ('GA2','2018-07-10',6);
-
-CREATE TABLE morphl.config_parameters (
-  morphl_component_name text,
-  parameter_name text,
-  parameter_value text,
-  PRIMARY KEY ((morphl_component_name, parameter_name))
-);
-
-INSERT INTO morphl.config_parameters (morphl_component_name,parameter_name,parameter_value)
-VALUES ('ga_pyspark','days_worth_of_data_to_load','60');
