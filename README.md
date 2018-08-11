@@ -51,6 +51,8 @@ VIEW_ID=
 ```
 it means you have forgotten to log out of `airflow` and back in again.
 
+Unless specified otherwise, all commands referred to below should be run as user `airflow`.
+
 ### Load historical data
 
 Run the command:
