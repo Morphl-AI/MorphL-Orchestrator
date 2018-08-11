@@ -76,8 +76,13 @@ python /opt/orchestrator/bootstrap/runasairflow/python/set_up_airflow_authentica
 start_airflow.sh
 
 cd /opt/orchestrator && sudo git pull
-sudo cp /opt/orchestrator/dockerbuilddirs/pythoncontainer/Dockerfile /opt/dockerbuilddirs/pythoncontainer/Dockerfile
-sudo cp /opt/orchestrator/dockerbuilddirs/pythoncontainer/install.sh /opt/dockerbuilddirs/pythoncontainer/install.sh
+
+cp /opt/orchestrator/dockerbuilddirs/pythoncontainer/Dockerfile /opt/dockerbuilddirs/pythoncontainer/Dockerfile
+cp /opt/orchestrator/dockerbuilddirs/pythoncontainer/install.sh /opt/dockerbuilddirs/pythoncontainer/install.sh
 cd /opt/dockerbuilddirs/pythoncontainer
 docker build -t pythoncontainer .
+
+cp /opt/orchestrator/dockerbuilddirs/pysparkcontainer/Dockerfile /opt/dockerbuilddirs/pysparkcontainer/Dockerfile
+cp /opt/orchestrator/dockerbuilddirs/pysparkcontainer/install.sh /opt/dockerbuilddirs/pysparkcontainer/install.sh
+cd /opt/dockerbuilddirs/pysparkcontainer
 docker build -t pysparkcontainer .
