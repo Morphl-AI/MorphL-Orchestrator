@@ -7,7 +7,7 @@ args = { 'owner': 'airflow',
          'retries': 8,
          'retry_delay': datetime.timedelta(minutes=30) }
 
-dag = DAG(dag_id='ga_churned_users',
+dag = DAG(dag_id='ga_churned_users_step_1',
           default_args=args,
           schedule_interval='0 12 * * *')
 
