@@ -4,7 +4,7 @@ from airflow.operators.bash_operator import BashOperator
 
 args = { 'owner': 'airflow',
          'start_date': START_DATE_AS_PY_CODE,
-         'retries': 8,
+         'retries': 16,
          'retry_delay': datetime.timedelta(minutes=30) }
 
 dag = DAG(dag_id='ga_churned_users_step_1',
