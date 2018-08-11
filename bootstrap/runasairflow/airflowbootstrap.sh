@@ -80,3 +80,4 @@ sudo cp /opt/orchestrator/dockerbuilddirs/pythoncontainer/Dockerfile /opt/docker
 sudo cp /opt/orchestrator/dockerbuilddirs/pythoncontainer/install.sh /opt/dockerbuilddirs/pythoncontainer/install.sh
 cd /opt/dockerbuilddirs/pythoncontainer
 docker build -t pythoncontainer .
+docker build -t pysparkcontainer .
