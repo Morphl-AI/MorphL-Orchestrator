@@ -32,4 +32,4 @@ tar -xf /opt/tmp/zzzhadoop.tgz -C /opt
 mv /opt/hadoop-* /opt/hadoop
 rm /opt/tmp/zzzhadoop.tgz
 
-echo 'Building container 1 (out of 2), this may take a while ...'
+echo 'Building container 2 (out of 2), this may take a while ...'
