@@ -2,6 +2,9 @@ export DEBIAN_FRONTEND=noninteractive
 
 mkdir /opt/tmp
 
+SP_CASS_CONN_VERSION=2.3.1
+JSR166E_VERSION=1.1.0
+
 echo 'Setting up the JDK ...'
 JDK_TGZ_URL=$(lynx -dump https://www.azul.com/downloads/zulu/zulu-linux/ | grep -o http.*jdk8.*x64.*gz$ | head -1)
 echo "From ${JDK_TGZ_URL}"
@@ -23,6 +26,9 @@ mv /opt/spark-* /opt/spark
 rm /opt/tmp/zzzspark.tgz
 cd /opt/spark/conf
 sed 's/INFO/FATAL/;s/WARN/FATAL/;s/ERROR/FATAL/' log4j.properties.template > log4j.properties
+
+wget -qO /opt/spark/jars/spark-cassandra-connector.jar https://repo1.maven.org/maven2/com/datastax/spark/spark-cassandra-connector_2.11/${SP_CASS_CONN_VERSION}/spark-cassandra-connector_2.11-${SP_CASS_CONN_VERSION}.jar
+wget -qO /opt/spark/jars/jsr166e.jar https://repo1.maven.org/maven2/com/twitter/jsr166e/${JSR166E_VERSION}/jsr166e-${JSR166E_VERSION}.jar
 
 echo 'Setting up Hadoop ...'
 HADOOP_TGZ_URL=$(lynx -dump ${MIRROR}hadoop/common/stable/ | grep -o http.*gz$ | grep -v src | head -1)
