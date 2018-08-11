@@ -73,7 +73,7 @@ echo "export NONDEFAULT_SUPERUSER_CASSANDRA_PASSWORD=${NONDEFAULT_SUPERUSER_CASS
 echo ". /home/airflow/.morphl_environment.sh" >> /home/airflow/.profile
 echo ". /home/airflow/.morphl_secrets.sh" >> /home/airflow/.profile
 
-mkdir -p /opt/dockerbuilddirs/pythoncontainer
+mkdir -p /opt/dockerbuilddirs/{pythoncontainer,pysparkcontainer}
 mkdir /opt/{secrets,tmp}
 touch /opt/secrets/{keyfile.json,viewid.txt}
 chmod 775 /opt /opt/{secrets,tmp}
