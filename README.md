@@ -96,6 +96,8 @@ log into Airflow's web UI.
 
 Keep refreshing the UI page until all the data for the number of days you specified previously, has been loaded into Cassandra.
 
+### Schedule the remaining parts of the pipeline
+
 Once all the raw data has been loaded, there is one more thing to do for the ML pipeline to be fully operational:
 ```
 airflow trigger_dag ga_churned_users_step_2
