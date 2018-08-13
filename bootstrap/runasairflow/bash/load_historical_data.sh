@@ -8,7 +8,7 @@ if [ ${rc} -eq 0 ]; then
   echo
   cqlsh ${MORPHL_SERVER_IP_ADDRESS} -u morphl -p ${MORPHL_CASSANDRA_PASSWORD} -f /opt/orchestrator/bootstrap/runasairflow/cql/truncate_ga_churned_users_tables.cql
   STEP_2_DAYS_WORTH_OF_DATA_TO_LOAD=$(<${TEMPFILE_C})
-  sed "s/STEP_2_DAYS_WORTH_OF_DATA_TO_LOAD/${STEP_2_DAYS_WORTH_OF_DATA_TO_LOAD}/g" /opt/orchestrator/bootstrap/runasairflow/cql/insert_into_config_parameters.cql > /tmp/insert_into_config_parameters.cql
+  sed "s/STEP_2_DAYS_WORTH_OF_DATA_TO_LOAD/${STEP_2_DAYS_WORTH_OF_DATA_TO_LOAD}/g" /opt/orchestrator/bootstrap/runasairflow/cql/insert_into_config_parameters.cql.template > /tmp/insert_into_config_parameters.cql
   cqlsh ${MORPHL_SERVER_IP_ADDRESS} -u morphl -p ${MORPHL_CASSANDRA_PASSWORD} -f /tmp/insert_into_config_parameters.cql
   echo "Initiating the data load ..."
   echo
