@@ -10,7 +10,7 @@ if [ ${rc} -eq 0 ]; then
   stop_airflow.sh
   airflow resetdb -y &>/dev/null
   START_DATE_AS_PY_CODE=$(<${TEMPFILE})
-  echo "sed 's/START_DATE_AS_PY_CODE/${START_DATE_AS_PY_CODE}/g' /opt/orchestrator/bootstrap/runasairflow/templates/ga_churned_users_step_1_dag.py.template" | bash > /home/airflow/airflow/dags/ga_churned_users_step_1_dag.py
+  sed "s/START_DATE_AS_PY_CODE/${START_DATE_AS_PY_CODE}/g" /opt/orchestrator/bootstrap/runasairflow/python/dags/ga_churned_users_step_1_dag.py.template > /home/airflow/airflow/dags/ga_churned_users_step_1_dag.py
   start_airflow.sh
   echo "The data load has been initiated."
   echo
