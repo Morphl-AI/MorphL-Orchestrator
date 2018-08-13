@@ -1,0 +1,31 @@
+import datetime
+from airflow.models import DAG
+from airflow.operators.bash_operator import BashOperator
+
+args = { 'owner': 'airflow',
+         'start_date': START_DATE_AS_PY_CODE,
+         'retries': 16,
+         'retry_delay': datetime.timedelta(minutes=30) }
+
+dag = DAG(dag_id='ga_churned_users_step_2',
+          default_args=args,
+          schedule_interval='@weekly')
+
+# Do not remove the extra space at the end (the one after 'runconnector.sh')
+docker_cmd_parts = [
+    'docker run --rm',
+    '-v /opt/samplecode:/opt/samplecode',
+    '-e ENVIRONMENT_TYPE',
+    '-e MORPHL_SERVER_IP_ADDRESS',
+    '-e MORPHL_CASSANDRA_USERNAME',
+    '-e MORPHL_CASSANDRA_KEYSPACE',
+    '-e MORPHL_CASSANDRA_PASSWORD',
+    'pysparkcontainer',
+    'spark-submit',
+    '--jars /opt/spark/jars/spark-cassandra-connector.jar,/opt/spark/jars/jsr166e.jar',
+    '/opt/samplecode/python/pyspark/ga_pyspark_preprocessor_churned.py ']
+docker_cmd = ' '.join(docker_cmd_parts)
+
+task = BashOperator(task_id='run_preprocessor',
+                    bash_command=docker_cmd,
+                    dag=dag)
