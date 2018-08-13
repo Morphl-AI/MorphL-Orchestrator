@@ -1,8 +1,8 @@
 import datetime
 from sys import argv, exit
 
-def get_record(i, num_days_ago, yesterday):
-    dt = yesterday - datetime.timedelta(days=num_days_ago)
+def get_record(i, num_days_ago, ref_dt):
+    dt = ref_dt - datetime.timedelta(days=num_days_ago)
     return (i, {'days_worth_of_data_to_load': str(num_days_ago),
                 'asYYYY-MM-DD': dt.strftime('%Y-%m-%d'),
                 'as_py_code': dt.__repr__()})
@@ -14,7 +14,7 @@ n = datetime.datetime.now()
 yesterday = n - datetime.timedelta(days=1)
 tomorrow = n + datetime.timedelta(days=1)
 lookup_dict = \
-    dict([get_record(i + 1, num_days_ago, yesterday) for (i, num_days_ago) in enumerate(OPTIONS)])
+    dict([get_record(i + 1, num_days_ago, n) for (i, num_days_ago) in enumerate(OPTIONS)])
 for _ in range(5):
     print('')
 print('How much historical data should be loaded?\n')
