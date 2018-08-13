@@ -96,6 +96,13 @@ log into Airflow's web UI.
 
 Keep refreshing the UI page until all the data for the number of days you specified previously, has been loaded into Cassandra.
 
+Once all the raw data has been loaded, there is one more thing to do for the ML pipeline to be fully operational:
+```
+airflow trigger_dag ga_churned_users_step_2
+```
+The steps above only need to be performed once, immeditely following the installation.  
+From this point forward, the platform is on auto-pilot and will on a regular basis collect new data and generate fewsh ML models fully automatically.
+
 ### Miscellaneous
 
 Should you need the connection details for Cassandra, the user name is `morphl` and you can find the password with:
