@@ -3,7 +3,7 @@ from airflow.models import DAG
 from airflow.operators.bash_operator import BashOperator
 
 args = { 'owner': 'airflow',
-         'start_date': START_DATE_AS_PY_CODE,
+         'start_date': STEP_1_START_DATE_AS_PY_CODE,
          'retries': 16,
          'retry_delay': datetime.timedelta(minutes=30) }
 
