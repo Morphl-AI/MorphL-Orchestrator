@@ -2,7 +2,7 @@
 
 A clean Ubuntu 16.04 machine, minimum 2 vCPUs, 16GB of RAM, 50GB storage.
 
-### QuickStart Guide
+### QuickStart Guide: Step 1) Installing the platform
 
 Bootstrap the installation by running the following commands as root:
 ```
@@ -21,7 +21,7 @@ Once the installation is done, check the bottom of the output to see the if the 
 
 At this point a few more setup steps are necessary.
 
-### Provide your key file and view ID
+### Step 2) Providing your key file and view ID
 
 From the root prompt, log into `airflow`:
 ```
@@ -53,7 +53,7 @@ it means you have forgotten to log out of `airflow` and back in again.
 
 Unless specified otherwise, all commands referred to below should be run as user `airflow`.
 
-### Load historical data
+### Step 3) Loading historical data
 
 Run the command:
 ```
@@ -96,7 +96,7 @@ log into Airflow's web UI.
 
 Keep refreshing the UI page until all the data for the number of days you specified previously, has been loaded into Cassandra.
 
-### Schedule the remaining parts of the pipeline
+### Step 4) Scheduling the remaining parts of the pipeline
 
 Once all the raw data has been loaded, there is one more thing to do for the ML pipeline to be fully operational:
 ```
@@ -105,7 +105,7 @@ airflow trigger_dag ga_churned_users_step_2
 The steps above only need to be performed once, immeditely following the installation.  
 From this point forward, the platform is on auto-pilot and will on a regular basis collect new data and generate fewsh ML models fully automatically.
 
-### Miscellaneous
+### Troubleshooting
 
 Should you need the connection details for Cassandra, the user name is `morphl` and you can find the password with:
 ```
