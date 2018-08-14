@@ -1,0 +1,1 @@
+TRUNCATE TABLE morphl.ga_churned_users_features;
