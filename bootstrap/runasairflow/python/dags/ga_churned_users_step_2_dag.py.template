@@ -26,6 +26,14 @@ docker_cmd_parts = [
     '/opt/samplecode/python/pyspark/ga_pyspark_preprocessor_churned.py ']
 docker_cmd = ' '.join(docker_cmd_parts)
 
-task = BashOperator(task_id='run_preprocessor',
-                    bash_command=docker_cmd,
-                    dag=dag)
+truncate_tables_task_1 = BashOperator(
+    task_id='truncate_tables_task_1',
+    bash_command='bash /opt/orchestrator/bootstrap/runasairflow/bash/truncate_tables_for_step_2.sh ',
+    dag=dag)
+
+run_preprocessor = BashOperator(
+    task_id='run_preprocessor',
+    bash_command=docker_cmd,
+    dag=dag)
+
+run_preprocessor.set_upstream(truncate_tables_task_1)
