@@ -2,6 +2,9 @@ set -e
 
 unset SUDO_UID SUDO_GID SUDO_USER
 
+ssh-keygen -f ~/.ssh/id_rsa -q -P ''
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+
 mkdir /home/airflow/.kube
 cat /etc/kubernetes/admin.conf > /home/airflow/.kube/config
 
@@ -62,7 +65,13 @@ echo "From ${HADOOP_TGZ_URL}"
 wget -qO /opt/tmp/zzzhadoop.tgz ${HADOOP_TGZ_URL}
 tar -xf /opt/tmp/zzzhadoop.tgz -C /opt
 mv /opt/hadoop-* /opt/hadoop
+rm /opt/hadoop/bin/*.cmd /opt/hadoop/sbin/*.cmd
 rm /opt/tmp/zzzhadoop.tgz
+echo "export JAVA_HOME=${JAVA_HOME}" >> /opt/hadoop/etc/hadoop/hadoop-env.sh
+echo 'export HADOOP_SSH_OPTS="-o StrictHostKeyChecking=no"' >> /opt/hadoop/etc/hadoop/hadoop-env.sh
+
+/opt/hadoop/bin/hdfs namenode -format
+/opt/hadoop/sbin/start-dfs.sh
 
 cqlsh ${MORPHL_SERVER_IP_ADDRESS} -u cassandra -p cassandra -e "CREATE USER morphl WITH PASSWORD '${MORPHL_CASSANDRA_PASSWORD}' SUPERUSER;"
 cqlsh ${MORPHL_SERVER_IP_ADDRESS} -u cassandra -p cassandra -e "ALTER USER cassandra WITH PASSWORD '${NONDEFAULT_SUPERUSER_CASSANDRA_PASSWORD}';"
