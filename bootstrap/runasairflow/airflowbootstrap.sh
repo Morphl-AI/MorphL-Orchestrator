@@ -14,7 +14,8 @@ bash /opt/dockerbuilddirs/pythoncontainer/Anaconda.sh -b -p /opt/anaconda
 mv /opt/anaconda/bin/sqlite3 /opt/anaconda/bin/sqlite3.orig
 pip install msgpack
 pip install --upgrade pip
-pip install psycopg2-binary apache-airflow Flask-Bcrypt cassandra-driver
+pip install psycopg2-binary apache-airflow Flask-Bcrypt cassandra-driver graphviz
+yes | conda install hdfs3 -c conda-forge
 
 echo 'Setting up the JDK ...'
 JDK_TGZ_URL=$(lynx -dump https://www.azul.com/downloads/zulu/zulu-linux/ | grep -o http.*jdk8.*x64.*gz$ | head -1)
