@@ -15,6 +15,15 @@ mv /opt/anaconda/bin/sqlite3 /opt/anaconda/bin/sqlite3.orig
 pip install msgpack
 pip install --upgrade pip
 pip install psycopg2-binary apache-airflow Flask-Bcrypt cassandra-driver graphviz
+
+echo 'Showing UIDs ...'
+
+echo $SUDO_UID
+echo $SUDO_GID
+echo $SUDO_USER
+
+unset SUDO_UID SUDO_GID SUDO_USER
+
 yes | conda install hdfs3 -c conda-forge
 
 echo 'Setting up the JDK ...'
