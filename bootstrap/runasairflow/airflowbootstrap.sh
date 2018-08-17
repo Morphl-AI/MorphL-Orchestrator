@@ -69,7 +69,10 @@ rm /opt/hadoop/bin/*.cmd /opt/hadoop/sbin/*.cmd
 rm /opt/tmp/zzzhadoop.tgz
 echo "export JAVA_HOME=${JAVA_HOME}" >> /opt/hadoop/etc/hadoop/hadoop-env.sh
 echo 'export HADOOP_SSH_OPTS="-o StrictHostKeyChecking=no"' >> /opt/hadoop/etc/hadoop/hadoop-env.sh
-
+mkdir -p /opt/hadoop/hadoop_store/hdfs/namenode
+mkdir -p /opt/hadoop/hadoop_store/hdfs/datanode
+sed "s/MORPHL_SERVER_IP_ADDRESS/${MORPHL_SERVER_IP_ADDRESS}/g" bootstrap/runasairflow/templates/core-site.xml.template > /opt/hadoop/etc/hadoop/core-site.xml
+cat /opt/orchestrator/bootstrap/runasairflow/templates/hdfs-site.xml.template > /opt/hadoop/etc/hadoop/hdfs-site.xml
 /opt/hadoop/bin/hdfs namenode -format
 /opt/hadoop/sbin/start-dfs.sh
 
