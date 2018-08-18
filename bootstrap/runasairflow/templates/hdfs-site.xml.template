@@ -12,7 +12,7 @@
     <value>file:/opt/hadoop/hadoop_store/hdfs/datanode</value>
   </property>
   <property>
-    <name>dfs.block.size</name>
+    <name>dfs.blocksize</name>
     <value>1048576</value>
   </property>
 </configuration>
