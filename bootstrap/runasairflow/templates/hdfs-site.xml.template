@@ -15,4 +15,8 @@
     <name>dfs.blocksize</name>
     <value>1048576</value>
   </property>
+  <property>
+    <name>dfs.client.read.shortcircuit</name>
+    <value>false</value>
+  </property>
 </configuration>
