@@ -29,7 +29,6 @@ CREATE TABLE morphl.ga_churned_users_features (
   screen_views double,
   hits double,
   time_on_page double,
-  device_category text,
   u_sessions double,
   session_duration double,
   entrances double,
@@ -38,6 +37,9 @@ CREATE TABLE morphl.ga_churned_users_features (
   page_value double,
   page_load_time double,
   page_load_sample double,
+  is_desktop double,
+  is_mobile double,
+  is_tablet double,
   PRIMARY KEY ((client_id), day_of_data_capture, session_id)
 ) WITH CLUSTERING ORDER BY (day_of_data_capture DESC);
 
