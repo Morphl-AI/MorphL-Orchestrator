@@ -33,12 +33,16 @@ sudo -Hiu postgres psql -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public 
 
 cat /opt/orchestrator/bootstrap/runasroot/rc.local > /etc/rc.local
 
+new_password () {
+  openssl rand -hex 64 | cut -c1-20
+}
+
 MORPHL_SERVER_IP_ADDRESS=$(ip route get 8.8.8.8 | awk '{print $NF; exit}')
-AIRFLOW_OS_PASSWORD=$(openssl rand -base64 32 | sha512sum | cut -c1-20)
-AIRFLOW_WEB_UI_PASSWORD=$(openssl rand -base64 32 | sha512sum | cut -c1-20)
-MORPHL_OS_PASSWORD=$(openssl rand -base64 32 | sha512sum | cut -c1-20)
-MORPHL_CASSANDRA_PASSWORD=$(openssl rand -base64 32 | sha512sum | cut -c1-20)
-NONDEFAULT_SUPERUSER_CASSANDRA_PASSWORD=$(openssl rand -base64 32 | sha512sum | cut -c1-20)
+AIRFLOW_OS_PASSWORD=$(new_password)
+AIRFLOW_WEB_UI_PASSWORD=$(new_password)
+MORPHL_OS_PASSWORD=$(new_password)
+MORPHL_CASSANDRA_PASSWORD=$(new_password)
+NONDEFAULT_SUPERUSER_CASSANDRA_PASSWORD=$(new_password)
 
 useradd -m airflow
 echo "airflow:${AIRFLOW_OS_PASSWORD}" | chpasswd
