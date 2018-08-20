@@ -20,7 +20,8 @@ mv /opt/anaconda/bin/sqlite3 /opt/anaconda/bin/sqlite3.orig
 pip install msgpack
 pip install --upgrade pip
 pip install psycopg2-binary apache-airflow Flask-Bcrypt cassandra-driver graphviz
-conda install hdfs3 -y -c conda-forge
+conda install hdfs3 fastparquet -y -c conda-forge
+conda install python-snappy -y
 
 echo 'Setting up the JDK ...'
 JDK_TGZ_URL=$(lynx -dump https://www.azul.com/downloads/zulu/zulu-linux/ | grep -o http.*jdk8.*x64.*gz$ | head -1)
