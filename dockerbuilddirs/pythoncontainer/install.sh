@@ -11,4 +11,6 @@ mv /opt/anaconda/bin/sqlite3 /opt/anaconda/bin/sqlite3.orig
 pip install msgpack
 pip install --upgrade pip
 pip install google-auth google-api-python-client tensorflow keras cassandra-driver
+conda install hdfs3 fastparquet -y -c conda-forge
+conda install python-snappy -y
 echo 'Building container 1 (out of 2), this may take a while ...'
