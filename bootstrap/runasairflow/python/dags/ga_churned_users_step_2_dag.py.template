@@ -1,4 +1,6 @@
 import datetime
+from os import urandom
+from hashlib import sha512
 from airflow.models import DAG
 from airflow.operators.bash_operator import BashOperator
 
@@ -10,6 +12,9 @@ args = { 'owner': 'airflow',
 dag = DAG(dag_id='ga_churned_users_step_2',
           default_args=args,
           schedule_interval='@weekly')
+
+today_as_str = datetime.datetime.now().strftime('%Y-%m-%d')
+unique_hash = sha512(urandom(100)).hexdigest()[:20]
 
 # Do not remove the extra space at the end (the one after 'runconnector.sh')
 docker_cmd_parts = [
@@ -26,6 +31,7 @@ docker_cmd_parts = [
     '/opt/samplecode/python/pyspark/ga_pyspark_preprocessor_churned.py ']
 docker_cmd = ' '.join(docker_cmd_parts)
 
+# Do not remove the extra space at the end (the one after 'truncate_tables_for_step_2.sh')
 truncate_tables_task_1 = BashOperator(
     task_id='truncate_tables_task_1',
     bash_command='bash /opt/orchestrator/bootstrap/runasairflow/bash/truncate_tables_for_step_2.sh ',
