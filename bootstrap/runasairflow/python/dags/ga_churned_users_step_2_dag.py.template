@@ -18,8 +18,8 @@ unique_hash = sha512(urandom(100)).hexdigest()[:20]
 
 # Do not remove the extra space at the end (the one after 'runconnector.sh')
 docker_cmd_parts = [
-    'TODAY_AS_STR={{ today_as_str }}',
-    'UNIQUE_HASH={{ unique_hash }}',
+    f'TODAY_AS_STR={today_as_str}',
+    f'UNIQUE_HASH={unique_hash}',
     'docker run --rm',
     '-v /opt/samplecode:/opt/samplecode',
     '-e ENVIRONMENT_TYPE',
