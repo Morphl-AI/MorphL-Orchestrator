@@ -37,7 +37,8 @@ new_password () {
   openssl rand -hex 64 | cut -c1-20
 }
 
-MORPHL_SERVER_IP_ADDRESS=$(hostname -f)
+MORPHL_SERVER_IP_ADDRESS=$(hostname --ip-address)
+MORPHL_SERVER_FQDN=$(hostname -f)
 AIRFLOW_OS_PASSWORD=$(new_password)
 AIRFLOW_WEB_UI_PASSWORD=$(new_password)
 MORPHL_OS_PASSWORD=$(new_password)
@@ -59,6 +60,7 @@ echo "airflow ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 echo "morphl ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 echo "export ENVIRONMENT_TYPE=production" >> /home/airflow/.morphl_environment.sh
 echo "export MORPHL_SERVER_IP_ADDRESS=${MORPHL_SERVER_IP_ADDRESS}" >> /home/airflow/.morphl_environment.sh
+echo "export MORPHL_SERVER_FQDN=${MORPHL_SERVER_FQDN}" >> /home/airflow/.morphl_environment.sh
 echo "export AIRFLOW_HOME=/home/airflow/airflow" >> /home/airflow/.morphl_environment.sh
 echo "export JAVA_HOME=/opt/jdk" >> /home/airflow/.morphl_environment.sh
 echo "export SPARK_HOME=/opt/spark" >> /home/airflow/.morphl_environment.sh
