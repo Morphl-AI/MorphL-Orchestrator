@@ -68,6 +68,7 @@ tar -xf /opt/tmp/zzzhadoop.tgz -C /opt
 mv /opt/hadoop-* /opt/hadoop
 rm /opt/hadoop/bin/*.cmd /opt/hadoop/sbin/*.cmd
 rm /opt/tmp/zzzhadoop.tgz
+cp /opt/orchestrator/bootstrap/runasairflow/bash/hdfs/*_hdfs.sh /opt/hadoop/bin/
 echo "export JAVA_HOME=${JAVA_HOME}" >> /opt/hadoop/etc/hadoop/hadoop-env.sh
 echo 'export HADOOP_SSH_OPTS="-o StrictHostKeyChecking=no"' >> /opt/hadoop/etc/hadoop/hadoop-env.sh
 mkdir -p /opt/hadoop/hadoop_store/hdfs/namenode
