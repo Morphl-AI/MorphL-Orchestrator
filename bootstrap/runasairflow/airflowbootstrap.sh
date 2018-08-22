@@ -77,7 +77,7 @@ sed "s/MORPHL_SERVER_IP_ADDRESS/${MORPHL_SERVER_IP_ADDRESS}/g" /opt/orchestrator
 cat /opt/orchestrator/bootstrap/runasairflow/templates/hdfs-site.xml.template > /opt/hadoop/etc/hadoop/hdfs-site.xml
 echo ${MORPHL_SERVER_IP_ADDRESS} > /opt/hadoop/etc/hadoop/slaves
 /opt/hadoop/bin/hdfs namenode -format
-/opt/hadoop/sbin/start-dfs.sh
+start_hdfs.sh
 
 cqlsh ${MORPHL_SERVER_IP_ADDRESS} -u cassandra -p cassandra -e "CREATE USER morphl WITH PASSWORD '${MORPHL_CASSANDRA_PASSWORD}' SUPERUSER;"
 cqlsh ${MORPHL_SERVER_IP_ADDRESS} -u cassandra -p cassandra -e "ALTER USER cassandra WITH PASSWORD '${NONDEFAULT_SUPERUSER_CASSANDRA_PASSWORD}';"
