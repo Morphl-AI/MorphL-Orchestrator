@@ -1,3 +1,2 @@
-fuser -k 9042/tcp > /dev/null 2>/dev/null
+fuser -k 9042/tcp &>/dev/null
 sleep 1
-
