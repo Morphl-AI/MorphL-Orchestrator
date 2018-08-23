@@ -104,3 +104,10 @@ cp /opt/orchestrator/dockerbuilddirs/pysparkcontainer/Dockerfile /opt/dockerbuil
 cp /opt/orchestrator/dockerbuilddirs/pysparkcontainer/install.sh /opt/dockerbuilddirs/pysparkcontainer/install.sh
 cd /opt/dockerbuilddirs/pysparkcontainer
 docker build -t pysparkcontainer .
+
+env | egrep '^MORPHL_SERVER_IP_ADDRESS|^MORPHL_CASSANDRA_USERNAME|^MORPHL_CASSANDRA_PASSWORD|^MORPHL_CASSANDRA_KEYSPACE' > /home/airflow/.env_file.sh
+kubectl create configmap environment-configmap --from-env-file=/home/airflow/.env_file.sh
+kubectl apply -f /opt/orchestrator/bootstrap/runasairflow/templates/k8s.ga-churned-users.deployment.yaml
+kubectl apply -f /opt/orchestrator/bootstrap/runasairflow/templates/k8s.ga-churned-users.service.yaml
+KUBERNETES_CLUSTER_IP_ADDRESS=$(kubectl get service/ga-churned-users-service -o jsonpath='{.spec.clusterIP}')
+echo "export KUBERNETES_CLUSTER_IP_ADDRESS=${KUBERNETES_CLUSTER_IP_ADDRESS}" >> /home/airflow/.morphl_environment.sh
