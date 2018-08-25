@@ -111,3 +111,5 @@ kubectl apply -f /opt/orchestrator/bootstrap/runasairflow/templates/k8s.ga-churn
 kubectl apply -f /opt/orchestrator/bootstrap/runasairflow/templates/k8s.ga-churned-users.service.yaml
 KUBERNETES_CLUSTER_IP_ADDRESS=$(kubectl get service/ga-churned-users-service -o jsonpath='{.spec.clusterIP}')
 echo "export KUBERNETES_CLUSTER_IP_ADDRESS=${KUBERNETES_CLUSTER_IP_ADDRESS}" >> /home/airflow/.morphl_environment.sh
+echo 'Testing prediction endpoint ...'
+curl http://${KUBERNETES_CLUSTER_IP_ADDRESS}/getprediction/GA1
