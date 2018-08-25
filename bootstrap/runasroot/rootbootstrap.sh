@@ -37,7 +37,7 @@ new_password () {
   openssl rand -hex 64 | cut -c1-20
 }
 
-MORPHL_SERVER_IP_ADDRESS=$(hostname --ip-address)
+MORPHL_SERVER_IP_ADDRESS=$(ip route get 8.8.8.8 | awk '{print $NF; exit}')
 MORPHL_SERVER_FQDN=$(hostname -f)
 AIRFLOW_OS_PASSWORD=$(new_password)
 AIRFLOW_WEB_UI_PASSWORD=$(new_password)
