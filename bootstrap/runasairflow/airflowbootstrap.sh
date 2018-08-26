@@ -77,7 +77,7 @@ mkdir -p /opt/hadoop/hadoop_store/hdfs/datanode
 sed "s/MORPHL_SERVER_IP_ADDRESS/${MORPHL_SERVER_IP_ADDRESS}/g" /opt/orchestrator/bootstrap/runasairflow/templates/core-site.xml.template > /opt/hadoop/etc/hadoop/core-site.xml
 cat /opt/orchestrator/bootstrap/runasairflow/templates/hdfs-site.xml.template > /opt/hadoop/etc/hadoop/hdfs-site.xml
 echo ${MORPHL_SERVER_FQDN} > /opt/hadoop/etc/hadoop/slaves
-/opt/hadoop/bin/hdfs namenode -format
+/opt/hadoop/bin/hdfs namenode -format &>/dev/null
 start_hdfs.sh
 
 cqlsh ${MORPHL_SERVER_IP_ADDRESS} -u cassandra -p cassandra -e "CREATE USER morphl WITH PASSWORD '${MORPHL_CASSANDRA_PASSWORD}' SUPERUSER;"
