@@ -114,4 +114,4 @@ KUBERNETES_CLUSTER_IP_ADDRESS=$(kubectl get service/ga-churned-users-service -o 
 echo "export KUBERNETES_CLUSTER_IP_ADDRESS=${KUBERNETES_CLUSTER_IP_ADDRESS}" >> /home/airflow/.morphl_environment.sh
 sleep 30
 echo 'Testing prediction endpoint ...'
-curl http://${KUBERNETES_CLUSTER_IP_ADDRESS}/getprediction/GA1
+curl -s http://${KUBERNETES_CLUSTER_IP_ADDRESS}/getprediction/GA1
