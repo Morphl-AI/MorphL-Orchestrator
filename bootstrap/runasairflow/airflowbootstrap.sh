@@ -20,6 +20,7 @@ mv /opt/anaconda/bin/sqlite3 /opt/anaconda/bin/sqlite3.orig
 pip install msgpack
 pip install --upgrade pip
 pip install psycopg2-binary apache-airflow Flask-Bcrypt cassandra-driver graphviz
+pip install https://github.com/scikit-learn/scikit-learn/archive/master.zip
 conda install hdfs3 fastparquet -y -c conda-forge
 conda install python-snappy -y
 
@@ -111,5 +112,6 @@ kubectl apply -f /opt/orchestrator/bootstrap/runasairflow/templates/k8s.ga-churn
 kubectl apply -f /opt/orchestrator/bootstrap/runasairflow/templates/k8s.ga-churned-users.service.yaml
 KUBERNETES_CLUSTER_IP_ADDRESS=$(kubectl get service/ga-churned-users-service -o jsonpath='{.spec.clusterIP}')
 echo "export KUBERNETES_CLUSTER_IP_ADDRESS=${KUBERNETES_CLUSTER_IP_ADDRESS}" >> /home/airflow/.morphl_environment.sh
+sleep 30
 echo 'Testing prediction endpoint ...'
 curl http://${KUBERNETES_CLUSTER_IP_ADDRESS}/getprediction/GA1
