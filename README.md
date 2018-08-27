@@ -8,10 +8,14 @@ Bootstrap the installation by running the following commands as root:
 ```
 WHERE_THE_ORCHESTRATOR_IS='https://github.com/Morphl-Project/MorphL-Orchestrator'
 WHERE_THE_SOFTWARE_IS='https://github.com/Morphl-Project/Sample-Code'
+WHERE_THE_FEATURE_SCALER_IS='https://github.com/Morphl-Project/morphl-churned-vs-not-churned-preprocessor'
 
 apt update -qq && apt -y install git ca-certificates
+
 git clone ${WHERE_THE_ORCHESTRATOR_IS} /opt/orchestrator
 git clone ${WHERE_THE_SOFTWARE_IS} /opt/samplecode
+git clone ${WHERE_THE_FEATURE_SCALER_IS} /opt/scaler
+
 bash /opt/orchestrator/bootstrap/runasroot/rootbootstrap.sh
 
 ```
