@@ -16,7 +16,7 @@ dag = DAG(dag_id='ga_churned_users_step_2',
 today_as_str = datetime.datetime.now().strftime('%Y-%m-%d')
 unique_hash = sha512(urandom(100)).hexdigest()[:20]
 
-# Do not remove the extra space at the end (the one after 'runconnector.sh')
+# Do not remove the extra space at the end (the one after 'runpysparkpreprocessor.sh')
 task_2_run_pyspark_preprocessor_cmd_parts = [
     f'TODAY_AS_STR={today_as_str}',
     f'UNIQUE_HASH={unique_hash}',
@@ -30,9 +30,7 @@ task_2_run_pyspark_preprocessor_cmd_parts = [
     '-e MORPHL_CASSANDRA_KEYSPACE',
     '-e MORPHL_CASSANDRA_PASSWORD',
     'pysparkcontainer',
-    'spark-submit',
-    '--jars /opt/spark/jars/spark-cassandra-connector.jar,/opt/spark/jars/jsr166e.jar',
-    '/opt/samplecode/python/pyspark/ga_pyspark_preprocessor_churned.py ']
+    'bash /opt/code/python/pyspark/runpysparkpreprocessor.sh ']
 task_2_run_pyspark_preprocessor_cmd = ' '.join(task_2_run_pyspark_preprocessor_cmd_parts)
 
 # Do not remove the extra space at the end (the one after 'move_metadata.sh')
