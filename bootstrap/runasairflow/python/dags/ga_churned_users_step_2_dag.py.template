@@ -53,9 +53,10 @@ task_1_truncate_tables = BashOperator(
     bash_command='bash /opt/orchestrator/bootstrap/runasairflow/bash/truncate_tables_for_step_2.sh ',
     dag=dag)
 
+# Do not remove the extra space at the end (the one after 'generate_id_files.sh')
 task_2_generate_id_files = BashOperator(
     task_id='task_2_generate_id_files',
-    bash_command='bash /opt/orchestrator/bootstrap/runasairflow/bash/generate_id_files.sh',
+    bash_command='bash /opt/orchestrator/bootstrap/runasairflow/bash/generate_id_files.sh ',
     dag=dag)
 
 task_3_run_pyspark_preprocessor = BashOperator(
