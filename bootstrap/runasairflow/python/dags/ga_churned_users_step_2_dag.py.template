@@ -45,7 +45,7 @@ task_4_move_metadata_cmd_parts = [
     f'TODAY_AS_STR={today_as_str}',
     f'UNIQUE_HASH={unique_hash}',
     'bash /opt/orchestrator/bootstrap/runasairflow/bash/move_metadata.sh ']
-task_3_move_metadata_cmd = ' '.join(task_3_move_metadata_cmd_parts)
+task_4_move_metadata_cmd = ' '.join(task_4_move_metadata_cmd_parts)
 
 # Do not remove the extra space at the end (the one after 'truncate_tables_for_step_2.sh')
 task_1_truncate_tables = BashOperator(
