@@ -1,6 +1,4 @@
 import datetime
-from os import urandom
-from hashlib import sha512
 from airflow.models import DAG
 from airflow.operators.bash_operator import BashOperator
 
@@ -13,8 +11,17 @@ dag = DAG(dag_id='ga_churned_users_step_2',
           default_args=args,
           schedule_interval='@weekly')
 
-today_as_str = datetime.datetime.now().strftime('%Y-%m-%d')
-unique_hash = sha512(urandom(100)).hexdigest()[:20]
+try:
+    with open('/tmp/today_as_str.txt', 'r') as f:
+        today_as_str = f.read().strip()
+except:
+    pass
+
+try:
+    with open('/tmp/unique_hash.txt', 'r') as f:
+        unique_hash = f.read().strip()
+except:
+    pass
 
 # Do not remove the extra space at the end (the one after 'runpysparkpreprocessor.sh')
 task_3_run_pyspark_preprocessor_cmd_parts = [
