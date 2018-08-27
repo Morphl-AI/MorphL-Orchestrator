@@ -17,7 +17,7 @@ today_as_str = datetime.datetime.now().strftime('%Y-%m-%d')
 unique_hash = sha512(urandom(100)).hexdigest()[:20]
 
 # Do not remove the extra space at the end (the one after 'runpysparkpreprocessor.sh')
-task_2_run_pyspark_preprocessor_cmd_parts = [
+task_3_run_pyspark_preprocessor_cmd_parts = [
     f'TODAY_AS_STR={today_as_str}',
     f'UNIQUE_HASH={unique_hash}',
     'docker run --rm',
@@ -31,10 +31,10 @@ task_2_run_pyspark_preprocessor_cmd_parts = [
     '-e MORPHL_CASSANDRA_PASSWORD',
     'pysparkcontainer',
     'bash /opt/code/python/pyspark/runpysparkpreprocessor.sh ']
-task_2_run_pyspark_preprocessor_cmd = ' '.join(task_2_run_pyspark_preprocessor_cmd_parts)
+task_3_run_pyspark_preprocessor_cmd = ' '.join(task_3_run_pyspark_preprocessor_cmd_parts)
 
 # Do not remove the extra space at the end (the one after 'move_metadata.sh')
-task_3_move_metadata_cmd_parts = [
+task_4_move_metadata_cmd_parts = [
     f'TODAY_AS_STR={today_as_str}',
     f'UNIQUE_HASH={unique_hash}',
     'bash /opt/orchestrator/bootstrap/runasairflow/bash/move_metadata.sh ']
@@ -46,15 +46,21 @@ task_1_truncate_tables = BashOperator(
     bash_command='bash /opt/orchestrator/bootstrap/runasairflow/bash/truncate_tables_for_step_2.sh ',
     dag=dag)
 
-task_2_run_pyspark_preprocessor = BashOperator(
-    task_id='task_2_run_pyspark_preprocessor',
-    bash_command=task_2_run_pyspark_preprocessor_cmd,
+task_2_generate_id_files = BashOperator(
+    task_id='task_2_generate_id_files',
+    bash_command='bash /opt/orchestrator/bootstrap/runasairflow/bash/generate_id_files.sh',
     dag=dag)
 
-task_3_move_metadata = BashOperator(
-    task_id='task_3_move_metadata',
-    bash_command=task_3_move_metadata_cmd,
+task_3_run_pyspark_preprocessor = BashOperator(
+    task_id='task_3_run_pyspark_preprocessor',
+    bash_command=task_3_run_pyspark_preprocessor_cmd,
     dag=dag)
 
-task_2_run_pyspark_preprocessor.set_upstream(task_1_truncate_tables)
-task_3_move_metadata.set_upstream(task_2_run_pyspark_preprocessor)
+task_4_move_metadata = BashOperator(
+    task_id='task_4_move_metadata',
+    bash_command=task_4_move_metadata_cmd,
+    dag=dag)
+
+task_2_generate_id_files.set_upstream(task_1_truncate_tables)
+task_3_run_pyspark_preprocessor.set_upstream(task_2_generate_id_files)
+task_4_move_metadata.set_upstream(task_3_run_pyspark_preprocessor)
