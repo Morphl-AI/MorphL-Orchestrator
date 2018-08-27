@@ -37,7 +37,7 @@ task_3_run_pyspark_preprocessor_cmd_parts = [
     '-e MORPHL_CASSANDRA_KEYSPACE',
     '-e MORPHL_CASSANDRA_PASSWORD',
     'pysparkcontainer',
-    'bash /opt/code/python/pyspark/runpysparkpreprocessor.sh ']
+    'bash /opt/samplecode/python/pyspark/runpysparkpreprocessor.sh ']
 task_3_run_pyspark_preprocessor_cmd = ' '.join(task_3_run_pyspark_preprocessor_cmd_parts)
 
 # Do not remove the extra space at the end (the one after 'move_metadata.sh')
