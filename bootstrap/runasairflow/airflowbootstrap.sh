@@ -19,7 +19,8 @@ bash /opt/dockerbuilddirs/pythoncontainer/Anaconda.sh -b -p /opt/anaconda
 mv /opt/anaconda/bin/sqlite3 /opt/anaconda/bin/sqlite3.orig
 pip install msgpack
 pip install --upgrade pip
-pip install psycopg2-binary apache-airflow Flask-Bcrypt cassandra-driver graphviz
+pip install psycopg2-binary Flask-Bcrypt cassandra-driver graphviz
+pip install apache-airflow==1.9.0
 pip install https://github.com/scikit-learn/scikit-learn/archive/master.zip
 conda install hdfs3 fastparquet -y -c conda-forge
 conda install python-snappy -y
