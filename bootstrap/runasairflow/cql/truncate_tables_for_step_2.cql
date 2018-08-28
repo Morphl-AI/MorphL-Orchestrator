@@ -1,1 +1,2 @@
-TRUNCATE TABLE morphl.ga_churned_users_features;
+TRUNCATE TABLE morphl.ga_churned_users_features_training_raw;
+TRUNCATE TABLE morphl.ga_churned_users_features_training_enriched;
