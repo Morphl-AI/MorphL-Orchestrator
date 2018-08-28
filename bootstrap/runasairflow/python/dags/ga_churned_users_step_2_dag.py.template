@@ -49,6 +49,24 @@ task_4_move_metadata_cmd_parts = [
     'bash /opt/orchestrator/bootstrap/runasairflow/bash/move_metadata.sh ']
 task_4_move_metadata_cmd = ' '.join(task_4_move_metadata_cmd_parts)
 
+# Do not remove the extra space at the end (the one after 'rundaskpreprocessor.sh')
+task_5_run_dask_preprocessor_cmd_parts = [
+    f'TODAY_AS_STR={today_as_str}',
+    f'UNIQUE_HASH={unique_hash}',
+    'TRAINING_OR_PREDICTION=training',
+    'MODELS_DIR=/opt/models',
+    'docker run --rm',
+    '-v /opt/samplecode:/opt/samplecode',
+    '-e ENVIRONMENT_TYPE',
+    '-e TODAY_AS_STR',
+    '-e UNIQUE_HASH',
+    '-e TRAINING_OR_PREDICTION',
+    '-e MODELS_DIR',
+    '-e MORPHL_SERVER_IP_ADDRESS',
+    'pysparkcontainer',
+    'bash /opt/scaler/rundaskpreprocessor.sh ']
+task_5_run_dask_preprocessor_cmd = ' '.join(task_5_run_dask_preprocessor_cmd_parts)
+
 # Do not remove the extra space at the end (the one after 'truncate_tables_for_step_2.sh')
 task_1_truncate_tables = BashOperator(
     task_id='task_1_truncate_tables',
@@ -71,6 +89,12 @@ task_4_move_metadata = BashOperator(
     bash_command=task_4_move_metadata_cmd,
     dag=dag)
 
+task_5_run_dask_preprocessor = BashOperator(
+    task_id='task_5_run_dask_preprocessor',
+    bash_command=task_5_run_dask_preprocessor_cmd,
+    dag=dag)
+
 task_2_generate_id_files.set_upstream(task_1_truncate_tables)
 task_3_run_pyspark_preprocessor.set_upstream(task_2_generate_id_files)
 task_4_move_metadata.set_upstream(task_3_run_pyspark_preprocessor)
+task_5_run_dask_preprocessor.set_upstream(task_4_move_metadata)
