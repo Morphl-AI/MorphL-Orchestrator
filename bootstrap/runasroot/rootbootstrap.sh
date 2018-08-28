@@ -62,6 +62,7 @@ echo "export ENVIRONMENT_TYPE=production" >> /home/airflow/.morphl_environment.s
 echo "export MORPHL_SERVER_IP_ADDRESS=${MORPHL_SERVER_IP_ADDRESS}" >> /home/airflow/.morphl_environment.sh
 echo "export MORPHL_SERVER_FQDN=${MORPHL_SERVER_FQDN}" >> /home/airflow/.morphl_environment.sh
 echo "export AIRFLOW_HOME=/home/airflow/airflow" >> /home/airflow/.morphl_environment.sh
+echo "export AIRFLOW_GPL_UNIDECODE=yes" >> /home/airflow/.morphl_environment.sh
 echo "export JAVA_HOME=/opt/jdk" >> /home/airflow/.morphl_environment.sh
 echo "export SPARK_HOME=/opt/spark" >> /home/airflow/.morphl_environment.sh
 echo "export CASSANDRA_HOME=/opt/cassandra" >> /home/airflow/.morphl_environment.sh
