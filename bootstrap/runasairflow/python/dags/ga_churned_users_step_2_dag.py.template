@@ -27,11 +27,13 @@ except:
 task_3_run_pyspark_preprocessor_cmd_parts = [
     f'TODAY_AS_STR={today_as_str}',
     f'UNIQUE_HASH={unique_hash}',
+    'TRAINING_OR_PREDICTION=training',
     'docker run --rm',
     '-v /opt/samplecode:/opt/samplecode',
     '-e ENVIRONMENT_TYPE',
     '-e TODAY_AS_STR',
     '-e UNIQUE_HASH',
+    '-e TRAINING_OR_PREDICTION',
     '-e MORPHL_SERVER_IP_ADDRESS',
     '-e MORPHL_CASSANDRA_USERNAME',
     '-e MORPHL_CASSANDRA_KEYSPACE',
