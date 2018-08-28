@@ -15,13 +15,13 @@ try:
     with open('/tmp/today_as_str.txt', 'r') as f:
         today_as_str = f.read().strip()
 except:
-    pass
+    today_as_str = ''
 
 try:
     with open('/tmp/unique_hash.txt', 'r') as f:
         unique_hash = f.read().strip()
 except:
-    pass
+    unique_hash = ''
 
 # Do not remove the extra space at the end (the one after 'runpysparkpreprocessor.sh')
 task_3_run_pyspark_preprocessor_cmd_parts = [
