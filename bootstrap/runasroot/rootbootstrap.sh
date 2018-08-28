@@ -82,12 +82,12 @@ echo ". /home/airflow/.morphl_environment.sh" >> /home/airflow/.profile
 echo ". /home/airflow/.morphl_secrets.sh" >> /home/airflow/.profile
 
 mkdir -p /opt/dockerbuilddirs/{pythoncontainer,pysparkcontainer}
-mkdir /opt/{secrets,tmp}
+mkdir /opt/{models,secrets,tmp}
 touch /opt/secrets/{keyfile.json,viewid.txt}
-chmod 775 /opt /opt/{secrets,tmp}
+chmod 775 /opt /opt/{models,secrets,tmp}
 chmod 660 /opt/secrets/{keyfile.json,viewid.txt}
 chmod -R 775 /opt/dockerbuilddirs
-chgrp airflow /opt /opt/{secrets,tmp} /opt/secrets/{keyfile.json,viewid.txt}
+chgrp airflow /opt /opt/{models,secrets,tmp} /opt/secrets/{keyfile.json,viewid.txt}
 chgrp -R airflow /opt/dockerbuilddirs
 
 sudo -Hiu airflow bash -c /opt/orchestrator/bootstrap/runasairflow/airflowbootstrap.sh
