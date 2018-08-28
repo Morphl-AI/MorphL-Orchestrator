@@ -17,7 +17,7 @@ CREATE TABLE morphl.ga_churned_users_sessions (
   PRIMARY KEY ((client_id), day_of_data_capture, session_id)
 ) WITH CLUSTERING ORDER BY (day_of_data_capture DESC);
 
-CREATE TABLE morphl.ga_churned_users_features (
+CREATE TABLE morphl.ga_churned_users_features_training_raw (
   client_id text,
   day_of_data_capture date,
   session_id text,
