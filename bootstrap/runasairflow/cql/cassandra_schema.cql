@@ -43,6 +43,26 @@ CREATE TABLE morphl.ga_churned_users_features_training_raw (
   PRIMARY KEY ((client_id), day_of_data_capture, session_id)
 ) WITH CLUSTERING ORDER BY (day_of_data_capture DESC);
 
+CREATE TABLE morphl.ga_churned_users_features_training_enriched (
+  client_id text,
+  day_of_data_capture date,
+  session_id text,
+  s_sessions double,
+  pageviews double,
+  unique_pageviews double,
+  time_on_page double,
+  u_sessions double,
+  session_duration double,
+  entrances double,
+  bounces double,
+  exits double,
+  is_desktop double,
+  is_mobile double,
+  is_tablet double,
+  churned double,
+  PRIMARY KEY ((client_id), day_of_data_capture, session_id)
+) WITH CLUSTERING ORDER BY (day_of_data_capture DESC);
+
 CREATE TABLE morphl.config_parameters (
   morphl_component_name text,
   parameter_name text,
