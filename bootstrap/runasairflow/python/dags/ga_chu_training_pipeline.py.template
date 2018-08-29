@@ -68,6 +68,13 @@ task_5_run_dask_preprocessor_cmd_parts = [
     'bash /opt/scaler/rundaskpreprocessor.sh ']
 task_5_run_dask_preprocessor_cmd = ' '.join(task_5_run_dask_preprocessor_cmd_parts)
 
+# Do not remove the extra space at the end (the one after 'mark_model_as_valid.sh')
+task_7_mark_model_as_valid_cmd_parts = [
+    f'TODAY_AS_STR={today_as_str}',
+    f'UNIQUE_HASH={unique_hash}',
+    'bash /opt/orchestrator/bootstrap/runasairflow/bash/mark_model_as_valid.sh ']
+task_7_mark_model_as_valid_cmd = ' '.join(task_7_mark_model_as_valid_cmd_parts)
+
 # Do not remove the extra space at the end (the one after 'truncate_tables_before_training_pipeline.sh')
 task_1_truncate_tables = BashOperator(
     task_id='task_1_truncate_tables',
@@ -95,7 +102,13 @@ task_5_run_dask_preprocessor = BashOperator(
     bash_command=task_5_run_dask_preprocessor_cmd,
     dag=dag)
 
+task_7_mark_model_as_valid = BashOperator(
+    task_id='task_7_mark_model_as_valid',
+    bash_command=task_7_mark_model_as_valid_cmd,
+    dag=dag)
+
 task_2_generate_id_files.set_upstream(task_1_truncate_tables)
 task_3_run_pyspark_preprocessor.set_upstream(task_2_generate_id_files)
 task_4_move_metadata.set_upstream(task_3_run_pyspark_preprocessor)
 task_5_run_dask_preprocessor.set_upstream(task_4_move_metadata)
+task_7_mark_model_as_valid.set_upstream(task_5_run_dask_preprocessor)
