@@ -23,6 +23,12 @@ try:
 except:
     unique_hash = ''
 
+# Do not remove the extra space at the end (the one after 'generate_id_files_prediction.sh')
+task_1_generate_id_files_prediction = BashOperator(
+    task_id='task_1_generate_id_files_prediction',
+    bash_command='bash /opt/orchestrator/bootstrap/runasairflow/bash/generate_id_files_prediction.sh ',
+    dag=dag)
+
 # Do not remove the extra space at the end (the one after 'runpysparkpreprocessor.sh')
 task_2_run_pyspark_preprocessor_cmd_parts = [
     f'DAY_AS_STR={day_as_str}',
@@ -49,3 +55,5 @@ task_2_run_pyspark_preprocessor = BashOperator(
     task_id='task_2_run_pyspark_preprocessor',
     bash_command=task_2_run_pyspark_preprocessor_cmd,
     dag=dag)
+
+task_2_run_pyspark_preprocessor.set_upstream(task_1_generate_id_files_prediction)
