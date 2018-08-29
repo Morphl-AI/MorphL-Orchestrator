@@ -110,8 +110,8 @@ task_7_mark_model_as_valid = BashOperator(
     bash_command=task_7_mark_model_as_valid_cmd,
     dag=dag)
 
-task_2_generate_id_files.set_upstream(task_1_truncate_tables)
-task_3_run_pyspark_preprocessor.set_upstream(task_2_generate_id_files)
+task_2_generate_id_files_training.set_upstream(task_1_truncate_tables)
+task_3_run_pyspark_preprocessor.set_upstream(task_2_generate_id_files_training)
 task_4_move_metadata.set_upstream(task_3_run_pyspark_preprocessor)
 task_5_run_dask_preprocessor.set_upstream(task_4_move_metadata)
 task_7_mark_model_as_valid.set_upstream(task_5_run_dask_preprocessor)
