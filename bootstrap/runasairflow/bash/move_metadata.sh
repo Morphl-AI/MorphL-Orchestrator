@@ -1,4 +1,4 @@
-HDFS_DIR=/preproc_${TODAY_AS_STR}_${UNIQUE_HASH}
+HDFS_DIR=/preproc_${DAY_AS_STR}_${UNIQUE_HASH}
 
 hdfs dfs -mv ${HDFS_DIR}/_metadata ${HDFS_DIR}/_md
 hdfs dfs -mkdir ${HDFS_DIR}/_metadata
