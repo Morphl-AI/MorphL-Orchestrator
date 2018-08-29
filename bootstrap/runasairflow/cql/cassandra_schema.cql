@@ -63,6 +63,14 @@ CREATE TABLE morphl.ga_churned_users_features_training_enriched (
   PRIMARY KEY ((client_id), day_of_data_capture, session_id)
 ) WITH CLUSTERING ORDER BY (day_of_data_capture DESC);
 
+CREATE TABLE morphl.ga_churned_users_valid_models (
+  always_zero int,
+  day_as_str text,
+  unique_hash text,
+  is_model_valid boolean,
+  PRIMARY KEY ((always_zero), day_as_str, unique_hash)
+) WITH CLUSTERING ORDER BY (day_as_str DESC);
+
 CREATE TABLE morphl.config_parameters (
   morphl_component_name text,
   parameter_name text,
