@@ -18,6 +18,7 @@ if [ ${rc} -eq 0 ]; then
   sed "s/START_DATE_AS_PY_CODE/${START_DATE_AS_PY_CODE}/g" /opt/orchestrator/bootstrap/runasairflow/python/dags/ga_chu_ingestion_pipeline.py.template > /home/airflow/airflow/dags/ga_chu_ingestion_pipeline.py
   START_DATE_AS_PY_CODE=$(<${TEMPFILE_B})
   sed "s/START_DATE_AS_PY_CODE/${START_DATE_AS_PY_CODE}/g" /opt/orchestrator/bootstrap/runasairflow/python/dags/ga_chu_training_pipeline.py.template > /home/airflow/airflow/dags/ga_chu_training_pipeline.py
+  cat /opt/orchestrator/bootstrap/runasairflow/python/dags/ga_chu_preflight_check.py > /home/airflow/airflow/dags/ga_chu_preflight_check.py
   start_airflow.sh
   echo 'The data load has been initiated.'
   echo
