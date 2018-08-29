@@ -12,7 +12,7 @@ dag = DAG(dag_id='ga_chu_ingestion_pipeline',
           schedule_interval='0 12 * * *')
 
 # Do not remove the extra space at the end (the one after 'runconnector.sh')
-docker_cmd_parts = [
+task_1_run_connector_cmd_parts = [
     'DAY_OF_DATA_CAPTURE={{ ds }}',
     'docker run --rm',
     '-v /opt/secrets:/opt/secrets',
@@ -27,8 +27,17 @@ docker_cmd_parts = [
     '-e MORPHL_CASSANDRA_PASSWORD',
     'pythoncontainer',
     'bash /opt/samplecode/python/cassandra/ga_cassandra_connector_churned/runconnector.sh ']
-docker_cmd = ' '.join(docker_cmd_parts)
+task_1_run_connector_cmd = ' '.join(task_1_run_connector_cmd_parts)
 
-task = BashOperator(task_id='run_connector',
-                    bash_command=docker_cmd,
-                    dag=dag)
+task_1_run_connector = BashOperator(
+    task_id='task_1_run_connector',
+    bash_command=task_1_run_connector_cmd,
+    dag=dag)
+
+# Do not remove the extra space at the end (the one after 'preflight_check_before_prediction_pipeline.sh')
+task_2_preflight_check_before_prediction_pipeline = BashOperator(
+    task_id='task_2_preflight_check_before_prediction_pipeline',
+    bash_command='bash /opt/orchestrator/bootstrap/runasairflow/bash/preflight_check_before_prediction_pipeline.sh ',
+    dag=dag)
+
+task_2_preflight_check_before_prediction_pipeline.set_upstream(task_1_run_connector)
