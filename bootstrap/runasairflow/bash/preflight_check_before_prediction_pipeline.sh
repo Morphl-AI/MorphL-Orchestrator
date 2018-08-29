@@ -3,3 +3,4 @@ echo ${cql_stmt} | \
   cqlsh ${MORPHL_SERVER_IP_ADDRESS} -u morphl -p ${MORPHL_CASSANDRA_PASSWORD} | \
   grep True && \
     airflow trigger_dag ga_chu_prediction_pipeline
+exit 0
