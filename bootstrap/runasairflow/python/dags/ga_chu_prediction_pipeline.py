@@ -10,3 +10,30 @@ args = { 'owner': 'airflow',
 dag = DAG(dag_id='ga_chu_prediction_pipeline',
           default_args=args,
           schedule_interval='@daily')
+
+# Do not remove the extra space at the end (the one after 'runpysparkpreprocessor.sh')
+task_1_run_pyspark_preprocessor_cmd_parts = [
+    f'TODAY_AS_STR={today_as_str}',
+    f'UNIQUE_HASH={unique_hash}',
+    'TRAINING_OR_PREDICTION=prediction',
+    'MODELS_DIR=/opt/models',
+    'docker run --rm',
+    '-v /opt/samplecode:/opt/samplecode',
+    '-v /opt/models:/opt/models',
+    '-e ENVIRONMENT_TYPE',
+    '-e TODAY_AS_STR',
+    '-e UNIQUE_HASH',
+    '-e TRAINING_OR_PREDICTION',
+    '-e MODELS_DIR',
+    '-e MORPHL_SERVER_IP_ADDRESS',
+    '-e MORPHL_CASSANDRA_USERNAME',
+    '-e MORPHL_CASSANDRA_KEYSPACE',
+    '-e MORPHL_CASSANDRA_PASSWORD',
+    'pysparkcontainer',
+    'bash /opt/samplecode/python/pyspark/runpysparkpreprocessor.sh ']
+task_1_run_pyspark_preprocessor_cmd = ' '.join(task_1_run_pyspark_preprocessor_cmd_parts)
+
+task_1_run_pyspark_preprocessor = BashOperator(
+    task_id='task_1_run_pyspark_preprocessor',
+    bash_command=task_1_run_pyspark_preprocessor_cmd,
+    dag=dag)
