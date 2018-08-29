@@ -104,7 +104,7 @@ Keep refreshing the UI page until all the data for the number of days you specif
 
 Once all the raw data has been loaded, there is one more thing to do for the ML pipeline to be fully operational:
 ```
-airflow trigger_dag ga_churned_users_step_2
+airflow trigger_dag ga_chu_training_pipeline
 ```
 The steps above only need to be performed once, immediately following the installation.  
 From this point forward, the platform is on auto-pilot and will on a regular basis collect new data and generate fresh ML models fully automatically.

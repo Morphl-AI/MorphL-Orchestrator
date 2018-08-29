@@ -1,2 +1,2 @@
 INSERT INTO morphl.config_parameters (morphl_component_name,parameter_name,parameter_value)
-VALUES ('ga_pyspark','days_worth_of_data_to_load','STEP_2_DAYS_WORTH_OF_DATA_TO_LOAD');
+VALUES ('ga_pyspark','days_worth_of_data_to_load','DAYS_WORTH_OF_DATA_TO_LOAD');
