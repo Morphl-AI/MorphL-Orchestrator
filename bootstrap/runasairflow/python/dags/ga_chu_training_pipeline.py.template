@@ -12,7 +12,7 @@ dag = DAG(dag_id='ga_chu_training_pipeline',
           schedule_interval='@weekly')
 
 try:
-    with open('/tmp/ga_chu_training_pipeline_today_as_str.txt', 'r') as f:
+    with open('/tmp/ga_chu_training_pipeline_day_as_str.txt', 'r') as f:
         day_as_str = f.read().strip()
 except:
     day_as_str = ''
