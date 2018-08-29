@@ -25,7 +25,7 @@ except:
 
 # Do not remove the extra space at the end (the one after 'runpysparkpreprocessor.sh')
 task_3_run_pyspark_preprocessor_cmd_parts = [
-    f'DAY_AS_STR={today_as_str}',
+    f'DAY_AS_STR={day_as_str}',
     f'UNIQUE_HASH={unique_hash}',
     'TRAINING_OR_PREDICTION=training',
     'MODELS_DIR=/opt/models',
@@ -47,14 +47,14 @@ task_3_run_pyspark_preprocessor_cmd = ' '.join(task_3_run_pyspark_preprocessor_c
 
 # Do not remove the extra space at the end (the one after 'move_metadata.sh')
 task_4_move_metadata_cmd_parts = [
-    f'DAY_AS_STR={today_as_str}',
+    f'DAY_AS_STR={day_as_str}',
     f'UNIQUE_HASH={unique_hash}',
     'bash /opt/orchestrator/bootstrap/runasairflow/bash/move_metadata.sh ']
 task_4_move_metadata_cmd = ' '.join(task_4_move_metadata_cmd_parts)
 
 # Do not remove the extra space at the end (the one after 'rundaskpreprocessor.sh')
 task_5_run_dask_preprocessor_cmd_parts = [
-    f'DAY_AS_STR={today_as_str}',
+    f'DAY_AS_STR={day_as_str}',
     f'UNIQUE_HASH={unique_hash}',
     'TRAINING_OR_PREDICTION=training',
     'MODELS_DIR=/opt/models',
@@ -73,7 +73,7 @@ task_5_run_dask_preprocessor_cmd = ' '.join(task_5_run_dask_preprocessor_cmd_par
 
 # Do not remove the extra space at the end (the one after 'mark_model_as_valid.sh')
 task_7_mark_model_as_valid_cmd_parts = [
-    f'DAY_AS_STR={today_as_str}',
+    f'DAY_AS_STR={day_as_str}',
     f'UNIQUE_HASH={unique_hash}',
     'bash /opt/orchestrator/bootstrap/runasairflow/bash/mark_model_as_valid.sh ']
 task_7_mark_model_as_valid_cmd = ' '.join(task_7_mark_model_as_valid_cmd_parts)
