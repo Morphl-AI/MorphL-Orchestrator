@@ -11,9 +11,21 @@ dag = DAG(dag_id='ga_chu_prediction_pipeline',
           default_args=args,
           schedule_interval='@daily')
 
+try:
+    with open('/tmp/ga_chu_prediction_pipeline_day_as_str.txt', 'r') as f:
+        day_as_str = f.read().strip()
+except:
+    day_as_str = ''
+
+try:
+    with open('/tmp/ga_chu_prediction_pipeline_unique_hash.txt', 'r') as f:
+        unique_hash = f.read().strip()
+except:
+    unique_hash = ''
+
 # Do not remove the extra space at the end (the one after 'runpysparkpreprocessor.sh')
-task_1_run_pyspark_preprocessor_cmd_parts = [
-    f'TODAY_AS_STR={today_as_str}',
+task_2_run_pyspark_preprocessor_cmd_parts = [
+    f'DAY_AS_STR={day_as_str}',
     f'UNIQUE_HASH={unique_hash}',
     'TRAINING_OR_PREDICTION=prediction',
     'MODELS_DIR=/opt/models',
@@ -21,7 +33,7 @@ task_1_run_pyspark_preprocessor_cmd_parts = [
     '-v /opt/samplecode:/opt/samplecode',
     '-v /opt/models:/opt/models',
     '-e ENVIRONMENT_TYPE',
-    '-e TODAY_AS_STR',
+    '-e DAY_AS_STR',
     '-e UNIQUE_HASH',
     '-e TRAINING_OR_PREDICTION',
     '-e MODELS_DIR',
@@ -31,9 +43,9 @@ task_1_run_pyspark_preprocessor_cmd_parts = [
     '-e MORPHL_CASSANDRA_PASSWORD',
     'pysparkcontainer',
     'bash /opt/samplecode/python/pyspark/runpysparkpreprocessor.sh ']
-task_1_run_pyspark_preprocessor_cmd = ' '.join(task_1_run_pyspark_preprocessor_cmd_parts)
+task_2_run_pyspark_preprocessor_cmd = ' '.join(task_2_run_pyspark_preprocessor_cmd_parts)
 
-task_1_run_pyspark_preprocessor = BashOperator(
-    task_id='task_1_run_pyspark_preprocessor',
-    bash_command=task_1_run_pyspark_preprocessor_cmd,
+task_2_run_pyspark_preprocessor = BashOperator(
+    task_id='task_2_run_pyspark_preprocessor',
+    bash_command=task_2_run_pyspark_preprocessor_cmd,
     dag=dag)
