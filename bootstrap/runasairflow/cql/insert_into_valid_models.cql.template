@@ -1,2 +1,2 @@
-INSERT INTO morphl.ga_churned_users_valid_models (always_zero,day_as_str,unique_hash,is_model_valid)
+INSERT INTO morphl.ga_chu_valid_models (always_zero,day_as_str,unique_hash,is_model_valid)
 VALUES (0,'DAY_AS_STR','UNIQUE_HASH',IS_MODEL_VALID);
