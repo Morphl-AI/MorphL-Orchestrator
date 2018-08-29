@@ -12,13 +12,13 @@ dag = DAG(dag_id='ga_chu_training_pipeline',
           schedule_interval='@weekly')
 
 try:
-    with open('/tmp/today_as_str.txt', 'r') as f:
+    with open('/tmp/ga_chu_training_pipeline_today_as_str.txt', 'r') as f:
         today_as_str = f.read().strip()
 except:
     today_as_str = ''
 
 try:
-    with open('/tmp/unique_hash.txt', 'r') as f:
+    with open('/tmp/ga_chu_training_pipeline_unique_hash.txt', 'r') as f:
         unique_hash = f.read().strip()
 except:
     unique_hash = ''
