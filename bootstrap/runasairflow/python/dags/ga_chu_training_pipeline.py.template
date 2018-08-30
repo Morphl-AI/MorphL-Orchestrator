@@ -87,7 +87,7 @@ task_6_generate_model_cmd_parts = [
     '-e MODELS_DIR',
     '-e MORPHL_SERVER_IP_ADDRESS',
     'pysparkcontainer',
-    'bash /opt/scaler/runmodelgenerator.sh ']
+    'bash /opt/modelgenerator/runmodelgenerator.sh ']
 task_6_generate_model_cmd = ' '.join(task_6_generate_model_cmd_parts)
 
 # Do not remove the extra space at the end (the one after 'mark_model_as_valid.sh')
