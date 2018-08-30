@@ -17,7 +17,33 @@ CREATE TABLE morphl.ga_chu_sessions (
   PRIMARY KEY ((client_id), day_of_data_capture, session_id)
 ) WITH CLUSTERING ORDER BY (day_of_data_capture DESC);
 
-CREATE TABLE morphl.ga_chu_features_raw (
+CREATE TABLE morphl.ga_chu_features_raw_t (
+  client_id text,
+  day_of_data_capture date,
+  session_id text,
+  session_count double,
+  days_since_last_session double,
+  s_sessions double,
+  pageviews double,
+  unique_pageviews double,
+  screen_views double,
+  hits double,
+  time_on_page double,
+  u_sessions double,
+  session_duration double,
+  entrances double,
+  bounces double,
+  exits double,
+  page_value double,
+  page_load_time double,
+  page_load_sample double,
+  is_desktop double,
+  is_mobile double,
+  is_tablet double,
+  PRIMARY KEY ((client_id), day_of_data_capture, session_id)
+) WITH CLUSTERING ORDER BY (day_of_data_capture DESC);
+
+CREATE TABLE morphl.ga_chu_features_raw_p (
   client_id text,
   day_of_data_capture date,
   session_id text,
