@@ -75,7 +75,6 @@ task_5_run_dask_preprocessor_cmd = ' '.join(task_5_run_dask_preprocessor_cmd_par
 task_6_generate_model_cmd_parts = [
     f'DAY_AS_STR={day_as_str}',
     f'UNIQUE_HASH={unique_hash}',
-    'TRAINING_OR_PREDICTION=training',
     'MODELS_DIR=/opt/models',
     'docker run --rm',
     '-v /opt/modelgenerator:/opt/modelgenerator',
@@ -83,7 +82,6 @@ task_6_generate_model_cmd_parts = [
     '-e ENVIRONMENT_TYPE',
     '-e DAY_AS_STR',
     '-e UNIQUE_HASH',
-    '-e TRAINING_OR_PREDICTION',
     '-e MODELS_DIR',
     '-e MORPHL_SERVER_IP_ADDRESS',
     'pysparkcontainer',
