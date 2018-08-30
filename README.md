@@ -35,7 +35,7 @@ apt update -qq && apt -y install git ca-certificates
 git clone ${WHERE_THE_ORCHESTRATOR_IS} /opt/orchestrator
 git clone ${WHERE_THE_SOFTWARE_IS} /opt/samplecode
 git clone ${WHERE_THE_FEATURE_SCALER_IS} /opt/scaler
-git clone ${WHERE_THE_FEATURE_SCALER_IS} /opt/modelgenerator
+git clone ${WHERE_THE_MODEL_GENERATOR_IS} /opt/modelgenerator
 
 bash /opt/orchestrator/bootstrap/runasroot/rootbootstrap.sh
 ```
