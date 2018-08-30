@@ -49,7 +49,7 @@ task_3_run_pyspark_preprocessor_cmd = ' '.join(task_3_run_pyspark_preprocessor_c
 task_4_move_metadata_cmd_parts = [
     f'DAY_AS_STR={day_as_str}',
     f'UNIQUE_HASH={unique_hash}',
-    'bash /opt/orchestrator/bootstrap/runasairflow/bash/move_metadata.sh ']
+    'bash /opt/orchestrator/bootstrap/runasairflow/bash/move_metadata.sh preproc_training ']
 task_4_move_metadata_cmd = ' '.join(task_4_move_metadata_cmd_parts)
 
 # Do not remove the extra space at the end (the one after 'rundaskpreprocessor.sh')
