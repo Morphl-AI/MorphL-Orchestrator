@@ -6,7 +6,7 @@ The MorphL Orchestrator is the backbone of the MorphL platform. It sets up the i
 
 - **Training Pipeline** - Consists of pre-processors (responsible for cleaning, formatting, deduplicating, normalizing and transforming data) and model training.
 
-- **Predict Pipeline** - It generates predictions based on the model that was trained. It is triggered by the ingestion pipeline through a preflight check.
+- **Predict Pipeline** - It generates predictions based on the model that was trained. It is triggered at the final step of the ingestion pipeline through a preflight check.
 
 The pipelines are set up using [Apache Airflow](https://github.com/apache/incubator-airflow).
 
@@ -28,12 +28,14 @@ Bootstrap the installation by running the following commands as root:
 WHERE_THE_ORCHESTRATOR_IS='https://github.com/Morphl-Project/MorphL-Orchestrator'
 WHERE_THE_SOFTWARE_IS='https://github.com/Morphl-Project/Sample-Code'
 WHERE_THE_FEATURE_SCALER_IS='https://github.com/Morphl-Project/morphl-churned-vs-not-churned-preprocessor'
+WHERE_THE_MODEL_GENERATOR_IS='https://github.com/Morphl-Project/morphl-churned-vs-not-churned-model-generator'
 
 apt update -qq && apt -y install git ca-certificates
 
 git clone ${WHERE_THE_ORCHESTRATOR_IS} /opt/orchestrator
 git clone ${WHERE_THE_SOFTWARE_IS} /opt/samplecode
 git clone ${WHERE_THE_FEATURE_SCALER_IS} /opt/scaler
+git clone ${WHERE_THE_FEATURE_SCALER_IS} /opt/modelgenerator
 
 bash /opt/orchestrator/bootstrap/runasroot/rootbootstrap.sh
 ```
@@ -77,10 +79,10 @@ Log out of `airflow` and back in again, and verify that your key file and view I
 ```
 cat /opt/secrets/keyfile.json
 
-echo ${VIEW_ID}
+env | grep VIEW_ID
 ```
 
-If the output of `echo ${VIEW_ID}` is empty, like this:
+If the output of `env | grep VIEW_ID` is empty, like this:
 
 ```
 VIEW_ID=
@@ -161,7 +163,7 @@ From this point forward, **the platform is on auto-pilot** and will on a regular
 
 ### Using Predictions
 
-Once a model has been trained, the prediction pipeline also needs to be triggered. You can wait until it is automatically triggered by the preflight check of the ingestion pipeline (runs daily) or you can trigger it yourself with the following command:
+Once a model has been trained, the prediction pipeline also needs to be triggered. You can wait until it is automatically triggered by the preflight check at the end of the ingestion pipeline (which runs daily) or you can trigger it yourself with the following command:
 
 ```
 airflow trigger_dag ga_chu_prediction_pipeline
