@@ -161,7 +161,13 @@ From this point forward, **the platform is on auto-pilot** and will on a regular
 
 ### Using Predictions
 
-Once a model has been trained, predictions can be accessed using the following command:
+Once a model has been trained, the prediction pipeline also needs to be triggered. You can wait until it is automatically triggered by the preflight check of the ingestion pipeline (runs daily) or you can trigger it yourself with the following command:
+
+```
+airflow trigger_dag ga_chu_prediction_pipeline
+```
+
+After the pipeline is triggered, predictions can be accessed using the following command:
 
 ```
 curl -s http://${KUBERNETES_CLUSTER_IP_ADDRESS}/getprediction/GA1
