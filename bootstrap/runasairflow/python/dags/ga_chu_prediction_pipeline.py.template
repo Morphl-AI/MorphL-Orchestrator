@@ -8,8 +8,7 @@ args = { 'owner': 'airflow',
          'retry_delay': datetime.timedelta(minutes=30) }
 
 dag = DAG(dag_id='ga_chu_prediction_pipeline',
-          default_args=args,
-          schedule_interval='@daily')
+          default_args=args)
 
 try:
     with open('/tmp/ga_chu_prediction_pipeline_day_as_str.txt', 'r') as f:
