@@ -6,7 +6,7 @@ rc=$?
 if [ ${rc} -eq 0 ]; then
   echo 'Emptying the relevant Cassandra tables ...'
   echo
-  cqlsh ${MORPHL_SERVER_IP_ADDRESS} -u morphl -p ${MORPHL_CASSANDRA_PASSWORD} -f /opt/orchestrator/bootstrap/runasairflow/cql/truncate_ga_chu_ingestion_tables.cql
+  cqlsh ${MORPHL_SERVER_IP_ADDRESS} -u morphl -p ${MORPHL_CASSANDRA_PASSWORD} -f /opt/orchestrator/bootstrap/runasairflow/cql/truncate_tables_before_loading_historical_data.cql
   DAYS_WORTH_OF_DATA_TO_LOAD=$(<${TEMPFILE_C})
   sed "s/DAYS_WORTH_OF_DATA_TO_LOAD/${DAYS_WORTH_OF_DATA_TO_LOAD}/g" /opt/orchestrator/bootstrap/runasairflow/cql/insert_into_config_parameters.cql.template > /tmp/insert_into_config_parameters.cql
   cqlsh ${MORPHL_SERVER_IP_ADDRESS} -u morphl -p ${MORPHL_CASSANDRA_PASSWORD} -f /tmp/insert_into_config_parameters.cql
