@@ -161,7 +161,13 @@ From this point forward, **the platform is on auto-pilot** and will on a regular
 
 ### Using Predictions
 
-[TBA] - How can we use the pipeline to get predictions?
+Once a model has been trained, predictions can be accessed using the following command:
+
+```
+curl -s http://${KUBERNETES_CLUSTER_IP_ADDRESS}/getprediction/GA1
+```
+
+`GA1` represents a client ID.
 
 ### Troubleshooting
 
