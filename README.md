@@ -6,7 +6,7 @@ The MorphL Orchestrator is the backbone of the MorphL platform. It sets up the i
 
 - **Training Pipeline** - Consists of pre-processors (responsible for cleaning, formatting, deduplicating, normalizing and transforming data) and model training.
 
-- **Predict Pipeline** - It generates predictions based on the model that was trained. It is triggered at the final step of the ingestion pipeline through a preflight check.
+- **Prediction Pipeline** - It generates predictions based on the model that was trained. It is triggered at the final step of the ingestion pipeline through a preflight check.
 
 The pipelines are set up using [Apache Airflow](https://github.com/apache/incubator-airflow).
 
