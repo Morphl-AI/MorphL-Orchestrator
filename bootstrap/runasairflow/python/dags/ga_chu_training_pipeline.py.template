@@ -68,7 +68,7 @@ task_5_run_dask_preprocessor_cmd_parts = [
     '-e TRAINING_OR_PREDICTION',
     '-e MODELS_DIR',
     '-e MORPHL_SERVER_IP_ADDRESS',
-    '-e LIBHDFS3_CONF'
+    '-e LIBHDFS3_CONF',
     'pythoncontainer',
     'bash /opt/scaler/rundaskpreprocessor.sh ']
 task_5_run_dask_preprocessor_cmd = ' '.join(task_5_run_dask_preprocessor_cmd_parts)
@@ -94,7 +94,7 @@ task_7_generate_model_cmd_parts = [
     '-e UNIQUE_HASH',
     '-e MODELS_DIR',
     '-e MORPHL_SERVER_IP_ADDRESS',
-    '-e LIBHDFS3_CONF'
+    '-e LIBHDFS3_CONF',
     'pythoncontainer',
     'bash /opt/modelgenerator/runmodelgenerator.sh ']
 task_7_generate_model_cmd = ' '.join(task_7_generate_model_cmd_parts)
