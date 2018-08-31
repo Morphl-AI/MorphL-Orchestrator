@@ -69,7 +69,7 @@ task_5_run_dask_preprocessor_cmd_parts = [
     '-e MODELS_DIR',
     '-e MORPHL_SERVER_IP_ADDRESS',
     '-e LIBHDFS3_CONF'
-    'pysparkcontainer',
+    'pythoncontainer',
     'bash /opt/scaler/rundaskpreprocessor.sh ']
 task_5_run_dask_preprocessor_cmd = ' '.join(task_5_run_dask_preprocessor_cmd_parts)
 
@@ -85,7 +85,7 @@ task_7_generate_model_cmd_parts = [
     f'DAY_AS_STR={day_as_str}',
     f'UNIQUE_HASH={unique_hash}',
     'MODELS_DIR=/opt/models',
-    'docker run --rm',
+    'docker run --rm --net host',
     '-v /opt/modelgenerator:/opt/modelgenerator:ro',
     '-v /opt/models:/opt/models',
     '-v /opt/hadoop/etc/hadoop:/opt/hadoop/etc/hadoop:ro',
@@ -95,7 +95,7 @@ task_7_generate_model_cmd_parts = [
     '-e MODELS_DIR',
     '-e MORPHL_SERVER_IP_ADDRESS',
     '-e LIBHDFS3_CONF'
-    'pysparkcontainer',
+    'pythoncontainer',
     'bash /opt/modelgenerator/runmodelgenerator.sh ']
 task_7_generate_model_cmd = ' '.join(task_7_generate_model_cmd_parts)
 
