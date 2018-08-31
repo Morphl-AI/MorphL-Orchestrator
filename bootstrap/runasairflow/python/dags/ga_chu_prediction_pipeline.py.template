@@ -59,7 +59,7 @@ task_5_run_dask_preprocessor_cmd_parts = [
     'MODELS_DIR=/opt/models',
     'docker run --rm --net host',
     '-v /opt/scaler:/opt/scaler:ro',
-    '-v /opt/models:/opt/models',
+    '-v /opt/models:/opt/models:ro',
     '-v /opt/hadoop/etc/hadoop:/opt/hadoop/etc/hadoop:ro',
     '-e ENVIRONMENT_TYPE',
     '-e DAY_AS_STR',
