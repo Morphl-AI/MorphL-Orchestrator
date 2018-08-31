@@ -155,7 +155,15 @@ Once all the raw data has been loaded, there is one more thing to do for the ML 
 airflow trigger_dag ga_chu_training_pipeline
 ```
 
-The command above will trigger the training pipeline. Since we have already loaded historical data (step 3), we can start running the pre-processors and train the models. If the training pipeline is not triggered, it will automatically start at its scheduled date (it runs on a weekly basis).
+The command above will trigger the training pipeline, and upon running it you should see output similar to this:
+
+```
+[...] {__init__.py:45} INFO - Using executor LocalExecutor
+[...] {models.py:189} INFO - Filling up the DagBag from /home/airflow/airflow/dags
+[...] {cli.py:203} INFO - Created <DagRun ga_chu_training_pipeline, externally triggered: True>
+```
+
+Since we have already loaded historical data (step 3), we can start running the pre-processors and train the models. If the training pipeline is not triggered, it will automatically start at its scheduled date (it runs on a weekly basis).
 
 The step above only needs to be performed once, immediately following the installation.
 
