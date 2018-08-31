@@ -30,7 +30,7 @@ task_3_run_pyspark_preprocessor_cmd_parts = [
     'MODELS_DIR=/opt/models',
     'docker run --rm --net host',
     '-v /opt/samplecode:/opt/samplecode:ro',
-    '-v /opt/models:/opt/models',
+    '-v /opt/models:/opt/models:ro',
     '-e ENVIRONMENT_TYPE',
     '-e DAY_AS_STR',
     '-e UNIQUE_HASH',
