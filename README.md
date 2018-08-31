@@ -163,7 +163,7 @@ The command above will trigger the training pipeline, and upon running it you sh
 [...] {cli.py:203} INFO - Created <DagRun ga_chu_training_pipeline, externally triggered: True>
 ```
 
-Since we have already loaded historical data (step 3), we can start running the pre-processors and train the models. If the training pipeline is not triggered, it will automatically start at its scheduled date (it runs on a weekly basis).
+Since we have already loaded historical data (step 3), we can start running the pre-processors and train the models. If you do not manually trigger the training pipeline as described above, it will automatically start at its scheduled date (it runs on a weekly basis).
 
 The step above only needs to be performed once, immediately following the installation.
 
