@@ -44,6 +44,39 @@ task_3_run_pyspark_preprocessor_cmd_parts = [
     'bash /opt/samplecode/python/pyspark/runpysparkpreprocessor.sh ']
 task_3_run_pyspark_preprocessor_cmd = ' '.join(task_3_run_pyspark_preprocessor_cmd_parts)
 
+# Do not remove the extra space at the end (the one after 'preproc_prediction')
+task_4_move_preproc_metadata_cmd_parts = [
+    f'DAY_AS_STR={day_as_str}',
+    f'UNIQUE_HASH={unique_hash}',
+    'bash /opt/orchestrator/bootstrap/runasairflow/bash/move_metadata.sh preproc_prediction ']
+task_4_move_preproc_metadata_cmd = ' '.join(task_4_move_preproc_metadata_cmd_parts)
+
+# Do not remove the extra space at the end (the one after 'rundaskpreprocessor.sh')
+task_5_run_dask_preprocessor_cmd_parts = [
+    f'DAY_AS_STR={day_as_str}',
+    f'UNIQUE_HASH={unique_hash}',
+    'TRAINING_OR_PREDICTION=prediction',
+    'MODELS_DIR=/opt/models',
+    'docker run --rm',
+    '-v /opt/scaler:/opt/scaler',
+    '-v /opt/models:/opt/models',
+    '-e ENVIRONMENT_TYPE',
+    '-e DAY_AS_STR',
+    '-e UNIQUE_HASH',
+    '-e TRAINING_OR_PREDICTION',
+    '-e MODELS_DIR',
+    '-e MORPHL_SERVER_IP_ADDRESS',
+    'pysparkcontainer',
+    'bash /opt/scaler/rundaskpreprocessor.sh ']
+task_5_run_dask_preprocessor_cmd = ' '.join(task_5_run_dask_preprocessor_cmd_parts)
+
+# Do not remove the extra space at the end (the one after 'scaled_features_prediction')
+task_6_move_scaled_features_metadata_cmd_parts = [
+    f'DAY_AS_STR={day_as_str}',
+    f'UNIQUE_HASH={unique_hash}',
+    'bash /opt/orchestrator/bootstrap/runasairflow/bash/move_metadata.sh scaled_features_prediction ']
+task_6_move_scaled_features_metadata_cmd = ' '.join(task_6_move_scaled_features_metadata_cmd_parts)
+
 # Do not remove the extra space at the end (the one after 'truncate_tables_before_prediction_pipeline.sh')
 task_1_truncate_tables = BashOperator(
     task_id='task_1_truncate_tables',
@@ -61,5 +94,23 @@ task_3_run_pyspark_preprocessor = BashOperator(
     bash_command=task_3_run_pyspark_preprocessor_cmd,
     dag=dag)
 
+task_4_move_preproc_metadata = BashOperator(
+    task_id='task_4_move_preproc_metadata',
+    bash_command=task_4_move_preproc_metadata_cmd,
+    dag=dag)
+
+task_5_run_dask_preprocessor = BashOperator(
+    task_id='task_5_run_dask_preprocessor',
+    bash_command=task_5_run_dask_preprocessor_cmd,
+    dag=dag)
+
+task_6_move_scaled_features_metadata = BashOperator(
+    task_id='task_6_move_scaled_features_metadata',
+    bash_command=task_6_move_scaled_features_metadata_cmd,
+    dag=dag)
+
 task_2_generate_id_files_prediction.set_upstream(task_1_truncate_tables)
 task_3_run_pyspark_preprocessor.set_upstream(task_2_generate_id_files_prediction)
+task_4_move_preproc_metadata.set_upstream(task_3_run_pyspark_preprocessor)
+task_5_run_dask_preprocessor.set_upstream(task_4_move_preproc_metadata)
+task_6_move_scaled_features_metadata.set_upstream(task_5_run_dask_preprocessor)
