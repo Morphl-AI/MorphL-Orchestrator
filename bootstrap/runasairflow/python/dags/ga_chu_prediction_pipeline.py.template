@@ -100,7 +100,7 @@ task_7_run_batch_inference_cmd_parts = [
     '-e MORPHL_CASSANDRA_PASSWORD',
     '-e LIBHDFS3_CONF',
     'pythoncontainer',
-    'bash /opt/samplecode/runbatchinference.sh ']
+    'bash /opt/samplecode/python/batch_inference/runbatchinference.sh ']
 task_7_run_batch_inference_cmd = ' '.join(task_7_run_batch_inference_cmd_parts)
 
 # Do not remove the extra space at the end (the one after 'truncate_tables_before_prediction_pipeline.sh')
