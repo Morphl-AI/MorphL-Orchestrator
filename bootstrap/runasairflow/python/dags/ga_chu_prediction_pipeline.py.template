@@ -79,6 +79,27 @@ task_6_move_scaled_features_metadata_cmd_parts = [
     'bash /opt/orchestrator/bootstrap/runasairflow/bash/move_metadata.sh scaled_features_prediction ']
 task_6_move_scaled_features_metadata_cmd = ' '.join(task_6_move_scaled_features_metadata_cmd_parts)
 
+# Do not remove the extra space at the end (the one after 'runbatchinference.sh')
+task_7_run_batch_inference_cmd_parts = [
+    f'DAY_AS_STR={day_as_str}',
+    f'UNIQUE_HASH={unique_hash}',
+    'TRAINING_OR_PREDICTION=prediction',
+    'MODELS_DIR=/opt/models',
+    'docker run --rm --net host',
+    '-v /opt/samplecode:/opt/samplecode:ro',
+    '-v /opt/models:/opt/models:ro',
+    '-v /opt/hadoop/etc/hadoop:/opt/hadoop/etc/hadoop:ro',
+    '-e ENVIRONMENT_TYPE',
+    '-e DAY_AS_STR',
+    '-e UNIQUE_HASH',
+    '-e TRAINING_OR_PREDICTION',
+    '-e MODELS_DIR',
+    '-e MORPHL_SERVER_IP_ADDRESS',
+    '-e LIBHDFS3_CONF',
+    'pythoncontainer',
+    'bash /opt/samplecode/runbatchinference.sh ']
+task_7_run_batch_inference_cmd = ' '.join(task_7_run_batch_inference_cmd_parts)
+
 # Do not remove the extra space at the end (the one after 'truncate_tables_before_prediction_pipeline.sh')
 task_1_truncate_tables = BashOperator(
     task_id='task_1_truncate_tables',
