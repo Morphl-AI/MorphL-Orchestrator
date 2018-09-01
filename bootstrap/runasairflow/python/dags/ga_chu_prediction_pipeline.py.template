@@ -95,6 +95,9 @@ task_7_run_batch_inference_cmd_parts = [
     '-e TRAINING_OR_PREDICTION',
     '-e MODELS_DIR',
     '-e MORPHL_SERVER_IP_ADDRESS',
+    '-e MORPHL_CASSANDRA_USERNAME',
+    '-e MORPHL_CASSANDRA_KEYSPACE',
+    '-e MORPHL_CASSANDRA_PASSWORD',
     '-e LIBHDFS3_CONF',
     'pythoncontainer',
     'bash /opt/samplecode/runbatchinference.sh ']
