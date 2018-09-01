@@ -132,8 +132,14 @@ task_6_move_scaled_features_metadata = BashOperator(
     bash_command=task_6_move_scaled_features_metadata_cmd,
     dag=dag)
 
+task_7_run_batch_inference = BashOperator(
+    task_id='task_7_run_batch_inference',
+    bash_command=task_7_run_batch_inference_cmd,
+    dag=dag)
+
 task_2_generate_id_files_prediction.set_upstream(task_1_truncate_tables)
 task_3_run_pyspark_preprocessor.set_upstream(task_2_generate_id_files_prediction)
 task_4_move_preproc_metadata.set_upstream(task_3_run_pyspark_preprocessor)
 task_5_run_dask_preprocessor.set_upstream(task_4_move_preproc_metadata)
 task_6_move_scaled_features_metadata.set_upstream(task_5_run_dask_preprocessor)
+task_7_run_batch_inference.set_upstream(task_6_move_scaled_features_metadata)
