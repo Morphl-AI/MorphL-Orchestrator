@@ -109,6 +109,12 @@ CREATE TABLE morphl.ga_chu_features_prediction (
 ) WITH CLUSTERING ORDER BY (day_of_data_capture DESC);
 
 CREATE TABLE morphl.ga_chu_valid_models (
+  client_id text,
+  prediction double,
+  PRIMARY KEY ((client_id))
+);
+
+CREATE TABLE morphl.ga_chu_valid_models (
   always_zero int,
   day_as_str text,
   unique_hash text,
