@@ -25,10 +25,10 @@ This step is required for setting up the environment and downloading the require
 Bootstrap the installation by running the following commands as root:
 
 ```
-WHERE_THE_ORCHESTRATOR_IS='https://github.com/Morphl-Project/MorphL-Orchestrator'
-WHERE_THE_SOFTWARE_IS='https://github.com/Morphl-Project/Sample-Code'
-WHERE_THE_FEATURE_SCALER_IS='https://github.com/Morphl-Project/morphl-churned-vs-not-churned-preprocessor'
-WHERE_THE_MODEL_GENERATOR_IS='https://github.com/Morphl-Project/morphl-churned-vs-not-churned-model-generator'
+WHERE_THE_ORCHESTRATOR_IS='https://github.com/Morphl-AI/MorphL-Orchestrator'
+WHERE_THE_SOFTWARE_IS='https://github.com/Morphl-AI/MorphL-Model-Publishers-Churned-Users'
+WHERE_THE_FEATURE_SCALER_IS='https://github.com/Morphl-AI/morphl-churned-vs-not-churned-preprocessor'
+WHERE_THE_MODEL_GENERATOR_IS='https://github.com/Morphl-AI/morphl-churned-vs-not-churned-model-generator'
 
 apt update -qq && apt -y install git ca-certificates
 
