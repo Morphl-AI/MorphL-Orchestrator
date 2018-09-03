@@ -85,7 +85,7 @@ CREATE TABLE morphl.ga_chu_features_training (
   is_tablet double,
   churned double,
   PRIMARY KEY ((client_id))
-) WITH CLUSTERING ORDER BY (day_of_data_capture DESC);
+);
 
 CREATE TABLE morphl.ga_chu_features_prediction (
   client_id text,
@@ -102,7 +102,7 @@ CREATE TABLE morphl.ga_chu_features_prediction (
   is_mobile double,
   is_tablet double,
   PRIMARY KEY ((client_id))
-) WITH CLUSTERING ORDER BY (day_of_data_capture DESC);
+);
 
 CREATE TABLE morphl.ga_chu_predictions (
   client_id text,
