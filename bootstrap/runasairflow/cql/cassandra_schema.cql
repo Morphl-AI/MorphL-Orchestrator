@@ -71,8 +71,6 @@ CREATE TABLE morphl.ga_chu_features_raw_p (
 
 CREATE TABLE morphl.ga_chu_features_training (
   client_id text,
-  day_of_data_capture date,
-  session_id text,
   pageviews double,
   unique_pageviews double,
   time_on_page double,
@@ -86,13 +84,11 @@ CREATE TABLE morphl.ga_chu_features_training (
   is_mobile double,
   is_tablet double,
   churned double,
-  PRIMARY KEY ((client_id), day_of_data_capture, session_id)
+  PRIMARY KEY ((client_id))
 ) WITH CLUSTERING ORDER BY (day_of_data_capture DESC);
 
 CREATE TABLE morphl.ga_chu_features_prediction (
   client_id text,
-  day_of_data_capture date,
-  session_id text,
   pageviews double,
   unique_pageviews double,
   time_on_page double,
@@ -105,7 +101,7 @@ CREATE TABLE morphl.ga_chu_features_prediction (
   is_desktop double,
   is_mobile double,
   is_tablet double,
-  PRIMARY KEY ((client_id), day_of_data_capture, session_id)
+  PRIMARY KEY ((client_id))
 ) WITH CLUSTERING ORDER BY (day_of_data_capture DESC);
 
 CREATE TABLE morphl.ga_chu_predictions (
