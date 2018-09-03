@@ -40,7 +40,7 @@ git clone ${WHERE_THE_MODEL_GENERATOR_IS} /opt/modelgenerator
 bash /opt/orchestrator/bootstrap/runasroot/rootbootstrap.sh
 ```
 
-The installation process is fully automated and will take a while to complete (20-30 minutes). The `rootbootstrap.sh` script will install Docker, Docker Registry, Kubernetes, PostgreSQL and various utilities libraries. A second script (`airflowbootstrap.sh`) will be run and will install Anaconda, JDK, Cassandra, Spark and Hadoop.
+The installation process is fully automated and will take a while to complete (25-35 minutes). The `rootbootstrap.sh` script will install Docker, Docker Registry, Kubernetes, PostgreSQL and various utilities libraries. A second script (`airflowbootstrap.sh`) will be run and will install Anaconda, JDK, Cassandra, Spark and Hadoop.
 
 Once the installation is done, check the bottom of the output to see the if the status `The installation has completed successfully.` has been reported.
 
