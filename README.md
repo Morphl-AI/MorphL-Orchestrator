@@ -148,7 +148,7 @@ Keep refreshing the UI page until all the data for the number of days you specif
 Once all the raw data has been loaded, there is one more thing to do for the ML pipeline to be fully operational:
 
 ```
-airflow trigger_dag ga_chu_training_pipeline
+airflow trigger_dag ga_chp_training_pipeline
 ```
 
 The command above will trigger the training pipeline, and upon running it you should see output similar to this:
@@ -156,7 +156,7 @@ The command above will trigger the training pipeline, and upon running it you sh
 ```
 [...] {__init__.py:45} INFO - Using executor LocalExecutor
 [...] {models.py:189} INFO - Filling up the DagBag from /home/airflow/airflow/dags
-[...] {cli.py:203} INFO - Created <DagRun ga_chu_training_pipeline, externally triggered: True>
+[...] {cli.py:203} INFO - Created <DagRun ga_chp_training_pipeline, externally triggered: True>
 ```
 
 Since we have already loaded historical data (step 3), we can start running the pre-processors and train the models. If you do not manually trigger the training pipeline as described above, it will automatically start at its scheduled date (it runs on a weekly basis).
@@ -170,7 +170,7 @@ From this point forward, **the platform is on auto-pilot** and will on a regular
 Once a model has been trained, the prediction pipeline also needs to be triggered. You can wait until it is automatically triggered by the preflight check at the end of the ingestion pipeline (which runs daily) or you can trigger it yourself with the following command:
 
 ```
-airflow trigger_dag ga_chu_prediction_pipeline
+airflow trigger_dag ga_chp_prediction_pipeline
 ```
 
 After the pipeline is triggered, predictions can be accessed using the following command:
