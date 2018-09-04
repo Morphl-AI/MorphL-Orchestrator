@@ -113,8 +113,8 @@ env | egrep '^MORPHL_SERVER_IP_ADDRESS|^MORPHL_CASSANDRA_USERNAME|^MORPHL_CASSAN
 kubectl create configmap environment-configmap --from-env-file=/home/airflow/.env_file.sh
 kubectl apply -f /opt/ga_chp/prediction/model_serving/ga_chp_kubernetes_deployment.yaml
 kubectl apply -f /opt/ga_chp/prediction/model_serving/ga_chp_kubernetes_service.yaml
-KUBERNETES_CLUSTER_IP_ADDRESS=$(kubectl get service/ga-churned-users-service -o jsonpath='{.spec.clusterIP}')
-echo "export KUBERNETES_CLUSTER_IP_ADDRESS=${KUBERNETES_CLUSTER_IP_ADDRESS}" >> /home/airflow/.morphl_environment.sh
+GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS=$(kubectl get service/ga-churned-users-service -o jsonpath='{.spec.clusterIP}')
+echo "export GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS=${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}" >> /home/airflow/.morphl_environment.sh
 sleep 30
 echo 'Testing prediction endpoint ...'
-curl -s http://${KUBERNETES_CLUSTER_IP_ADDRESS}/getprediction/GA1
+curl -s http://${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}/getprediction/GA1
