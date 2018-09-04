@@ -176,7 +176,7 @@ airflow trigger_dag ga_chp_prediction_pipeline
 After the pipeline is triggered, predictions can be accessed using the following command:
 
 ```
-curl -s http://${KUBERNETES_CLUSTER_IP_ADDRESS}/getprediction/GA1
+curl -s http://${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}/getprediction/GA1
 ```
 
 `GA1` represents a client ID.
