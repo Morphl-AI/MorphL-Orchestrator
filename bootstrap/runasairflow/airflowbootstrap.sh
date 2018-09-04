@@ -92,9 +92,7 @@ cp /opt/anaconda/bin/airflow /opt/anaconda/bin/airflow_webserver
 cp /opt/orchestrator/bootstrap/runasairflow/bash/airflow/*_airflow.sh /opt/anaconda/bin/
 airflow version
 airflow initdb
-sleep 10
 python /opt/orchestrator/bootstrap/runasairflow/python/set_up_airflow_authentication.py
-sleep 10
 start_airflow.sh
 
 cd /opt/orchestrator && sudo git pull
