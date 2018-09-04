@@ -26,12 +26,12 @@ Bootstrap the installation by running the following commands as root:
 
 ```
 WHERE_THE_ORCHESTRATOR_IS='https://github.com/Morphl-AI/MorphL-Orchestrator'
-WHERE_THE_SOFTWARE_IS='https://github.com/Morphl-AI/MorphL-Model-Publishers-Churned-Users'
+WHERE_GA_CHP_IS='https://github.com/Morphl-AI/MorphL-Model-Publishers-Churned-Users'
 
 apt update -qq && apt -y install git ca-certificates
 
 git clone ${WHERE_THE_ORCHESTRATOR_IS} /opt/orchestrator
-git clone ${WHERE_THE_SOFTWARE_IS} /opt/ga_chp
+git clone ${WHERE_GA_CHP_IS} /opt/ga_chp
 
 bash /opt/orchestrator/bootstrap/runasroot/rootbootstrap.sh
 ```
