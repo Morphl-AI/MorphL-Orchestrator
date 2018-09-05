@@ -95,7 +95,7 @@ To train the models, you'll need to bring in historical data. If you don't have 
 Run the command:
 
 ```
-load_historical_data.sh
+load_ga_chp_historical_data.sh
 ```
 
 You will be presented with a prompt that lets you select the time interval for loading the data:
