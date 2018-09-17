@@ -17,5 +17,5 @@ conda install python-snappy -y
 wget -qO /opt/gcsdk.tgz https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz
 tar -xf /opt/gcsdk.tgz -C /opt
 mv /opt/google-cloud-sdk /opt/gcsdk
-echo n | /opt/gcsdk/install.sh --usage-reporting=false --path-update=true &>/dev/null
+/opt/gcsdk/install.sh --quiet --usage-reporting=false &>/dev/null
 echo 'Building container 1 (out of 2), this may take a while ...'
