@@ -9,6 +9,6 @@ ENV PATH=/opt/anaconda/bin:/opt/gcsdk/bin:$PATH \
     LANGUAGE=en_US.UTF-8      \
     LANG=en_US.UTF-8          \
     LC_ALL=C.UTF-8            \
-    TERM=xterm-256color
+    TERM=linux
 
 RUN chmod +x /usr/bin/install.sh && bash install.sh
