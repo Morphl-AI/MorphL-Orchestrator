@@ -14,4 +14,8 @@ pip install google-auth google-api-python-client tensorflow keras cassandra-driv
 pip install https://github.com/scikit-learn/scikit-learn/archive/master.zip
 conda install hdfs3 fastparquet h5py==2.8.0 -y -c conda-forge
 conda install python-snappy -y
+wget -qO /opt/gcsdk.tgz https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz
+tar -xf /opt/gcsdk.tgz -C /opt
+mv /opt/google-cloud-sdk /opt/gcsdk
+echo n | /opt/gcsdk/install.sh --usage-reporting=false --path-update=true &>/dev/null
 echo 'Building container 1 (out of 2), this may take a while ...'
