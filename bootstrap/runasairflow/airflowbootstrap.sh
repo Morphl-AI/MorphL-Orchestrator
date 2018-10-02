@@ -13,7 +13,8 @@ JSR166E_VERSION=1.1.0
 SPARK_AVRO_VERSION=4.0.0
 
 echo 'Setting up Anaconda ...'
-ANACONDA_SH_URL=$(lynx -dump https://repo.continuum.io/archive/ | grep -o http.*Anaconda3.*Linux.x86_64.sh$ | head -1)
+# ANACONDA_SH_URL=$(lynx -dump https://repo.continuum.io/archive/ | grep -o http.*Anaconda3.*Linux.x86_64.sh$ | head -1)
+ANACONDA_SH_URL=https://repo.continuum.io/archive/Anaconda3-5.2.0-Linux-x86_64.sh
 echo "From ${ANACONDA_SH_URL}"
 wget -qO /opt/dockerbuilddirs/pythoncontainer/Anaconda.sh ${ANACONDA_SH_URL}
 bash /opt/dockerbuilddirs/pythoncontainer/Anaconda.sh -b -p /opt/anaconda
