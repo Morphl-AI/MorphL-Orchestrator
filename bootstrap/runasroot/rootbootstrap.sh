@@ -72,6 +72,7 @@ echo "export MORPHL_CASSANDRA_USERNAME=morphl" >> /home/airflow/.morphl_environm
 echo "export MORPHL_CASSANDRA_KEYSPACE=morphl" >> /home/airflow/.morphl_environment.sh
 echo "export LIBHDFS3_CONF=/opt/hadoop/etc/hadoop/hdfs-site.xml" >> /home/airflow/.morphl_environment.sh
 echo "export LD_LIBRARY_PATH=/opt/hadoop/lib/native:\$LD_LIBRARY_PATH" >> /home/airflow/.morphl_environment.sh
+echo "export API_DOMAIN=\$(</opt/settings/apidomain.txt)" >> /home/airflow/.morphl_environment.sh
 echo "export PATH=/opt/orchestrator/bootstrap/runasairflow/bash:/opt/anaconda/bin:/opt/jdk/bin:/opt/spark/bin:/opt/cassandra/bin:/opt/hadoop/bin:\$PATH" >> /home/airflow/.morphl_environment.sh
 echo "export KEY_FILE_LOCATION=/opt/secrets/keyfile.json" >> /home/airflow/.morphl_secrets.sh
 echo "export VIEW_ID=\$(</opt/secrets/viewid.txt)" >> /home/airflow/.morphl_secrets.sh
@@ -83,7 +84,8 @@ echo "export NONDEFAULT_SUPERUSER_CASSANDRA_PASSWORD=${NONDEFAULT_SUPERUSER_CASS
 echo ". /home/airflow/.morphl_environment.sh" >> /home/airflow/.profile
 echo ". /home/airflow/.morphl_secrets.sh" >> /home/airflow/.profile
 
-mkdir -p /opt/dockerbuilddirs/{pythoncontainer,pysparkcontainer}
+mkdir -p /opt/dockerbuilddirs/{pythoncontainer,pysparkcontainer,letsencryptcontainer,apicontainer}
+mkdir -p /opt/dockerbuilddirs/letsencryptcontainer/site
 mkdir /opt/{models,secrets,landing,tmp}
 touch /opt/secrets/{keyfile.json,viewid.txt}
 chmod 775 /opt /opt/{models,secrets,landing,tmp}
