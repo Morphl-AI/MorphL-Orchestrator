@@ -35,7 +35,21 @@ sudo -Hiu postgres psql -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public 
 
 cat /opt/orchestrator/bootstrap/runasroot/rc.local > /etc/rc.local
 
+# Generate OS / Airflow password
 new_password () {
+  openssl rand -hex 64 | cut -c1-20
+}
+
+# Generate API credentials 
+new_api_key () {
+  openssl rand -hex 64 | cut -c1-20
+}
+
+new_api_secret () {
+  openssl rand -hex 64 | cut -c1-20
+}
+
+new_api_jwt_secret () {
   openssl rand -hex 64 | cut -c1-20
 }
 
@@ -46,6 +60,9 @@ AIRFLOW_WEB_UI_PASSWORD=$(new_password)
 MORPHL_OS_PASSWORD=$(new_password)
 MORPHL_CASSANDRA_PASSWORD=$(new_password)
 NONDEFAULT_SUPERUSER_CASSANDRA_PASSWORD=$(new_password)
+MORPHL_API_KEY="pk_$(new_api_key)"
+MORPHL_API_SECRET="sk_$(new_api_secret)"
+MORPHL_API_JWT_SECRET=$(new_api_jwt_secret)
 
 useradd -m airflow
 echo "airflow:${AIRFLOW_OS_PASSWORD}" | chpasswd
@@ -81,6 +98,9 @@ echo "export AIRFLOW_WEB_UI_PASSWORD=${AIRFLOW_WEB_UI_PASSWORD}" >> /home/airflo
 echo "export MORPHL_OS_PASSWORD=${MORPHL_OS_PASSWORD}" >> /home/airflow/.morphl_secrets.sh
 echo "export MORPHL_CASSANDRA_PASSWORD=${MORPHL_CASSANDRA_PASSWORD}" >> /home/airflow/.morphl_secrets.sh
 echo "export NONDEFAULT_SUPERUSER_CASSANDRA_PASSWORD=${NONDEFAULT_SUPERUSER_CASSANDRA_PASSWORD}" >> /home/airflow/.morphl_secrets.sh
+echo "export MORPHL_API_KEY=${MORPHL_API_KEY}" >> /home/airflow/.morphl_secrets.sh
+echo "export MORPHL_API_SECRET=${MORPHL_API_SECRET}" >> /home/airflow/.morphl_secrets.sh
+echo "export MORPHL_API_JWT_SECRET=${MORPHL_API_JWT_SECRET}" >> /home/airflow/.morphl_secrets.sh
 echo ". /home/airflow/.morphl_environment.sh" >> /home/airflow/.profile
 echo ". /home/airflow/.morphl_secrets.sh" >> /home/airflow/.profile
 
