@@ -21,7 +21,7 @@ bash /opt/dockerbuilddirs/pythoncontainer/Anaconda.sh -b -p /opt/anaconda
 mv /opt/anaconda/bin/sqlite3 /opt/anaconda/bin/sqlite3.orig
 pip install msgpack
 pip install --upgrade pip
-pip install psycopg2-binary Flask-Bcrypt cassandra-driver graphviz
+pip install psycopg2-binary Flask-Bcrypt cassandra-driver graphviz PyJWT
 pip install apache-airflow==1.9.0
 pip install https://github.com/scikit-learn/scikit-learn/archive/master.zip
 conda install hdfs3 fastparquet h5py==2.8.0 -y -c conda-forge
@@ -142,12 +142,20 @@ docker run -it --rm                                                             
 # Stop and remove temporary API endpoint
 docker stop letsencryptnginx && docker rm $_
 
+env | egrep '^MORPHL_SERVER_IP_ADDRESS|^MORPHL_CASSANDRA_USERNAME|^MORPHL_CASSANDRA_PASSWORD|^MORPHL_CASSANDRA_KEYSPACE' > /home/airflow/.env_file.sh
+kubectl create configmap environment-configmap --from-env-file=/home/airflow/.env_file.sh
+kubectl apply -f /opt/ga_chp/prediction/model_serving/ga_chp_kubernetes_deployment.yaml
+kubectl apply -f /opt/ga_chp/prediction/model_serving/ga_chp_kubernetes_service.yaml
+GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS=$(kubectl get service/ga-chp-service -o jsonpath='{.spec.clusterIP}')
+echo "export GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS=${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}" >> /home/airflow/.morphl_environment.sh
+sleep 30
+echo 'Testing prediction endpoint ...'
+curl -s http://${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}/getprediction/GA1
+
 # Spin off nginx / API container
 cp /opt/orchestrator/dockerbuilddirs/apicontainer/Dockerfile /opt/dockerbuilddirs/apicontainer/Dockerfile
 cp /opt/orchestrator/dockerbuilddirs/apicontainer/nginx.conf /opt/dockerbuilddirs/apicontainer/nginx.conf
 sed "s/API_DOMAIN/${API_DOMAIN}/g" /opt/orchestrator/dockerbuilddirs/apicontainer/api.conf.template > /opt/dockerbuilddirs/apicontainer/api.conf
-
-GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS=$(kubectl get service/ga-chp-service -o jsonpath='{.spec.clusterIP}')
 
 cd /opt/dockerbuilddirs/apicontainer
 docker build \
@@ -158,12 +166,3 @@ docker run -d --name apinginx   \
            -p 80:80 -p 443:443  \
            -v /opt/dockerbuilddirs/letsencryptvolume/etc/letsencrypt:/etc/letsencrypt \
            apicontainer
-
-env | egrep '^MORPHL_SERVER_IP_ADDRESS|^MORPHL_CASSANDRA_USERNAME|^MORPHL_CASSANDRA_PASSWORD|^MORPHL_CASSANDRA_KEYSPACE' > /home/airflow/.env_file.sh
-kubectl create configmap environment-configmap --from-env-file=/home/airflow/.env_file.sh
-kubectl apply -f /opt/ga_chp/prediction/model_serving/ga_chp_kubernetes_deployment.yaml
-kubectl apply -f /opt/ga_chp/prediction/model_serving/ga_chp_kubernetes_service.yaml
-echo "export GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS=${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}" >> /home/airflow/.morphl_environment.sh
-sleep 30
-echo 'Testing prediction endpoint ...'
-curl -s http://${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}/getprediction/GA1
