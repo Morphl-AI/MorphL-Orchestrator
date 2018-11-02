@@ -106,7 +106,9 @@ where `???.???.???.???` is the IP address of the Ubuntu machine. You should be a
 
 `dig +short myip.opendns.com @resolver1.opendns.com`
 
-**Make sure you're using a static IP address that doesn't change when the instance is rebooted.**
+- **Make sure you're using a static IP address that doesn't change when the instance is rebooted.**
+
+- **Also, allow both HTTP and HTTPS traffic to your VM**.
 
 2. Add your subdomain name in a text file on your machine:
 
