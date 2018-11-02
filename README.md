@@ -26,7 +26,9 @@ We recommend using a clean Ubuntu 16.04 machine, minimum 2 vCPUs, 16GB of RAM, 5
 
 Model predictions will be exposed through a secure API, for easy integration within a web or mobile app. The API needs an associated domain or subdomain name.
 
-1. In your DNS zone, add an A record with your subdomain and external IP address of the orchestrator instance:
+##### A record
+
+In your DNS zone, add an A record with your subdomain and external IP address of the orchestrator instance:
 
 `A api.yourdomain.com ???.???.???.???`
 
@@ -38,7 +40,9 @@ where `???.???.???.???` is the IP address of the Ubuntu machine. You should be a
 
 - **Also, allow both HTTP and HTTPS traffic to your VM**.
 
-2. Add your subdomain name in a text file on your machine:
+##### Settings file
+
+Add your subdomain name in a text file on your machine:
 
 ```
 cat > /opt/settings/apidomain.txt << EOF
