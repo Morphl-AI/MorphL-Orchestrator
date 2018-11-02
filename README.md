@@ -94,6 +94,30 @@ it means you have forgotten to log out of `airflow` and back in again.
 
 Unless specified otherwise, all commands referred to below should be run as user `airflow`.
 
+#### Step 2.2) API subdomain
+
+Model predictions will be exposed through a secure API, for easy integration within a web or mobile app. The API needs an associated domain or subdomain name.
+
+1. In your DNS zone, add an A record with your subdomain and external IP address of the orchestrator instance:
+
+`A api.yourdomain.com ???.???.???.???`
+
+where `???.???.???.???` is the IP address of the Ubuntu machine. You should be able to get this IP address from your cloud management interface or by running:
+
+`dig +short myip.opendns.com @resolver1.opendns.com`
+
+**Make sure you're using a static IP address that doesn't change when the instance is rebooted.**
+
+2. Add your subdomain name in a text file on your machine:
+
+```
+cat > /opt/settings/apidomain.txt << EOF
+api.yourdomain.com
+EOF
+```
+
+SSL certificates for the API subdomain will be automatically generated and renewed using [Let's Encrypt](https://letsencrypt.org/).
+
 ### Step 3) Loading historical data
 
 To train the models, you'll need to bring in historical data. If you don't have historical data, you can let the ingestion pipeline gather it. However, in most cases, you'll have data that was already gathered and can be immediately downloaded.
