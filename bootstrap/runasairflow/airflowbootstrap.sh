@@ -136,7 +136,6 @@ docker run -it --rm                                                             
            certonly --webroot \
            --register-unsafely-without-email --agree-tos \
            --webroot-path=/data/letsencrypt \
-           --staging \
            -d ${API_DOMAIN}
 
 # Stop and remove temporary API endpoint
