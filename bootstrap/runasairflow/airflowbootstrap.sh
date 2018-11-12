@@ -112,7 +112,8 @@ cd /opt/dockerbuilddirs/pysparkcontainer
 docker build -t pysparkcontainer .
 
 # Spin off temporary container for generating SSL certificates
-echo "Setting up API with SSL certificates..."
+echo "Generate SSL certificates for API..."
+echo ${API_DOMAIN}
 cp /opt/orchestrator/dockerbuilddirs/letsencryptcontainer/Dockerfile /opt/dockerbuilddirs/letsencryptcontainer/Dockerfile
 sed "s/API_DOMAIN/${API_DOMAIN}/g" /opt/orchestrator/dockerbuilddirs/letsencryptcontainer/default.conf.template > /opt/dockerbuilddirs/letsencryptcontainer/default.conf
 echo "Temporary endpoint for generating API SSL certificates with letsencrypt" > /opt/dockerbuilddirs/letsencryptcontainer/site/index.html
@@ -148,10 +149,9 @@ kubectl apply -f /opt/ga_chp/prediction/model_serving/ga_chp_kubernetes_service.
 GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS=$(kubectl get service/ga-chp-service -o jsonpath='{.spec.clusterIP}')
 echo "export GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS=${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}" >> /home/airflow/.morphl_environment.sh
 sleep 30
-echo 'Testing prediction endpoint ...'
-curl -s http://${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}/getprediction/GA1
 
 # Spin off nginx / API container
+echo 'Setting up public facing API ...'
 cp /opt/orchestrator/dockerbuilddirs/apicontainer/Dockerfile /opt/dockerbuilddirs/apicontainer/Dockerfile
 cp /opt/orchestrator/dockerbuilddirs/apicontainer/nginx.conf /opt/dockerbuilddirs/apicontainer/nginx.conf
 sed "s/API_DOMAIN/${API_DOMAIN}/g" /opt/orchestrator/dockerbuilddirs/apicontainer/api.conf.template > /opt/dockerbuilddirs/apicontainer/api.conf
@@ -165,3 +165,6 @@ docker run -d --name apinginx   \
            -p 80:80 -p 443:443  \
            -v /opt/dockerbuilddirs/letsencryptvolume/etc/letsencrypt:/etc/letsencrypt \
            apicontainer
+
+echo 'Testing Kubernetes prediction endpoint ...'
+curl -s http://${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}/getprediction/GA1
