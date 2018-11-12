@@ -118,13 +118,13 @@ cp /opt/orchestrator/dockerbuilddirs/letsencryptcontainer/Dockerfile /opt/docker
 sed "s/API_DOMAIN/${API_DOMAIN}/g" /opt/orchestrator/dockerbuilddirs/letsencryptcontainer/default.conf.template > /opt/dockerbuilddirs/letsencryptcontainer/default.conf
 echo "Temporary endpoint for generating API SSL certificates with letsencrypt" > /opt/dockerbuilddirs/letsencryptcontainer/site/index.html
 cd /opt/dockerbuilddirs/letsencryptcontainer
-docker build -t letsencryptcontainer .
+docker build -t letsencryptnginx .
 
 # Run temporary endpoint on port 80, so it can be reached by Let's Encrypt
-docker run -d --name letsencryptnginx                                              \
+docker run -d --name letsencryptcontainer                                              \
            -p 80:80                                                                \
            -v /opt/dockerbuilddirs/letsencryptcontainer/site:/usr/share/nginx/html \
-           letsencryptcontainer
+           letsencryptnginx
 
 # Generate SSL certificates.
 # Use --staging flag when testing, as Let's Encrypt has a rate limit.
@@ -140,7 +140,7 @@ docker run -it --rm                                                             
            -d ${API_DOMAIN}
 
 # Stop and remove temporary API endpoint
-docker stop letsencryptnginx && docker rm $_
+docker stop letsencryptcontainer && docker rm $_
 
 env | egrep '^MORPHL_SERVER_IP_ADDRESS|^MORPHL_CASSANDRA_USERNAME|^MORPHL_CASSANDRA_PASSWORD|^MORPHL_CASSANDRA_KEYSPACE' > /home/airflow/.env_file.sh
 kubectl create configmap environment-configmap --from-env-file=/home/airflow/.env_file.sh
@@ -159,12 +159,12 @@ sed "s/API_DOMAIN/${API_DOMAIN}/g" /opt/orchestrator/dockerbuilddirs/apicontaine
 cd /opt/dockerbuilddirs/apicontainer
 docker build \
            --build-arg GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS=${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS} \
-           -t apicontainer .
+           -t apinginx .
 
-docker run -d --name apinginx   \
+docker run -d --name apicontainer   \
            -p 80:80 -p 443:443  \
            -v /opt/dockerbuilddirs/letsencryptvolume/etc/letsencrypt:/etc/letsencrypt \
-           apicontainer
+           apinginx
 
 echo 'Testing Kubernetes prediction endpoint ...'
 curl -s http://${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}/getprediction/GA1
