@@ -16,9 +16,41 @@ The pipelines are set up using [Apache Airflow](https://github.com/apache/incuba
 
 ### Prerequisites
 
+#### 1) Virtual Instance
+
 The orchestrator can be installed on a virtual instance on a cloud platform of your choice (Google Cloud Platform, Amazon Web Services, etc.).
 
 We recommend using a clean Ubuntu 16.04 machine, minimum 2 vCPUs, 16GB of RAM, 50GB storage.
+
+#### 2) API subdomain
+
+Model predictions will be exposed through a secure API, for easy integration within a web or mobile app. The API needs an associated domain or subdomain name.
+
+##### A record
+
+In your DNS zone, add an A record with your subdomain and external IP address of the orchestrator instance:
+
+`A api.yourdomain.com ???.???.???.???`
+
+where `???.???.???.???` is the IP address of the Ubuntu machine. You should be able to get this IP address from your cloud management interface or by running from your machine:
+
+`dig +short myip.opendns.com @resolver1.opendns.com`
+
+- **Make sure you're using a static IP address that doesn't change when the instance is rebooted.**
+
+- **Also, allow both HTTP and HTTPS traffic to your VM**.
+
+##### Settings file
+
+Add your subdomain name in a text file on your machine:
+
+```
+cat > /opt/settings/apidomain.txt << EOF
+api.yourdomain.com
+EOF
+```
+
+SSL certificates for the API subdomain will be automatically generated and renewed using [Let's Encrypt](https://letsencrypt.org/).
 
 ## Quick Start Guide
 
