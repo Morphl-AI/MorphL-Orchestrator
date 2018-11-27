@@ -57,7 +57,6 @@ MORPHL_SERVER_IP_ADDRESS=$(ip route get $(ip r | grep ^default | cut -d' ' -f3) 
 MORPHL_SERVER_FQDN=$(hostname -f)
 AIRFLOW_OS_PASSWORD=$(new_password)
 AIRFLOW_WEB_UI_PASSWORD=$(new_password)
-MORPHL_OS_PASSWORD=$(new_password)
 MORPHL_CASSANDRA_PASSWORD=$(new_password)
 NONDEFAULT_SUPERUSER_CASSANDRA_PASSWORD=$(new_password)
 MORPHL_API_KEY="pk_$(new_api_key)"
@@ -67,10 +66,6 @@ MORPHL_API_JWT_SECRET=$(new_api_jwt_secret)
 useradd -m airflow
 echo "airflow:${AIRFLOW_OS_PASSWORD}" | chpasswd
 usermod -aG docker,sudo airflow
-
-useradd -m morphl
-echo "morphl:${MORPHL_OS_PASSWORD}" | chpasswd
-usermod -aG docker,sudo morphl
 
 touch /home/airflow/.profile /home/airflow/.morphl_environment.sh /home/airflow/.morphl_secrets.sh
 chmod 660 /home/airflow/.profile /home/airflow/.morphl_environment.sh /home/airflow/.morphl_secrets.sh
@@ -95,7 +90,6 @@ echo "export KEY_FILE_LOCATION=/opt/secrets/keyfile.json" >> /home/airflow/.morp
 echo "export VIEW_ID=\$(</opt/secrets/viewid.txt)" >> /home/airflow/.morphl_secrets.sh
 echo "export AIRFLOW_OS_PASSWORD=${AIRFLOW_OS_PASSWORD}" >> /home/airflow/.morphl_secrets.sh
 echo "export AIRFLOW_WEB_UI_PASSWORD=${AIRFLOW_WEB_UI_PASSWORD}" >> /home/airflow/.morphl_secrets.sh
-echo "export MORPHL_OS_PASSWORD=${MORPHL_OS_PASSWORD}" >> /home/airflow/.morphl_secrets.sh
 echo "export MORPHL_CASSANDRA_PASSWORD=${MORPHL_CASSANDRA_PASSWORD}" >> /home/airflow/.morphl_secrets.sh
 echo "export NONDEFAULT_SUPERUSER_CASSANDRA_PASSWORD=${NONDEFAULT_SUPERUSER_CASSANDRA_PASSWORD}" >> /home/airflow/.morphl_secrets.sh
 echo "export MORPHL_API_KEY=${MORPHL_API_KEY}" >> /home/airflow/.morphl_secrets.sh
