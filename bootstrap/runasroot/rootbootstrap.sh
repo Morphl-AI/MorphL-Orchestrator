@@ -53,6 +53,15 @@ new_api_jwt_secret () {
   openssl rand -hex 64 | cut -c1-20
 }
 
+# Generate dashboard credentials
+new_dashboard_username () {
+  openssl rand -hex 64 | cut -c1-10
+}
+
+new_dashboard_password () {
+  openssl rand -hex 64 | cut -c1-20
+}
+
 MORPHL_SERVER_IP_ADDRESS=$(ip route get $(ip r | grep ^default | cut -d' ' -f3) | awk '{print $NF; exit}')
 MORPHL_SERVER_FQDN=$(hostname -f)
 AIRFLOW_OS_PASSWORD=$(new_password)
@@ -62,6 +71,8 @@ NONDEFAULT_SUPERUSER_CASSANDRA_PASSWORD=$(new_password)
 MORPHL_API_KEY="pk_$(new_api_key)"
 MORPHL_API_SECRET="sk_$(new_api_secret)"
 MORPHL_API_JWT_SECRET=$(new_api_jwt_secret)
+MORPHL_DASHBOARD_USERNAME="morphl_$(new_dashboard_username)"
+MORPHL_DASHBOARD_PASSWORD=$(new_dashboard_password)
 
 useradd -m airflow
 echo "airflow:${AIRFLOW_OS_PASSWORD}" | chpasswd
@@ -95,6 +106,8 @@ echo "export NONDEFAULT_SUPERUSER_CASSANDRA_PASSWORD=${NONDEFAULT_SUPERUSER_CASS
 echo "export MORPHL_API_KEY=${MORPHL_API_KEY}" >> /home/airflow/.morphl_secrets.sh
 echo "export MORPHL_API_SECRET=${MORPHL_API_SECRET}" >> /home/airflow/.morphl_secrets.sh
 echo "export MORPHL_API_JWT_SECRET=${MORPHL_API_JWT_SECRET}" >> /home/airflow/.morphl_secrets.sh
+echo "export MORPHL_DASHBOARD_USERNAME=${MORPHL_DASHBOARD_USERNAME}" >> /home/airflow/.morphl_secrets.sh
+echo "export MORPHL_DASHBOARD_PASSWORD=${MORPHL_DASHBOARD_PASSWORD}" >> /home/airflow/.morphl_secrets.sh
 echo ". /home/airflow/.morphl_environment.sh" >> /home/airflow/.profile
 echo ". /home/airflow/.morphl_secrets.sh" >> /home/airflow/.profile
 
