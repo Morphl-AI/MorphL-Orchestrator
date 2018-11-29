@@ -167,4 +167,4 @@ docker run -d --name apicontainer   \
            apinginx
 
 echo 'Testing Kubernetes prediction endpoint ...'
-curl -s http://${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}/getprediction/GA1
+curl -s http://${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}
