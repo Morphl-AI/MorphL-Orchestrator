@@ -15,7 +15,7 @@ if [ ${rc} -eq 0 ]; then
   # Write configuration parameters in corresponding Cassandra table
   DAYS_TRAINING_DELAY=$(<${TEMPFILE_A})
   DAYS_WORTH_OF_DATA_TO_LOAD=$(<${TEMPFILE_B})
-  sed "s/DAYS_TRAINING_DELAY/${DAYS_TRAINING_DELAY}/g;S/DAYS_WORTH_OF_DATA_TO_LOAD/${DAYS_WORTH_OF_DATA_TO_LOAD}/g" /opt/ga_chp_bq/training/pipeline_setup/insert_into_ga_chp_bq_config_parameters.cql.template > /tmp/insert_into_config_parameters.cql
+  sed "s/DAYS_TRAINING_DELAY/${DAYS_TRAINING_DELAY}/g;s/DAYS_WORTH_OF_DATA_TO_LOAD/${DAYS_WORTH_OF_DATA_TO_LOAD}/g" /opt/ga_chp_bq/training/pipeline_setup/insert_into_ga_chp_bq_config_parameters.cql.template > /tmp/insert_into_config_parameters.cql
   cqlsh ${MORPHL_SERVER_IP_ADDRESS} -u morphl -p ${MORPHL_CASSANDRA_PASSWORD} -f /tmp/insert_into_config_parameters.cql
 
   # Reset Airflow and create dags
