@@ -27,6 +27,7 @@ if [ ${rc} -eq 0 ]; then
   python /opt/orchestrator/bootstrap/runasairflow/python/set_up_airflow_authentication.py
   START_DATE_AS_PY_CODE=$(<${TEMPFILE_C})
   sed "s/START_DATE_AS_PY_CODE/${START_DATE_AS_PY_CODE}/g;s/DAYS_TRAINING_DELAY/${DAYS_TRAINING_DELAY}/g;s/DAYS_WORTH_OF_DATA_TO_LOAD/${DAYS_WORTH_OF_DATA_TO_LOAD}/g" /opt/ga_chp_bq/training/pipeline_setup/ga_chp_bq_training_airflow_dag.py.template > /home/airflow/airflow/dags/ga_chp_bq_training_pipeline.py
+  airflow trigger_dag ga_chp_bq_training_pipeline
 #   START_DATE_AS_PY_CODE=$(<${TEMPFILE_C})
 #   sed "s/START_DATE_AS_PY_CODE/${START_DATE_AS_PY_CODE}/g" /opt/ga_chp_bq/prediction/pipeline_setup/ga_chp_bq_prediction_airflow_dag.py.template > /home/airflow/airflow/dags/ga_chp_bq_prediction_pipeline.py
   start_airflow.sh
