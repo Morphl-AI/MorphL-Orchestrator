@@ -11,7 +11,7 @@ mv /opt/anaconda/bin/sqlite3 /opt/anaconda/bin/sqlite3.orig
 pip install msgpack
 pip install --upgrade pip
 pip install google-auth google-api-python-client tensorflow keras cassandra-driver PyJWT flask-cors
-pip install https://github.com/scikit-learn/scikit-learn/archive/master.zip
+pip install scikit-learn==0.20.2
 conda install hdfs3 fastparquet h5py==2.8.0 -y -c conda-forge
 conda install python-snappy -y
 wget -qO /opt/gcsdk.tgz https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz

@@ -23,7 +23,7 @@ pip install msgpack
 pip install --upgrade pip
 pip install psycopg2-binary Flask-Bcrypt cassandra-driver graphviz
 pip install apache-airflow==1.9.0
-pip install https://github.com/scikit-learn/scikit-learn/archive/master.zip
+pip install scikit-learn==0.20.2
 conda install hdfs3 fastparquet h5py==2.8.0 -y -c conda-forge
 conda install python-snappy -y
 
