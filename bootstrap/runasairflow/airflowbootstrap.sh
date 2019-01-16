@@ -142,7 +142,7 @@ docker run -it --rm                                                             
 # Stop and remove temporary API endpoint
 docker stop letsencryptcontainer && docker rm $_
 
-env | egrep '^MORPHL_SERVER_IP_ADDRESS|^MORPHL_CASSANDRA_USERNAME|^MORPHL_CASSANDRA_PASSWORD|^MORPHL_CASSANDRA_KEYSPACE|^API_DOMAIN|^MORPHL_API_KEY|^MORPHL_API_SECRET|^MORPHL_API_JWT_SECRET' > /home/airflow/.env_file.sh
+env | egrep '^MORPHL_SERVER_IP_ADDRESS|^MORPHL_CASSANDRA_USERNAME|^MORPHL_CASSANDRA_PASSWORD|^MORPHL_CASSANDRA_KEYSPACE|^API_DOMAIN|^MORPHL_API_KEY|^MORPHL_API_SECRET|^MORPHL_API_JWT_SECRET|^MORPHL_DASHBOARD_USERNAME|^MORPHL_DASHBOARD_PASSWORD' > /home/airflow/.env_file.sh
 kubectl create configmap environment-configmap --from-env-file=/home/airflow/.env_file.sh
 kubectl apply -f /opt/ga_chp/prediction/model_serving/ga_chp_kubernetes_deployment.yaml
 kubectl apply -f /opt/ga_chp/prediction/model_serving/ga_chp_kubernetes_service.yaml
@@ -167,4 +167,4 @@ docker run -d --name apicontainer   \
            apinginx
 
 echo 'Testing Kubernetes prediction endpoint ...'
-curl -s http://${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}/getprediction/GA1
+curl -s http://${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}

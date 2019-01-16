@@ -211,13 +211,13 @@ Once a model has been trained, the prediction pipeline also needs to be triggere
 airflow trigger_dag ga_chp_prediction_pipeline
 ```
 
-After the pipeline is triggered, predictions can be accessed using the following command:
+After the pipeline is triggered, the API can be accessed using the following command:
 
 ```
-curl -s http://${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}/getprediction/GA1
+curl -s http://${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}
 ```
 
-`GA1` represents a client ID.
+See [Wiki](https://github.com/Morphl-AI/MorphL-Model-Publishers-Churning-Users/wiki/Public-API-Endpoints) for examples on how to access predictions.
 
 ### Troubleshooting
 
