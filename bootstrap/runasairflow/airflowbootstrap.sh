@@ -144,12 +144,25 @@ docker stop letsencryptcontainer && docker rm $_
 
 env | egrep '^MORPHL_SERVER_IP_ADDRESS|^MORPHL_CASSANDRA_USERNAME|^MORPHL_CASSANDRA_PASSWORD|^MORPHL_CASSANDRA_KEYSPACE|^API_DOMAIN|^MORPHL_API_KEY|^MORPHL_API_SECRET|^MORPHL_API_JWT_SECRET|^MORPHL_DASHBOARD_USERNAME|^MORPHL_DASHBOARD_PASSWORD' > /home/airflow/.env_file.sh
 kubectl create configmap environment-configmap --from-env-file=/home/airflow/.env_file.sh
+
+# Init auth service
+kubectl apply -f /opt/auth/auth_kubernetes_deployment.yaml
+kubectl apply -f /opt/auth/auth_kubernetes_service.yaml
+AUTH_KUBERNETES_CLUSTER_IP_ADDRESS=$(kubectl get service/auth-service -o jsonpath='{.spec.clusterIP}')
+echo "export AUTH_KUBERNETES_CLUSTER_IP_ADDRESS=${AUTH_KUBERNETES_CLUSTER_IP_ADDRESS}" >> /home/airflow/.morphl_environment.sh
+
+# Init GA_CHP service
 kubectl apply -f /opt/ga_chp/prediction/model_serving/ga_chp_kubernetes_deployment.yaml
 kubectl apply -f /opt/ga_chp/prediction/model_serving/ga_chp_kubernetes_service.yaml
+GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS=$(kubectl get service/ga-chp-service -o jsonpath='{.spec.clusterIP}')
+echo "export GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS=${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}" >> /home/airflow/.morphl_environment.sh
+
+# Init GA_CHP_BQ service
 kubectl apply -f /opt/ga_chp_bq/prediction/model_serving/ga_chp_bq_kubernetes_deployment.yaml
 kubectl apply -f /opt/ga_chp_bq/prediction/model_serving/ga_chp_bq_kubernetes_service.yaml
-KUBERNETES_CLUSTER_IP_ADDRESS=$(kubectl get service/ga-chp-service -o jsonpath='{.spec.clusterIP}')
-echo "export KUBERNETES_CLUSTER_IP_ADDRESS=${KUBERNETES_CLUSTER_IP_ADDRESS}" >> /home/airflow/.morphl_environment.sh
+GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS=$(kubectl get service/ga-chp-bq-service -o jsonpath='{.spec.clusterIP}')
+echo "export GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS=${GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS}" >> /home/airflow/.morphl_environment.sh
+
 sleep 30
 
 # Spin off nginx / API container
@@ -160,7 +173,9 @@ sed "s/API_DOMAIN/${API_DOMAIN}/g" /opt/orchestrator/dockerbuilddirs/apicontaine
 
 cd /opt/dockerbuilddirs/apicontainer
 docker build \
-           --build-arg KUBERNETES_CLUSTER_IP_ADDRESS=${KUBERNETES_CLUSTER_IP_ADDRESS} \
+           --build-arg AUTH_KUBERNETES_CLUSTER_IP_ADDRESS=${AUTH_KUBERNETES_CLUSTER_IP_ADDRESS} \
+           --build-arg GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS=${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS} \
+           --build-arg GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS=${GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS} \
            -t apinginx .
 
 docker run -d --name apicontainer   \
@@ -168,5 +183,13 @@ docker run -d --name apicontainer   \
            -v /opt/dockerbuilddirs/letsencryptvolume/etc/letsencrypt:/etc/letsencrypt \
            apinginx
 
-echo 'Testing Kubernetes prediction endpoint ...'
-curl -s http://${KUBERNETES_CLUSTER_IP_ADDRESS}
+echo 'Testing Kubernetes prediction endpoints ...'
+
+echo 'Testing authorize API ...'
+curl -s http://${AUTH_KUBERNETES_CLUSTER_IP_ADDRESS}
+
+echo 'Testing churning users API ...'
+curl -s http://${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}
+
+echo 'Testing churning users with BigQuery API ...'
+curl -s http://${GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS}
