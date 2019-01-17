@@ -12,9 +12,9 @@ RUN apk update \
     && apk add --no-cache bash \
     && adduser -D -H -u 1000 -s /bin/bash www-data \
     && rm /etc/nginx/conf.d/default.conf \
-    && echo "upstream kubernetes-upstream-auth { server ${AUTH_KUBERNETES_CLUSTER_IP_ADDRESS}; }" \ 
-    && echo "upstream kubernetes-upstream-ga-chp { server ${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}; }" \ 
-    && echo "upstream kubernetes-upstream-ga-chp-bq { server ${GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS}; }" > /etc/nginx/conf.d/upstream.conf
+    && export "upstream kubernetes-upstream-auth { server ${AUTH_KUBERNETES_CLUSTER_IP_ADDRESS}; }" > /etc/nginx/conf.d/upstream.conf \ 
+    && export "upstream kubernetes-upstream-ga-chp { server ${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}; }" > /etc/nginx/conf.d/upstream.conf \ 
+    && export "upstream kubernetes-upstream-ga-chp-bq { server ${GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS}; }" > /etc/nginx/conf.d/upstream.conf
 
 CMD ["nginx"]
 
