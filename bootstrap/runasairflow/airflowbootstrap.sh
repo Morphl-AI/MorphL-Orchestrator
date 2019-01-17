@@ -146,8 +146,10 @@ env | egrep '^MORPHL_SERVER_IP_ADDRESS|^MORPHL_CASSANDRA_USERNAME|^MORPHL_CASSAN
 kubectl create configmap environment-configmap --from-env-file=/home/airflow/.env_file.sh
 kubectl apply -f /opt/ga_chp/prediction/model_serving/ga_chp_kubernetes_deployment.yaml
 kubectl apply -f /opt/ga_chp/prediction/model_serving/ga_chp_kubernetes_service.yaml
-GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS=$(kubectl get service/ga-chp-service -o jsonpath='{.spec.clusterIP}')
-echo "export GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS=${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}" >> /home/airflow/.morphl_environment.sh
+kubectl apply -f /opt/ga_chp_bq/prediction/model_serving/ga_chp_bq_kubernetes_deployment.yaml
+kubectl apply -f /opt/ga_chp_bq/prediction/model_serving/ga_chp_bq_kubernetes_service.yaml
+KUBERNETES_CLUSTER_IP_ADDRESS=$(kubectl get service/ga-chp-service -o jsonpath='{.spec.clusterIP}')
+echo "export KUBERNETES_CLUSTER_IP_ADDRESS=${KUBERNETES_CLUSTER_IP_ADDRESS}" >> /home/airflow/.morphl_environment.sh
 sleep 30
 
 # Spin off nginx / API container
@@ -158,7 +160,7 @@ sed "s/API_DOMAIN/${API_DOMAIN}/g" /opt/orchestrator/dockerbuilddirs/apicontaine
 
 cd /opt/dockerbuilddirs/apicontainer
 docker build \
-           --build-arg GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS=${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS} \
+           --build-arg KUBERNETES_CLUSTER_IP_ADDRESS=${KUBERNETES_CLUSTER_IP_ADDRESS} \
            -t apinginx .
 
 docker run -d --name apicontainer   \
@@ -167,4 +169,4 @@ docker run -d --name apicontainer   \
            apinginx
 
 echo 'Testing Kubernetes prediction endpoint ...'
-curl -s http://${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}
+curl -s http://${KUBERNETES_CLUSTER_IP_ADDRESS}

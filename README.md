@@ -214,7 +214,7 @@ airflow trigger_dag ga_chp_prediction_pipeline
 After the pipeline is triggered, the API can be accessed using the following command:
 
 ```
-curl -s http://${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}
+curl -s http://${KUBERNETES_CLUSTER_IP_ADDRESS}
 ```
 
 See [Wiki](https://github.com/Morphl-AI/MorphL-Model-Publishers-Churning-Users/wiki/Public-API-Endpoints) for examples on how to access predictions.
