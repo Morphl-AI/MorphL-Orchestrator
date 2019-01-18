@@ -185,11 +185,7 @@ docker run -d --name apicontainer   \
 
 echo 'Testing Kubernetes prediction endpoints ...'
 
-echo 'Testing authorize API ...'
+echo 'Testing API ...'
 curl -s http://${AUTH_KUBERNETES_CLUSTER_IP_ADDRESS}
-
-echo 'Testing churning users API ...'
-curl -s http://${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}
-
-echo 'Testing churning users with BigQuery API ...'
-curl -s http://${GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS}
+curl -s http://${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}/churning
+curl -s http://${GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS}/churning-bq

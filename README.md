@@ -221,10 +221,10 @@ After the pipeline is triggered, the API can be accessed using the following com
 curl -s http://${AUTH_KUBERNETES_CLUSTER_IP_ADDRESS}
 
 # Churning users API
-curl -s http://${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}
+curl -s http://${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}/churning
 
 # Churning users with BigQuery API
-curl -s http://${GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS}
+curl -s http://${GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS}/churning-bq
 ```
 
 See [GA_CHP Wiki](https://github.com/Morphl-AI/MorphL-Model-Publishers-Churning-Users/wiki/Public-API-Endpoints) or [GA_CHP_BQ wiki](https://github.com/Morphl-AI/MorphL-Model-Publishers-Churning-Users-BigQuery/wiki/Public-API-Endpoints) for examples on how to access predictions.
