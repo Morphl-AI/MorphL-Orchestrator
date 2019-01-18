@@ -227,7 +227,7 @@ curl -s http://${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}
 curl -s http://${GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS}
 ```
 
-See [GA_CHP Wiki](https://github.com/Morphl-AI/MorphL-Model-Publishers-Churning-Users/wiki/Public-API-Endpoints) for examples on how to access predictions or [GA_CHP_BQ wiki](https://github.com/Morphl-AI/MorphL-Model-Publishers-Churning-Users-BigQuery/wiki/Public-API-Endpoints) for examples on how to access predictions.
+See [GA_CHP Wiki](https://github.com/Morphl-AI/MorphL-Model-Publishers-Churning-Users/wiki/Public-API-Endpoints) or [GA_CHP_BQ wiki](https://github.com/Morphl-AI/MorphL-Model-Publishers-Churning-Users-BigQuery/wiki/Public-API-Endpoints) for examples on how to access predictions.
 
 ### Troubleshooting
 
