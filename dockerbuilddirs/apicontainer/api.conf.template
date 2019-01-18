@@ -24,15 +24,23 @@ server {
     ssl_certificate /etc/letsencrypt/live/API_DOMAIN/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/API_DOMAIN/privkey.pem;
 
-    location ~ ^/(/|/authorize|/dashboard)/ {
+    # Home page
+    location =/ {
         proxy_pass http://kubernetes-upstream-auth;
     }
 
-    location /churning/ {
+    # Authorize / Authentication routes
+    location ~ ^/(authorize|dashboard) {
+        proxy_pass http://kubernetes-upstream-auth;
+    }
+
+    # Churning users with Google Analytics routes
+    location ^~ /churning {
         proxy_pass http://kubernetes-upstream-ga-chp;
     }
 
-    location /churning-bq/ {
+    # Churning users with BigQuery routes
+    location ^~ /churning-bq {
         proxy_pass http://kubernetes-upstream-ga-chp-bq;
     }
 }
