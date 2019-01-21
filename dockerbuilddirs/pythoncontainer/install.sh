@@ -12,7 +12,7 @@ pip install msgpack
 pip install --upgrade pip
 pip install google-auth google-api-python-client tensorflow keras cassandra-driver PyJWT flask-cors
 pip install scikit-learn==0.20.2
-conda install hdfs3 fastparquet h5py==2.8.0 -y -c conda-forge
+conda install libhdfs3=2.3=3 hdfs3 fastparquet h5py==2.8.0 -y -c conda-forge
 conda install python-snappy -y
 wget -qO /opt/gcsdk.tgz https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz
 tar -xf /opt/gcsdk.tgz -C /opt
