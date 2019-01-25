@@ -24,14 +24,23 @@ server {
     ssl_certificate /etc/letsencrypt/live/API_DOMAIN/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/API_DOMAIN/privkey.pem;
 
-    location / {
-        proxy_pass http://kubernetes-upstream;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "";
-        proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    # Home page
+    location =/ {
+        proxy_pass http://kubernetes-upstream-auth;
+    }
+
+    # Authorize / Authentication routes
+    location ~ ^/(authorize|dashboard) {
+        proxy_pass http://kubernetes-upstream-auth;
+    }
+
+    # Churning users with Google Analytics routes
+    location ^~ /churning {
+        proxy_pass http://kubernetes-upstream-ga-chp;
+    }
+
+    # Churning users with BigQuery routes
+    location ^~ /churning-bq {
+        proxy_pass http://kubernetes-upstream-ga-chp-bq;
     }
 }

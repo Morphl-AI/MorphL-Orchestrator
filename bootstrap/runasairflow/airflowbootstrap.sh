@@ -10,7 +10,7 @@ cat /etc/kubernetes/admin.conf > /home/airflow/.kube/config
 
 SP_CASS_CONN_VERSION=2.3.1
 JSR166E_VERSION=1.1.0
-SPARK_AVRO_VERSION=4.0.0
+SPARK_AVRO_VERSION=2.4.0
 
 echo 'Setting up Anaconda ...'
 # ANACONDA_SH_URL=$(lynx -dump https://repo.continuum.io/archive/ | grep -o http.*Anaconda3.*Linux.x86_64.sh$ | head -1)
@@ -23,8 +23,8 @@ pip install msgpack
 pip install --upgrade pip
 pip install psycopg2-binary Flask-Bcrypt cassandra-driver graphviz
 pip install apache-airflow==1.9.0
-pip install https://github.com/scikit-learn/scikit-learn/archive/master.zip
-conda install hdfs3 fastparquet h5py==2.8.0 -y -c conda-forge
+pip install scikit-learn==0.20.2
+conda install libhdfs3=2.3=3 hdfs3 fastparquet h5py==2.8.0 -y -c conda-forge
 conda install python-snappy -y
 
 echo 'Setting up the JDK ...'
@@ -63,10 +63,10 @@ sed 's/INFO/FATAL/;s/WARN/FATAL/;s/ERROR/FATAL/' log4j.properties.template > log
 
 wget -qO /opt/spark/jars/spark-cassandra-connector.jar https://repo1.maven.org/maven2/com/datastax/spark/spark-cassandra-connector_2.11/${SP_CASS_CONN_VERSION}/spark-cassandra-connector_2.11-${SP_CASS_CONN_VERSION}.jar
 wget -qO /opt/spark/jars/jsr166e.jar https://repo1.maven.org/maven2/com/twitter/jsr166e/${JSR166E_VERSION}/jsr166e-${JSR166E_VERSION}.jar
-wget -qO /opt/spark/jars/spark-avro.jar https://repo1.maven.org/maven2/com/databricks/spark-avro_2.11/${SPARK_AVRO_VERSION}/spark-avro_2.11-${SPARK_AVRO_VERSION}.jar
+wget -qO /opt/spark/jars/spark-avro.jar https://repo1.maven.org/maven2/org/apache/spark/spark-avro_2.11/${SPARK_AVRO_VERSION}/spark-avro_2.11-${SPARK_AVRO_VERSION}.jar
 
 echo 'Setting up Hadoop ...'
-HADOOP_TGZ_URL=$(lynx -dump ${MIRROR}hadoop/common/stable/ | grep -o http.*gz$ | grep -v src | head -1)
+HADOOP_TGZ_URL=$(lynx -dump ${MIRROR}hadoop/common/stable/ | grep -o http.*gz$ | grep -v src | grep -v site | head -1)
 echo "From ${HADOOP_TGZ_URL}"
 wget -qO /opt/tmp/zzzhadoop.tgz ${HADOOP_TGZ_URL}
 tar -xf /opt/tmp/zzzhadoop.tgz -C /opt
@@ -144,10 +144,25 @@ docker stop letsencryptcontainer && docker rm $_
 
 env | egrep '^MORPHL_SERVER_IP_ADDRESS|^MORPHL_CASSANDRA_USERNAME|^MORPHL_CASSANDRA_PASSWORD|^MORPHL_CASSANDRA_KEYSPACE|^API_DOMAIN|^MORPHL_API_KEY|^MORPHL_API_SECRET|^MORPHL_API_JWT_SECRET|^MORPHL_DASHBOARD_USERNAME|^MORPHL_DASHBOARD_PASSWORD' > /home/airflow/.env_file.sh
 kubectl create configmap environment-configmap --from-env-file=/home/airflow/.env_file.sh
+
+# Init auth service
+kubectl apply -f /opt/auth/auth_kubernetes_deployment.yaml
+kubectl apply -f /opt/auth/auth_kubernetes_service.yaml
+AUTH_KUBERNETES_CLUSTER_IP_ADDRESS=$(kubectl get service/auth-service -o jsonpath='{.spec.clusterIP}')
+echo "export AUTH_KUBERNETES_CLUSTER_IP_ADDRESS=${AUTH_KUBERNETES_CLUSTER_IP_ADDRESS}" >> /home/airflow/.morphl_environment.sh
+
+# Init GA_CHP service
 kubectl apply -f /opt/ga_chp/prediction/model_serving/ga_chp_kubernetes_deployment.yaml
 kubectl apply -f /opt/ga_chp/prediction/model_serving/ga_chp_kubernetes_service.yaml
 GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS=$(kubectl get service/ga-chp-service -o jsonpath='{.spec.clusterIP}')
 echo "export GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS=${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}" >> /home/airflow/.morphl_environment.sh
+
+# Init GA_CHP_BQ service
+kubectl apply -f /opt/ga_chp_bq/prediction/model_serving/ga_chp_bq_kubernetes_deployment.yaml
+kubectl apply -f /opt/ga_chp_bq/prediction/model_serving/ga_chp_bq_kubernetes_service.yaml
+GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS=$(kubectl get service/ga-chp-bq-service -o jsonpath='{.spec.clusterIP}')
+echo "export GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS=${GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS}" >> /home/airflow/.morphl_environment.sh
+
 sleep 30
 
 # Spin off nginx / API container
@@ -158,7 +173,9 @@ sed "s/API_DOMAIN/${API_DOMAIN}/g" /opt/orchestrator/dockerbuilddirs/apicontaine
 
 cd /opt/dockerbuilddirs/apicontainer
 docker build \
+           --build-arg AUTH_KUBERNETES_CLUSTER_IP_ADDRESS=${AUTH_KUBERNETES_CLUSTER_IP_ADDRESS} \
            --build-arg GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS=${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS} \
+           --build-arg GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS=${GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS} \
            -t apinginx .
 
 docker run -d --name apicontainer   \
@@ -166,5 +183,9 @@ docker run -d --name apicontainer   \
            -v /opt/dockerbuilddirs/letsencryptvolume/etc/letsencrypt:/etc/letsencrypt \
            apinginx
 
-echo 'Testing Kubernetes prediction endpoint ...'
-curl -s http://${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}
+echo 'Testing Kubernetes prediction endpoints ...'
+
+echo 'Testing API ...'
+curl -s http://${AUTH_KUBERNETES_CLUSTER_IP_ADDRESS}
+curl -s http://${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}/churning
+curl -s http://${GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS}/churning-bq
