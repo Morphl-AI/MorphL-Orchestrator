@@ -10,7 +10,8 @@ rm /opt/Anaconda.sh
 mv /opt/anaconda/bin/sqlite3 /opt/anaconda/bin/sqlite3.orig
 pip install msgpack
 pip install --upgrade pip
-pip install google-auth google-api-python-client tensorflow keras cassandra-driver PyJWT flask-cors
+pip install google-auth google-api-python-client tensorflow keras cassandra-driver PyJWT flask-cors torch torchtext
+pip install gcsfs==0.2.0
 pip install scikit-learn==0.20.2
 conda install libhdfs3=2.3=3 hdfs3 fastparquet h5py==2.8.0 -y -c conda-forge
 conda install python-snappy -y
