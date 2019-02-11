@@ -88,7 +88,6 @@ cqlsh ${MORPHL_SERVER_IP_ADDRESS} -u cassandra -p cassandra -e "CREATE USER morp
 cqlsh ${MORPHL_SERVER_IP_ADDRESS} -u cassandra -p cassandra -e "ALTER USER cassandra WITH PASSWORD '${NONDEFAULT_SUPERUSER_CASSANDRA_PASSWORD}';"
 cqlsh ${MORPHL_SERVER_IP_ADDRESS} -u morphl -p ${MORPHL_CASSANDRA_PASSWORD} -f /opt/ga_chp/cassandra_schema/ga_chp_cassandra_schema.cql
 cqlsh ${MORPHL_SERVER_IP_ADDRESS} -u morphl -p ${MORPHL_CASSANDRA_PASSWORD} -f /opt/ga_chp_bq/cassandra_schema/ga_chp_bq_cassandra_schema.cql
-cqlsh ${MORPHL_SERVER_IP_ADDRESS} -u morphl -p ${MORPHL_CASSANDRA_PASSWORD} -f /opt/usi_csv/cassandra_schema/usi_csv_cassandra_schema.cql
 
 mkdir -p /home/airflow/airflow/dags
 cat /opt/orchestrator/bootstrap/runasairflow/templates/airflow.cfg.template > /home/airflow/airflow/airflow.cfg
