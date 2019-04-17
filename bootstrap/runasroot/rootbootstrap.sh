@@ -40,7 +40,7 @@ new_hex_digest () {
  openssl rand -hex 64 | cut -c1-$1
 }
 
-MORPHL_SERVER_IP_ADDRESS=$(ip route get $(ip r | grep ^default | cut -d' ' -f3) | awk '{print $NF; exit}')
+MORPHL_SERVER_IP_ADDRESS=$(ip route get $(ip r | grep ^default | cut -d' ' -f3) | awk '{print $5; exit}')
 MORPHL_SERVER_FQDN=$(hostname -f)
 AIRFLOW_OS_PASSWORD=$(new_hex_digest 20)
 AIRFLOW_WEB_UI_PASSWORD=$(new_hex_digest 20)
