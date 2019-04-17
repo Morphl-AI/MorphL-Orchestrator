@@ -52,7 +52,7 @@ MORPHL_API_JWT_SECRET=$(new_hex_digest 20)
 MORPHL_DASHBOARD_USERNAME="morphl_$(new_hex_digest 10)"
 MORPHL_DASHBOARD_PASSWORD=$(new_hex_digest 20)
 
-useradd -m airflow
+useradd -m airflow -s /bin/bash
 echo "airflow:${AIRFLOW_OS_PASSWORD}" | chpasswd
 usermod -aG docker,sudo airflow
 
