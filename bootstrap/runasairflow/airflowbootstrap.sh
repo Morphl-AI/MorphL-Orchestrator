@@ -23,6 +23,7 @@ pip install msgpack
 pip install --upgrade pip
 pip install psycopg2-binary Flask-Bcrypt cassandra-driver graphviz
 pip install apache-airflow==1.9.0
+pip install pyarrow==0.13.0 
 conda install fastparquet h5py==2.8.0 -y -c conda-forge
 conda install python-snappy -y
 
