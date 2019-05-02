@@ -8,9 +8,9 @@ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 mkdir /home/airflow/.kube
 cat /etc/kubernetes/admin.conf > /home/airflow/.kube/config
 
-SP_CASS_CONN_VERSION=2.3.1
+SP_CASS_CONN_VERSION=2.4.1
 JSR166E_VERSION=1.1.0
-SPARK_AVRO_VERSION=2.4.0
+SPARK_AVRO_VERSION=2.4.1
 
 echo 'Setting up Anaconda ...'
 # ANACONDA_SH_URL=$(lynx -dump https://repo.continuum.io/archive/ | grep -o http.*Anaconda3.*Linux.x86_64.sh$ | head -1)
@@ -51,8 +51,9 @@ echo "sed 's/MORPHL_SERVER_IP_ADDRESS/${MORPHL_SERVER_IP_ADDRESS}/g' /opt/orches
 start_cassandra.sh
 
 echo 'Setting up Spark ...'
-SPARK_DIR_URL=$(lynx -dump ${MIRROR}spark/ | grep -o 'http.*/spark/spark-[0-9].*$' | sort -V | tail -1)
-SPARK_TGZ_URL=$(lynx -dump ${SPARK_DIR_URL} | grep -o http.*bin-hadoop.*tgz$ | tail -1)
+# SPARK_DIR_URL=$(lynx -dump ${MIRROR}spark/ | grep -o 'http.*/spark/spark-[0-9].*$' | sort -V | tail -1)
+# SPARK_TGZ_URL=$(lynx -dump ${SPARK_DIR_URL} | grep -o http.*bin-hadoop.*tgz$ | tail -1)
+SPARK_TGZ_URL='https://archive.apache.org/dist/spark/spark-2.4.1/spark-2.4.1-bin-hadoop2.7.tgz'
 echo "From ${SPARK_TGZ_URL}"
 wget -qO /opt/tmp/zzzspark.tgz ${SPARK_TGZ_URL}
 tar -xf /opt/tmp/zzzspark.tgz -C /opt
