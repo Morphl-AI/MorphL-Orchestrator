@@ -28,7 +28,7 @@ conda install libhdfs3=2.3=3 hdfs3 fastparquet h5py==2.8.0 -y -c conda-forge
 conda install python-snappy -y
 
 echo 'Setting up the JDK ...'
-JDK_TGZ_URL=$(lynx -dump https://www.azul.com/downloads/zulu/zulu-linux/ | grep -o http.*jdk8.*x64.*gz$ | head -1)
+JDK_TGZ_URL=$(lynx -dump https://www.azul.com/downloads/zulu/ | grep -o http.*jdk8.*linux_x64.*gz$ | head -1)
 echo "From ${JDK_TGZ_URL}"
 wget -qO /opt/tmp/zzzjdk.tgz ${JDK_TGZ_URL}
 tar -xf /opt/tmp/zzzjdk.tgz -C /opt

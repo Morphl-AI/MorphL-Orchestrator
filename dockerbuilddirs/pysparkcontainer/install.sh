@@ -7,7 +7,7 @@ JSR166E_VERSION=1.1.0
 SPARK_AVRO_VERSION=2.4.0
 
 echo 'Setting up the JDK ...'
-JDK_TGZ_URL=$(lynx -dump https://www.azul.com/downloads/zulu/zulu-linux/ | grep -o http.*jdk8.*x64.*gz$ | head -1)
+JDK_TGZ_URL=$(lynx -dump https://www.azul.com/downloads/zulu/ | grep -o http.*jdk8.*linux_x64.*gz$ | head -1)
 echo "From ${JDK_TGZ_URL}"
 wget -qO /opt/tmp/zzzjdk.tgz ${JDK_TGZ_URL}
 tar -xf /opt/tmp/zzzjdk.tgz -C /opt
