@@ -20,7 +20,7 @@ The pipelines are set up using [Apache Airflow](https://github.com/apache/incuba
 
 The orchestrator can be installed on a virtual instance on a cloud platform of your choice (Google Cloud Platform, Amazon Web Services, etc.).
 
-We recommend using a clean Ubuntu 16.04 machine, minimum 2 vCPUs, 16GB of RAM, 50GB storage.
+We recommend using a clean Ubuntu 18.04 machine, minimum 2 vCPUs, 16GB of RAM, 50GB storage.
 
 #### 2) API subdomain
 
