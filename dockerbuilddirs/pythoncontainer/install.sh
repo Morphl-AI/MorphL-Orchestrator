@@ -10,8 +10,9 @@ rm /opt/Anaconda.sh
 mv /opt/anaconda/bin/sqlite3 /opt/anaconda/bin/sqlite3.orig
 pip install msgpack
 pip install --upgrade pip
-pip install google-auth google-api-python-client tensorflow keras cassandra-driver PyJWT flask-cors
+pip install google-auth google-api-python-client tensorflow keras cassandra-driver PyJWT flask-cors torch torchtext
 pip install pyarrow==0.13.0 
+pip install gcsfs==0.2.0
 conda install fastparquet h5py==2.8.0 -y -c conda-forge
 conda install python-snappy -y
 wget -qO /opt/gcsdk.tgz https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz

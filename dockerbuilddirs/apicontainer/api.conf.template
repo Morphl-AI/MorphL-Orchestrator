@@ -43,4 +43,9 @@ server {
     location ^~ /churning-bq {
         proxy_pass http://kubernetes-upstream-ga-chp-bq;
     }
+
+    # User search intent with CSV files
+    location ^~ /search-intent {
+        proxy_pass http://kubernetes-upstream-usi-csv;
+    }
 }

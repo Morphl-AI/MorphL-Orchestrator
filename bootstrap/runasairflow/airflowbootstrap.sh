@@ -164,6 +164,12 @@ kubectl apply -f /opt/ga_chp_bq/prediction/model_serving/ga_chp_bq_kubernetes_se
 GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS=$(kubectl get service/ga-chp-bq-service -o jsonpath='{.spec.clusterIP}')
 echo "export GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS=${GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS}" >> /home/airflow/.morphl_environment.sh
 
+# Init USI_CSV service
+kubectl apply -f /opt/usi_csv/prediction/model_serving/usi_csv_kubernetes_deployment.yaml
+kubectl apply -f /opt/usi_csv/prediction/model_serving/usi_csv_kubernetes_service.yaml
+USI_CSV_KUBERNETES_CLUSTER_IP_ADDRESS=$(kubectl get service/usi-csv-service -o jsonpath='{.spec.clusterIP}')
+echo "export USI_CSV_KUBERNETES_CLUSTER_IP_ADDRESS=${USI_CSV_KUBERNETES_CLUSTER_IP_ADDRESS}" >> /home/airflow/.morphl_environment.sh
+
 sleep 30
 
 # Spin off nginx / API container
@@ -177,6 +183,7 @@ docker build \
            --build-arg AUTH_KUBERNETES_CLUSTER_IP_ADDRESS=${AUTH_KUBERNETES_CLUSTER_IP_ADDRESS} \
            --build-arg GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS=${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS} \
            --build-arg GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS=${GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS} \
+           --build-arg USI_CSV_KUBERNETES_CLUSTER_IP_ADDRESS=${USI_CSV_KUBERNETES_CLUSTER_IP_ADDRESS} \
            -t apinginx .
 
 docker run -d --name apicontainer   \
@@ -190,3 +197,4 @@ echo 'Testing API ...'
 curl -s http://${AUTH_KUBERNETES_CLUSTER_IP_ADDRESS}
 curl -s http://${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}/churning
 curl -s http://${GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS}/churning-bq
+curl -s http://${USI_CSV_KUBERNETES_CLUSTER_IP_ADDRESS}/search-intent
