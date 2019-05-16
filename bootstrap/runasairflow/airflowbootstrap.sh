@@ -14,7 +14,7 @@ cat /etc/kubernetes/admin.conf > /home/airflow/.kube/config
 # SPARK_AVRO_VERSION=2.4.1
 #################
 
-MORPHL_MIRROR='http://ec2-13-53-163-125.eu-north-1.compute.amazonaws.com/repo'
+MORPHL_MIRROR='http://mirror.morphlio.com/repo'
 
 echo 'Setting up Anaconda ...'
 # ANACONDA_SH_URL=$(lynx -dump https://repo.continuum.io/archive/ | grep -o http.*Anaconda3.*Linux.x86_64.sh$ | head -1)

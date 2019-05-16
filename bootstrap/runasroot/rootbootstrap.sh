@@ -9,7 +9,7 @@ docker run -d --name registry --restart=always    \
            -v /var/lib/registry:/var/lib/registry \
            registry:2
 
-MORPHL_MIRROR='http://ec2-13-53-163-125.eu-north-1.compute.amazonaws.com/repo'
+MORPHL_MIRROR='http://mirror.morphlio.com/repo'
 
 # STABLE_KUBERNETES_VERSION=$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)
 STABLE_KUBERNETES_VERSION=v1.14.0
