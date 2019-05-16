@@ -8,9 +8,13 @@ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 mkdir /home/airflow/.kube
 cat /etc/kubernetes/admin.conf > /home/airflow/.kube/config
 
-SP_CASS_CONN_VERSION=2.4.1
-JSR166E_VERSION=1.1.0
-SPARK_AVRO_VERSION=2.4.1
+#### Old repo ###
+# SP_CASS_CONN_VERSION=2.4.1
+# JSR166E_VERSION=1.1.0
+# SPARK_AVRO_VERSION=2.4.1
+#################
+
+MORPHL_MIRROR='http://ec2-13-53-163-125.eu-north-1.compute.amazonaws.com/repo'
 
 echo 'Setting up Anaconda ...'
 # ANACONDA_SH_URL=$(lynx -dump https://repo.continuum.io/archive/ | grep -o http.*Anaconda3.*Linux.x86_64.sh$ | head -1)
@@ -18,7 +22,7 @@ echo 'Setting up Anaconda ...'
 # ANACONDA_SH_URL=https://repo.continuum.io/archive/Anaconda3-5.2.0-Linux-x86_64.sh
 #################
 #### New repo ###
-ANACONDA_SH_URL='http://ec2-13-53-163-125.eu-north-1.compute.amazonaws.com/repo/anaconda/Anaconda3-5.2.0-Linux-x86_64.sh'
+ANACONDA_SH_URL="${MORPHL_MIRROR}/anaconda/Anaconda3-5.2.0-Linux-x86_64.sh"
 #################
 echo "From ${ANACONDA_SH_URL}"
 wget -qO /opt/dockerbuilddirs/pythoncontainer/Anaconda.sh ${ANACONDA_SH_URL}
@@ -37,7 +41,7 @@ echo 'Setting up the JDK ...'
 # JDK_TGZ_URL=$(lynx -dump https://www.azul.com/downloads/zulu/ | grep -o http.*jdk8.*linux_x64.*gz$ | head -1)
 #################
 #### New repo ###
-JDK_TGZ_URL='http://ec2-13-53-163-125.eu-north-1.compute.amazonaws.com/repo/jdk/jdk8.0.212-linux_x64.tar.gz'
+JDK_TGZ_URL="${MORPHL_MIRROR}/jdk/jdk8.0.212-linux_x64.tar.gz"
 #################
 echo "From ${JDK_TGZ_URL}"
 wget -qO /opt/tmp/zzzjdk.tgz ${JDK_TGZ_URL}
@@ -56,7 +60,7 @@ echo 'Setting up Cassandra ...'
 # CASSANDRA_TGZ_URL=$(lynx -dump ${CASSANDRA_DIR_URL} | grep -o http.*bin.tar.gz$ | head -1)
 #################
 #### New repo ###
-CASSANDRA_TGZ_URL='http://ec2-13-53-163-125.eu-north-1.compute.amazonaws.com/repo/apache-cassandra/apache-cassandra-3.11.4-bin.tar.gz'
+CASSANDRA_TGZ_URL="${MORPHL_MIRROR}/apache-cassandra/apache-cassandra-3.11.4-bin.tar.gz"
 #################
 echo "From ${CASSANDRA_TGZ_URL}"
 wget -qO /opt/tmp/cassandra.tgz ${CASSANDRA_TGZ_URL}
@@ -74,7 +78,7 @@ echo 'Setting up Spark ...'
 # SPARK_TGZ_URL='https://archive.apache.org/dist/spark/spark-2.4.1/spark-2.4.1-bin-hadoop2.7.tgz'
 #################
 #### New repo ###
-SPARK_TGZ_URL='http://ec2-13-53-163-125.eu-north-1.compute.amazonaws.com/repo/apache-spark/spark-2.4.1-bin-hadoop2.7.tgz'
+SPARK_TGZ_URL="${MORPHL_MIRROR}/apache-spark/spark-2.4.1-bin-hadoop2.7.tgz"
 #################
 echo "From ${SPARK_TGZ_URL}"
 wget -qO /opt/tmp/zzzspark.tgz ${SPARK_TGZ_URL}
@@ -90,16 +94,16 @@ sed 's/INFO/FATAL/;s/WARN/FATAL/;s/ERROR/FATAL/' log4j.properties.template > log
 # wget -qO /opt/spark/jars/spark-avro.jar https://repo1.maven.org/maven2/org/apache/spark/spark-avro_2.11/${SPARK_AVRO_VERSION}/spark-avro_2.11-${SPARK_AVRO_VERSION}.jar
 #################
 #### New repo ###
-wget -qO /opt/spark/jars/spark-cassandra-connector.jar http://ec2-13-53-163-125.eu-north-1.compute.amazonaws.com/repo/apache-spark/connectors/spark-cassandra-connector_2.11-2.4.1.jar
-wget -qO /opt/spark/jars/jsr166e.jar http://ec2-13-53-163-125.eu-north-1.compute.amazonaws.com/repo/apache-spark/connectors/jsr166e-1.1.0.jar
-wget -qO /opt/spark/jars/spark-avro.jar http://ec2-13-53-163-125.eu-north-1.compute.amazonaws.com/repo/apache-spark/connectors/spark-avro_2.11-2.4.1.jar
+wget -qO /opt/spark/jars/spark-cassandra-connector.jar "${MORPHL_MIRROR}/apache-spark/connectors/spark-cassandra-connector_2.11-2.4.1.jar"
+wget -qO /opt/spark/jars/jsr166e.jar "${MORPHL_MIRROR}/apache-spark/connectors/jsr166e-1.1.0.jar"
+wget -qO /opt/spark/jars/spark-avro.jar "${MORPHL_MIRROR}/apache-spark/connectors/spark-avro_2.11-2.4.1.jar"
 #################
 echo 'Setting up Hadoop ...'
 #### Old repo ###
 # HADOOP_TGZ_URL=$(lynx -dump ${MIRROR}hadoop/common/stable/ | grep -o http.*gz$ | grep -v src | grep -v site | head -1)
 #################
 #### New repo ###
-HADOOP_TGZ_URL='http://ec2-13-53-163-125.eu-north-1.compute.amazonaws.com/repo/apache-hadoop/hadoop-3.2.0.tar.gz'
+HADOOP_TGZ_URL="${MORPHL_MIRROR}/apache-hadoop/hadoop-3.2.0.tar.gz"
 #################
 echo "From ${HADOOP_TGZ_URL}"
 wget -qO /opt/tmp/zzzhadoop.tgz ${HADOOP_TGZ_URL}

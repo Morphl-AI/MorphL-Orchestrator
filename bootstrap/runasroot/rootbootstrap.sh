@@ -9,6 +9,8 @@ docker run -d --name registry --restart=always    \
            -v /var/lib/registry:/var/lib/registry \
            registry:2
 
+MORPHL_MIRROR='http://ec2-13-53-163-125.eu-north-1.compute.amazonaws.com/repo'
+
 # STABLE_KUBERNETES_VERSION=$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)
 STABLE_KUBERNETES_VERSION=v1.14.0
 #### Old repo ###
@@ -16,8 +18,8 @@ STABLE_KUBERNETES_VERSION=v1.14.0
 # echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" > /etc/apt/sources.list.d/kubernetes.list
 #################
 #### New repo ###
-curl -s http://ec2-13-53-163-125.eu-north-1.compute.amazonaws.com/repo/kubernetes/doc/apt-key.gpg | apt-key add -
-echo "deb http://ec2-13-53-163-125.eu-north-1.compute.amazonaws.com/repo/kubernetes/ kubernetes-xenial main" > /etc/apt/sources.list.d/kubernetes.list
+curl -s "${MORPHL_MIRROR}/kubernetes/doc/apt-key.gpg" | apt-key add -
+echo "deb ${MORPHL_MIRROR}/kubernetes/ kubernetes-xenial main" > /etc/apt/sources.list.d/kubernetes.list
 #################
 APT_KUBERNETES_VERSION=$(echo ${STABLE_KUBERNETES_VERSION} | sed 's/^v//')-00
 apt update -qq && apt -y install kubelet=${APT_KUBERNETES_VERSION} kubeadm=${APT_KUBERNETES_VERSION} kubectl=${APT_KUBERNETES_VERSION}
