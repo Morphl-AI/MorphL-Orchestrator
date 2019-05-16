@@ -14,7 +14,12 @@ SPARK_AVRO_VERSION=2.4.1
 
 echo 'Setting up Anaconda ...'
 # ANACONDA_SH_URL=$(lynx -dump https://repo.continuum.io/archive/ | grep -o http.*Anaconda3.*Linux.x86_64.sh$ | head -1)
-ANACONDA_SH_URL=https://repo.continuum.io/archive/Anaconda3-5.2.0-Linux-x86_64.sh
+#### Old repo ###
+# ANACONDA_SH_URL=https://repo.continuum.io/archive/Anaconda3-5.2.0-Linux-x86_64.sh
+#################
+#### New repo ###
+ANACONDA_SH_URL='http://ec2-13-53-163-125.eu-north-1.compute.amazonaws.com/repo/anaconda/Anaconda3-5.2.0-Linux-x86_64.sh'
+#################
 echo "From ${ANACONDA_SH_URL}"
 wget -qO /opt/dockerbuilddirs/pythoncontainer/Anaconda.sh ${ANACONDA_SH_URL}
 bash /opt/dockerbuilddirs/pythoncontainer/Anaconda.sh -b -p /opt/anaconda
@@ -28,19 +33,31 @@ conda install fastparquet h5py==2.8.0 -y -c conda-forge
 conda install python-snappy -y
 
 echo 'Setting up the JDK ...'
-JDK_TGZ_URL=$(lynx -dump https://www.azul.com/downloads/zulu/ | grep -o http.*jdk8.*linux_x64.*gz$ | head -1)
+#### Old repo ###
+# JDK_TGZ_URL=$(lynx -dump https://www.azul.com/downloads/zulu/ | grep -o http.*jdk8.*linux_x64.*gz$ | head -1)
+#################
+#### New repo ###
+JDK_TGZ_URL='http://ec2-13-53-163-125.eu-north-1.compute.amazonaws.com/repo/jdk/jdk8.0.212-linux_x64.tar.gz'
+#################
 echo "From ${JDK_TGZ_URL}"
 wget -qO /opt/tmp/zzzjdk.tgz ${JDK_TGZ_URL}
 tar -xf /opt/tmp/zzzjdk.tgz -C /opt
 mv /opt/zulu* /opt/jdk
 rm /opt/tmp/zzzjdk.tgz
 
-CLOSER="https://www.apache.org/dyn/closer.cgi?as_json=1"
-MIRROR=$(curl --stderr /dev/null ${CLOSER} | jq -r '.preferred')
+#### Old repo ###
+# CLOSER="https://www.apache.org/dyn/closer.cgi?as_json=1"
+# MIRROR=$(curl --stderr /dev/null ${CLOSER} | jq -r '.preferred')
+#################
 
 echo 'Setting up Cassandra ...'
-CASSANDRA_DIR_URL=$(lynx -dump ${MIRROR}cassandra/ | grep -o 'http.*/cassandra/[0-9].*$' | sort -V | tail -1)
-CASSANDRA_TGZ_URL=$(lynx -dump ${CASSANDRA_DIR_URL} | grep -o http.*bin.tar.gz$ | head -1)
+#### Old repo ###
+# CASSANDRA_DIR_URL=$(lynx -dump ${MIRROR}cassandra/ | grep -o 'http.*/cassandra/[0-9].*$' | sort -V | tail -1)
+# CASSANDRA_TGZ_URL=$(lynx -dump ${CASSANDRA_DIR_URL} | grep -o http.*bin.tar.gz$ | head -1)
+#################
+#### New repo ###
+CASSANDRA_TGZ_URL='http://ec2-13-53-163-125.eu-north-1.compute.amazonaws.com/repo/apache-cassandra/apache-cassandra-3.11.4-bin.tar.gz'
+#################
 echo "From ${CASSANDRA_TGZ_URL}"
 wget -qO /opt/tmp/cassandra.tgz ${CASSANDRA_TGZ_URL}
 tar -xf /opt/tmp/cassandra.tgz -C /opt
@@ -53,7 +70,12 @@ start_cassandra.sh
 echo 'Setting up Spark ...'
 # SPARK_DIR_URL=$(lynx -dump ${MIRROR}spark/ | grep -o 'http.*/spark/spark-[0-9].*$' | sort -V | tail -1)
 # SPARK_TGZ_URL=$(lynx -dump ${SPARK_DIR_URL} | grep -o http.*bin-hadoop.*tgz$ | tail -1)
-SPARK_TGZ_URL='https://archive.apache.org/dist/spark/spark-2.4.1/spark-2.4.1-bin-hadoop2.7.tgz'
+#### Old repo ###
+# SPARK_TGZ_URL='https://archive.apache.org/dist/spark/spark-2.4.1/spark-2.4.1-bin-hadoop2.7.tgz'
+#################
+#### New repo ###
+SPARK_TGZ_URL='http://ec2-13-53-163-125.eu-north-1.compute.amazonaws.com/repo/apache-spark/spark-2.4.1-bin-hadoop2.7.tgz'
+#################
 echo "From ${SPARK_TGZ_URL}"
 wget -qO /opt/tmp/zzzspark.tgz ${SPARK_TGZ_URL}
 tar -xf /opt/tmp/zzzspark.tgz -C /opt
@@ -62,12 +84,23 @@ rm /opt/tmp/zzzspark.tgz
 cd /opt/spark/conf
 sed 's/INFO/FATAL/;s/WARN/FATAL/;s/ERROR/FATAL/' log4j.properties.template > log4j.properties
 
-wget -qO /opt/spark/jars/spark-cassandra-connector.jar https://repo1.maven.org/maven2/com/datastax/spark/spark-cassandra-connector_2.11/${SP_CASS_CONN_VERSION}/spark-cassandra-connector_2.11-${SP_CASS_CONN_VERSION}.jar
-wget -qO /opt/spark/jars/jsr166e.jar https://repo1.maven.org/maven2/com/twitter/jsr166e/${JSR166E_VERSION}/jsr166e-${JSR166E_VERSION}.jar
-wget -qO /opt/spark/jars/spark-avro.jar https://repo1.maven.org/maven2/org/apache/spark/spark-avro_2.11/${SPARK_AVRO_VERSION}/spark-avro_2.11-${SPARK_AVRO_VERSION}.jar
-
+#### Old repo ###
+# wget -qO /opt/spark/jars/spark-cassandra-connector.jar https://repo1.maven.org/maven2/com/datastax/spark/spark-cassandra-connector_2.11/${SP_CASS_CONN_VERSION}/spark-cassandra-connector_2.11-${SP_CASS_CONN_VERSION}.jar
+# wget -qO /opt/spark/jars/jsr166e.jar https://repo1.maven.org/maven2/com/twitter/jsr166e/${JSR166E_VERSION}/jsr166e-${JSR166E_VERSION}.jar
+# wget -qO /opt/spark/jars/spark-avro.jar https://repo1.maven.org/maven2/org/apache/spark/spark-avro_2.11/${SPARK_AVRO_VERSION}/spark-avro_2.11-${SPARK_AVRO_VERSION}.jar
+#################
+#### New repo ###
+wget -qO /opt/spark/jars/spark-cassandra-connector.jar http://ec2-13-53-163-125.eu-north-1.compute.amazonaws.com/repo/apache-spark/connectors/spark-cassandra-connector_2.11-2.4.1.jar
+wget -qO /opt/spark/jars/jsr166e.jar http://ec2-13-53-163-125.eu-north-1.compute.amazonaws.com/repo/apache-spark/connectors/jsr166e-1.1.0.jar
+wget -qO /opt/spark/jars/spark-avro.jar http://ec2-13-53-163-125.eu-north-1.compute.amazonaws.com/repo/apache-spark/connectors/spark-avro_2.11-2.4.1.jar
+#################
 echo 'Setting up Hadoop ...'
-HADOOP_TGZ_URL=$(lynx -dump ${MIRROR}hadoop/common/stable/ | grep -o http.*gz$ | grep -v src | grep -v site | head -1)
+#### Old repo ###
+# HADOOP_TGZ_URL=$(lynx -dump ${MIRROR}hadoop/common/stable/ | grep -o http.*gz$ | grep -v src | grep -v site | head -1)
+#################
+#### New repo ###
+HADOOP_TGZ_URL='http://ec2-13-53-163-125.eu-north-1.compute.amazonaws.com/repo/apache-hadoop/hadoop-3.2.0.tar.gz'
+#################
 echo "From ${HADOOP_TGZ_URL}"
 wget -qO /opt/tmp/zzzhadoop.tgz ${HADOOP_TGZ_URL}
 tar -xf /opt/tmp/zzzhadoop.tgz -C /opt
