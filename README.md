@@ -65,6 +65,7 @@ WHERE_THE_ORCHESTRATOR_IS='https://github.com/Morphl-AI/MorphL-Orchestrator'
 WHERE_AUTH_IS='https://github.com/Morphl-AI/MorphL-Auth-API.git'
 WHERE_GA_CHP_IS='https://github.com/Morphl-AI/MorphL-Model-Publishers-Churning-Users'
 WHERE_GA_CHP_BQ_IS='https://github.com/Morphl-AI/MorphL-Model-Publishers-Churning-Users-BigQuery'
+WHERE_USI_CSV_IS='https://github.com/Morphl-AI/MorphL-Model-User-Search-Intent'
 
 apt update -qq && apt -y install git ca-certificates
 
@@ -72,6 +73,7 @@ git clone ${WHERE_THE_ORCHESTRATOR_IS} /opt/orchestrator
 git clone ${WHERE_AUTH_IS} /opt/auth
 git clone ${WHERE_GA_CHP_IS} /opt/ga_chp
 git clone ${WHERE_GA_CHP_BQ_IS} /opt/ga_chp_bq
+git clone ${WHERE_USI_CSV_IS} /opt/usi_csv
 
 bash /opt/orchestrator/bootstrap/runasroot/rootbootstrap.sh
 ```
@@ -225,6 +227,9 @@ curl -s http://${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}/churning
 
 # Churning users with BigQuery API
 curl -s http://${GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS}/churning-bq
+
+# User search intent with CSVs
+curl -s http://${USI_CSV_KUBERNETES_CLUSTER_IP_ADDRESS}/search-intent
 ```
 
 See [GA_CHP Wiki](https://github.com/Morphl-AI/MorphL-Model-Publishers-Churning-Users/wiki/Public-API-Endpoints) or [GA_CHP_BQ wiki](https://github.com/Morphl-AI/MorphL-Model-Publishers-Churning-Users-BigQuery/wiki/Public-API-Endpoints) for examples on how to access predictions.

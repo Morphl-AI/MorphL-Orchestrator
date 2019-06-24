@@ -8,9 +8,9 @@ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 mkdir /home/airflow/.kube
 cat /etc/kubernetes/admin.conf > /home/airflow/.kube/config
 
-SP_CASS_CONN_VERSION=2.3.1
+SP_CASS_CONN_VERSION=2.4.1
 JSR166E_VERSION=1.1.0
-SPARK_AVRO_VERSION=2.4.0
+SPARK_AVRO_VERSION=2.4.1
 
 echo 'Setting up Anaconda ...'
 # ANACONDA_SH_URL=$(lynx -dump https://repo.continuum.io/archive/ | grep -o http.*Anaconda3.*Linux.x86_64.sh$ | head -1)
@@ -23,8 +23,8 @@ pip install msgpack
 pip install --upgrade pip
 pip install psycopg2-binary Flask-Bcrypt cassandra-driver graphviz
 pip install apache-airflow==1.9.0
-pip install scikit-learn==0.20.2
-conda install libhdfs3=2.3=3 hdfs3 fastparquet h5py==2.8.0 -y -c conda-forge
+pip install pyarrow==0.13.0 
+conda install fastparquet h5py==2.8.0 -y -c conda-forge
 conda install python-snappy -y
 
 echo 'Setting up the JDK ...'
@@ -51,8 +51,9 @@ echo "sed 's/MORPHL_SERVER_IP_ADDRESS/${MORPHL_SERVER_IP_ADDRESS}/g' /opt/orches
 start_cassandra.sh
 
 echo 'Setting up Spark ...'
-SPARK_DIR_URL=$(lynx -dump ${MIRROR}spark/ | grep -o 'http.*/spark/spark-[0-9].*$' | sort -V | tail -1)
-SPARK_TGZ_URL=$(lynx -dump ${SPARK_DIR_URL} | grep -o http.*bin-hadoop.*tgz$ | tail -1)
+# SPARK_DIR_URL=$(lynx -dump ${MIRROR}spark/ | grep -o 'http.*/spark/spark-[0-9].*$' | sort -V | tail -1)
+# SPARK_TGZ_URL=$(lynx -dump ${SPARK_DIR_URL} | grep -o http.*bin-hadoop.*tgz$ | tail -1)
+SPARK_TGZ_URL='https://archive.apache.org/dist/spark/spark-2.4.1/spark-2.4.1-bin-hadoop2.7.tgz'
 echo "From ${SPARK_TGZ_URL}"
 wget -qO /opt/tmp/zzzspark.tgz ${SPARK_TGZ_URL}
 tar -xf /opt/tmp/zzzspark.tgz -C /opt
@@ -163,6 +164,12 @@ kubectl apply -f /opt/ga_chp_bq/prediction/model_serving/ga_chp_bq_kubernetes_se
 GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS=$(kubectl get service/ga-chp-bq-service -o jsonpath='{.spec.clusterIP}')
 echo "export GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS=${GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS}" >> /home/airflow/.morphl_environment.sh
 
+# Init USI_CSV service
+kubectl apply -f /opt/usi_csv/prediction/model_serving/usi_csv_kubernetes_deployment.yaml
+kubectl apply -f /opt/usi_csv/prediction/model_serving/usi_csv_kubernetes_service.yaml
+USI_CSV_KUBERNETES_CLUSTER_IP_ADDRESS=$(kubectl get service/usi-csv-service -o jsonpath='{.spec.clusterIP}')
+echo "export USI_CSV_KUBERNETES_CLUSTER_IP_ADDRESS=${USI_CSV_KUBERNETES_CLUSTER_IP_ADDRESS}" >> /home/airflow/.morphl_environment.sh
+
 sleep 30
 
 # Spin off nginx / API container
@@ -176,6 +183,7 @@ docker build \
            --build-arg AUTH_KUBERNETES_CLUSTER_IP_ADDRESS=${AUTH_KUBERNETES_CLUSTER_IP_ADDRESS} \
            --build-arg GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS=${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS} \
            --build-arg GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS=${GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS} \
+           --build-arg USI_CSV_KUBERNETES_CLUSTER_IP_ADDRESS=${USI_CSV_KUBERNETES_CLUSTER_IP_ADDRESS} \
            -t apinginx .
 
 docker run -d --name apicontainer   \
@@ -189,3 +197,4 @@ echo 'Testing API ...'
 curl -s http://${AUTH_KUBERNETES_CLUSTER_IP_ADDRESS}
 curl -s http://${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}/churning
 curl -s http://${GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS}/churning-bq
+curl -s http://${USI_CSV_KUBERNETES_CLUSTER_IP_ADDRESS}/search-intent

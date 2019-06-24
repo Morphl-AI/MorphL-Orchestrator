@@ -24,7 +24,7 @@ chgrp sudo /etc/kubernetes/admin.conf
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 kubectl taint nodes --all node-role.kubernetes.io/master-
 
-apt -y install build-essential binutils ntp openssl sudo wget lynx htop nethogs tmux jq graphviz python2.7
+apt -y install build-essential binutils ntp openssl sudo wget lynx htop nethogs tmux jq graphviz python2.7 unzip
 apt -y install postgresql postgresql-contrib postgresql-client postgresql-client-common
 sudo -Hiu postgres psql -c "CREATE USER airflow PASSWORD 'airflow';"
 sudo -Hiu postgres psql -c "CREATE DATABASE airflow;"
@@ -71,7 +71,6 @@ echo "export SPARK_HOME=/opt/spark" >> /home/airflow/.morphl_environment.sh
 echo "export CASSANDRA_HOME=/opt/cassandra" >> /home/airflow/.morphl_environment.sh
 echo "export MORPHL_CASSANDRA_USERNAME=morphl" >> /home/airflow/.morphl_environment.sh
 echo "export MORPHL_CASSANDRA_KEYSPACE=morphl" >> /home/airflow/.morphl_environment.sh
-echo "export LIBHDFS3_CONF=/opt/hadoop/etc/hadoop/hdfs-site.xml" >> /home/airflow/.morphl_environment.sh
 echo "export LD_LIBRARY_PATH=/opt/hadoop/lib/native:\$LD_LIBRARY_PATH" >> /home/airflow/.morphl_environment.sh
 echo "export API_DOMAIN=$(</opt/settings/apidomain.txt)" >> /home/airflow/.morphl_environment.sh
 echo "export PATH=/opt/orchestrator/bootstrap/runasairflow/bash:/opt/anaconda/bin:/opt/jdk/bin:/opt/spark/bin:/opt/cassandra/bin:/opt/hadoop/bin:\$PATH" >> /home/airflow/.morphl_environment.sh
