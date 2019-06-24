@@ -10,13 +10,24 @@ rm /opt/Anaconda.sh
 mv /opt/anaconda/bin/sqlite3 /opt/anaconda/bin/sqlite3.orig
 pip install msgpack
 pip install --upgrade pip
-pip install google-auth google-api-python-client tensorflow keras cassandra-driver PyJWT flask-cors torch torchtext
-pip install pyarrow==0.13.0 
+pip install google-auth
+pip install google-api-python-client
+# Install tensorflow wrap dependency first to prevent distutils uninstall error
+pip install wrapt --ignore-installed
+pip install tensorflow
+pip install keras
+pip install cassandra-driver
+pip install PyJWT
+pip install flask-cors
+pip install torch
+pip install torchtext
+pip install pyarrow==0.13.0
 pip install gcsfs==0.2.0
 conda install fastparquet h5py==2.8.0 -y -c conda-forge
 conda install python-snappy -y
 wget -qO /opt/gcsdk.tgz https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz
 tar -xf /opt/gcsdk.tgz -C /opt
+rm /opt/gcsdk.tgz
 mv /opt/google-cloud-sdk /opt/gcsdk
 /opt/gcsdk/install.sh --quiet --usage-reporting=false &>/dev/null
 echo 'Building container 1 (out of 2), this may take a while ...'
