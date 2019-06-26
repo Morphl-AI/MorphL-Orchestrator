@@ -244,7 +244,7 @@ Documentation for API endpoints is available at the following links:
 - [Churning users API Wiki](https://github.com/Morphl-AI/MorphL-Model-Publishers-Churning-Users/wiki/Public-API-Endpoints)
 - [Churning users with BigQuery API wiki](https://github.com/Morphl-AI/MorphL-Model-Publishers-Churning-Users-BigQuery/wiki/Public-API-Endpoints)
 - [User search intent with CSVs API wiki](https://github.com/Morphl-AI/MorphL-Model-Publishers-Churning-Users-BigQuery/wiki/Public-API-Endpoints)
-- [Shopping stage API API wiki](https://github.com/Morphl-AI/MorphL-Model-Ecommerce-Shopping-Stage/wiki/Public-API-Endpoints)
+- [Shopping stage API wiki](https://github.com/Morphl-AI/MorphL-Model-Ecommerce-Shopping-Stage/wiki/Public-API-Endpoints)
 
 ### Troubleshooting
 
