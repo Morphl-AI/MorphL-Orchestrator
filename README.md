@@ -58,6 +58,8 @@ SSL certificates for the API subdomain will be automatically generated and renew
 
 This step is required for setting up the environment and downloading the required software on your instance.
 
+If `rootbootstrap.sh` crashes because of swap, temporarily disabling it (`swapoff -a`) should fix the problem.
+
 Bootstrap the installation by running the following commands as root:
 
 ```
