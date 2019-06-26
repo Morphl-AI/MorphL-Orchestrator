@@ -66,6 +66,7 @@ WHERE_AUTH_IS='https://github.com/Morphl-AI/MorphL-Auth-API.git'
 WHERE_GA_CHP_IS='https://github.com/Morphl-AI/MorphL-Model-Publishers-Churning-Users'
 WHERE_GA_CHP_BQ_IS='https://github.com/Morphl-AI/MorphL-Model-Publishers-Churning-Users-BigQuery'
 WHERE_USI_CSV_IS='https://github.com/Morphl-AI/MorphL-Model-User-Search-Intent'
+WHERE_GA_EPNA_IS='https://github.com/Morphl-AI/MorphL-Model-Ecommerce-Shopping-Stage'
 
 apt update -qq && apt -y install git ca-certificates
 
@@ -74,6 +75,7 @@ git clone ${WHERE_AUTH_IS} /opt/auth
 git clone ${WHERE_GA_CHP_IS} /opt/ga_chp
 git clone ${WHERE_GA_CHP_BQ_IS} /opt/ga_chp_bq
 git clone ${WHERE_USI_CSV_IS} /opt/usi_csv
+git clone ${WHERE_GA_EPNA_IS} /opt/ga_epna
 
 bash /opt/orchestrator/bootstrap/runasroot/rootbootstrap.sh
 ```
@@ -99,6 +101,8 @@ su - airflow
 - Churning users based on Google Analytics data (_GA_CHP_ model) - see docs [here](https://github.com/Morphl-AI/MorphL-Model-Publishers-Churning-Users#orchestrator-setup).
 
 - Churning users based on Google Analytics 360 with BigQuery integration (_GA_CHP_BQ_ model) - see docs [here](https://github.com/Morphl-AI/MorphL-Model-Publishers-Churning-Users-BigQuery/tree/master/bq_extractor#orchestrator-setup).
+
+- Shopping stage based on Google Analytics data (_GA_EPNA_ model) - see docs [here](https://github.com/Morphl-AI/MorphL-Model-Ecommerce-Shopping-Stage/tree/master/#installation).
 
 Log out of `airflow` and back in again, and verify that your key file and view ID have been configured correctly:
 
@@ -228,11 +232,19 @@ curl -s http://${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}/churning
 # Churning users with BigQuery API
 curl -s http://${GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS}/churning-bq
 
-# User search intent with CSVs
+# User search intent with CSVs API
 curl -s http://${USI_CSV_KUBERNETES_CLUSTER_IP_ADDRESS}/search-intent
+
+# Shopping stage API
+curl -s http://${GA_EPNA_KUBERNETES_CLUSTER_IP_ADDRESS}/search-intent
 ```
 
-See [GA_CHP Wiki](https://github.com/Morphl-AI/MorphL-Model-Publishers-Churning-Users/wiki/Public-API-Endpoints) or [GA_CHP_BQ wiki](https://github.com/Morphl-AI/MorphL-Model-Publishers-Churning-Users-BigQuery/wiki/Public-API-Endpoints) for examples on how to access predictions.
+Documentation for API endpoints is available at the following links:
+
+- [Churning users API Wiki](https://github.com/Morphl-AI/MorphL-Model-Publishers-Churning-Users/wiki/Public-API-Endpoints)
+- [Churning users with BigQuery API wiki](https://github.com/Morphl-AI/MorphL-Model-Publishers-Churning-Users-BigQuery/wiki/Public-API-Endpoints)
+- [User search intent with CSVs API wiki](https://github.com/Morphl-AI/MorphL-Model-Publishers-Churning-Users-BigQuery/wiki/Public-API-Endpoints)
+- [Shopping stage API API wiki](https://github.com/Morphl-AI/MorphL-Model-Ecommerce-Shopping-Stage/wiki/Public-API-Endpoints)
 
 ### Troubleshooting
 
