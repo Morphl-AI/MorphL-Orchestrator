@@ -48,4 +48,9 @@ server {
     location ^~ /search-intent {
         proxy_pass http://kubernetes-upstream-usi-csv;
     }
+
+    # Shopping stage with Google Analytics routes
+    location ^~ /shopping-stage {
+        proxy_pass http://kubernetes-upstream-ga-epna;
+    }
 }

@@ -207,6 +207,12 @@ kubectl apply -f /opt/usi_csv/prediction/model_serving/usi_csv_kubernetes_servic
 USI_CSV_KUBERNETES_CLUSTER_IP_ADDRESS=$(kubectl get service/usi-csv-service -o jsonpath='{.spec.clusterIP}')
 echo "export USI_CSV_KUBERNETES_CLUSTER_IP_ADDRESS=${USI_CSV_KUBERNETES_CLUSTER_IP_ADDRESS}" >> /home/airflow/.morphl_environment.sh
 
+# Init GA_EPNA service
+kubectl apply -f /opt/ga_epna/prediction/model_serving/ga_epna_kubernetes_deployment.yaml
+kubectl apply -f /opt/ga_epna/prediction/model_serving/ga_epna_kubernetes_service.yaml
+GA_EPNA_KUBERNETES_CLUSTER_IP_ADDRESS=$(kubectl get service/ga-epna-service -o jsonpath='{.spec.clusterIP}')
+echo "export GA_EPNA_KUBERNETES_CLUSTER_IP_ADDRESS=${GA_EPNA_KUBERNETES_CLUSTER_IP_ADDRESS}" >> /home/airflow/.morphl_environment.sh
+
 sleep 30
 
 # Spin off nginx / API container
@@ -221,6 +227,7 @@ docker build \
            --build-arg GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS=${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS} \
            --build-arg GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS=${GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS} \
            --build-arg USI_CSV_KUBERNETES_CLUSTER_IP_ADDRESS=${USI_CSV_KUBERNETES_CLUSTER_IP_ADDRESS} \
+           --build-arg GA_EPNA_KUBERNETES_CLUSTER_IP_ADDRESS=${GA_EPNA_KUBERNETES_CLUSTER_IP_ADDRESS} \
            -t apinginx .
 
 docker run -d --name apicontainer   \
@@ -235,3 +242,4 @@ curl -s http://${AUTH_KUBERNETES_CLUSTER_IP_ADDRESS}
 curl -s http://${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}/churning
 curl -s http://${GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS}/churning-bq
 curl -s http://${USI_CSV_KUBERNETES_CLUSTER_IP_ADDRESS}/search-intent
+curl -s http://${GA_EPNA_KUBERNETES_CLUSTER_IP_ADDRESS}/shopping-stage
