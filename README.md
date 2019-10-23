@@ -69,6 +69,7 @@ WHERE_GA_CHP_IS='https://github.com/Morphl-AI/MorphL-Model-Publishers-Churning-U
 WHERE_GA_CHP_BQ_IS='https://github.com/Morphl-AI/MorphL-Model-Publishers-Churning-Users-BigQuery'
 WHERE_USI_CSV_IS='https://github.com/Morphl-AI/MorphL-Model-User-Search-Intent'
 WHERE_GA_EPNA_IS='https://github.com/Morphl-AI/MorphL-Model-Ecommerce-Shopping-Stage'
+WHERE_GA_RECSYS_IS='https://github.com/MorphL-Labs/pipelines-recsys'
 
 apt update -qq && apt -y install git ca-certificates
 
@@ -78,6 +79,7 @@ git clone ${WHERE_GA_CHP_IS} /opt/ga_chp
 git clone ${WHERE_GA_CHP_BQ_IS} /opt/ga_chp_bq
 git clone ${WHERE_USI_CSV_IS} /opt/usi_csv
 git clone ${WHERE_GA_EPNA_IS} /opt/ga_epna
+git clone ${WHERE_GA_RECSYS_IS} /opt/ga_recsys
 
 bash /opt/orchestrator/bootstrap/runasroot/rootbootstrap.sh
 ```

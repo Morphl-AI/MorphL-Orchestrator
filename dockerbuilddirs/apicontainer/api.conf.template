@@ -53,4 +53,9 @@ server {
     location ^~ /shopping-stage {
         proxy_pass http://kubernetes-upstream-ga-epna;
     }
+
+    # RecSys routes
+    location ^~ /recsys {
+        proxy_pass http://kubernetes-upstream-ga-recsys;
+    }
 }
