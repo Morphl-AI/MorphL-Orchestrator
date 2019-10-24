@@ -180,7 +180,7 @@ docker run -it --rm                                                             
 # Stop and remove temporary API endpoint
 docker stop letsencryptcontainer && docker rm $_
 
-env | egrep '^MORPHL_SERVER_IP_ADDRESS|^MORPHL_CASSANDRA_USERNAME|^MORPHL_CASSANDRA_PASSWORD|^MORPHL_CASSANDRA_KEYSPACE|^API_DOMAIN|^MORPHL_API_KEY|^MORPHL_API_SECRET|^MORPHL_API_JWT_SECRET|^MORPHL_DASHBOARD_USERNAME|^MORPHL_DASHBOARD_PASSWORD' > /home/airflow/.env_file.sh
+env | egrep '^MORPHL_SERVER_IP_ADDRESS|^MORPHL_CASSANDRA_USERNAME|^MORPHL_CASSANDRA_PASSWORD|^MORPHL_CASSANDRA_KEYSPACE|^API_DOMAIN|^MORPHL_API_KEY|^MORPHL_API_SECRET|^MORPHL_API_JWT_SECRET|^MORPHL_DASHBOARD_USERNAME|^MORPHL_DASHBOARD_PASSWORD|^GA_RECSYS_AWS_CREDENTIALS_FILE_LOCATION|^GA_RECSYS_AWS_CONFIG_FILE_LOCATION' > /home/airflow/.env_file.sh
 kubectl create configmap environment-configmap --from-env-file=/home/airflow/.env_file.sh
 
 # Init auth service
