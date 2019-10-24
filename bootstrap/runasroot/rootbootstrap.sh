@@ -82,6 +82,7 @@ echo "export MORPHL_CASSANDRA_KEYSPACE=morphl" >> /home/airflow/.morphl_environm
 echo "export LD_LIBRARY_PATH=/opt/hadoop/lib/native:\$LD_LIBRARY_PATH" >> /home/airflow/.morphl_environment.sh
 echo "export API_DOMAIN=$(</opt/settings/apidomain.txt)" >> /home/airflow/.morphl_environment.sh
 echo "export PATH=/opt/orchestrator/bootstrap/runasairflow/bash:/opt/anaconda/bin:/opt/jdk/bin:/opt/spark/bin:/opt/cassandra/bin:/opt/hadoop/bin:\$PATH" >> /home/airflow/.morphl_environment.sh
+echo "export GA_RECSYS_AWS_CONFIG_FILE_LOCATION=/opt/settings/ga_recsys/aws_config.json" >> /home/airflow/.morphl_environment.sh
 echo "export KEY_FILE_LOCATION=/opt/secrets/keyfile.json" >> /home/airflow/.morphl_secrets.sh
 echo "export VIEW_ID=\$(</opt/secrets/viewid.txt)" >> /home/airflow/.morphl_secrets.sh
 echo "export AIRFLOW_OS_PASSWORD=${AIRFLOW_OS_PASSWORD}" >> /home/airflow/.morphl_secrets.sh
@@ -93,6 +94,7 @@ echo "export MORPHL_API_SECRET=${MORPHL_API_SECRET}" >> /home/airflow/.morphl_se
 echo "export MORPHL_API_JWT_SECRET=${MORPHL_API_JWT_SECRET}" >> /home/airflow/.morphl_secrets.sh
 echo "export MORPHL_DASHBOARD_USERNAME=${MORPHL_DASHBOARD_USERNAME}" >> /home/airflow/.morphl_secrets.sh
 echo "export MORPHL_DASHBOARD_PASSWORD=${MORPHL_DASHBOARD_PASSWORD}" >> /home/airflow/.morphl_secrets.sh
+echo "export GA_RECSYS_AWS_CREDENTIALS_FILE_LOCATION=/opt/secrets/ga_recsys/aws_credentials.json" >> /home/airflow/.morphl_secrets.sh
 echo ". /home/airflow/.morphl_environment.sh" >> /home/airflow/.profile
 echo ". /home/airflow/.morphl_secrets.sh" >> /home/airflow/.profile
 
