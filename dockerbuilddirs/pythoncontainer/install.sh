@@ -23,6 +23,7 @@ pip install torch
 pip install torchtext
 pip install pyarrow==0.13.0
 pip install gcsfs==0.2.0
+pip install boto3
 conda install fastparquet h5py==2.8.0 -y -c conda-forge
 conda install python-snappy -y
 wget -qO /opt/gcsdk.tgz https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz
