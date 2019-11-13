@@ -206,7 +206,7 @@ docker build \
 docker run -d --name apicontainer   \
            -p 80:80 -p 443:443  \
            -v /opt/dockerbuilddirs/letsencryptvolume/etc/letsencrypt:/etc/letsencrypt \
-           -v /opt/dockerbuilddirs/apicontainervolume/etc/nginx:/etc/nginx/
+           -v /opt/dockerbuilddirs/apicontainervolume/etc/nginx:/etc/nginx/ \
            apinginx
 
 echo 'Testing Kubernetes prediction endpoints ...'
