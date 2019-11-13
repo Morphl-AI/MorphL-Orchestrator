@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 set -e
 
 unset SUDO_UID SUDO_GID SUDO_USER
@@ -189,34 +190,10 @@ kubectl apply -f /opt/auth/auth_kubernetes_service.yaml
 AUTH_KUBERNETES_CLUSTER_IP_ADDRESS=$(kubectl get service/auth-service -o jsonpath='{.spec.clusterIP}')
 echo "export AUTH_KUBERNETES_CLUSTER_IP_ADDRESS=${AUTH_KUBERNETES_CLUSTER_IP_ADDRESS}" >> /home/airflow/.morphl_environment.sh
 
-# Init GA_CHP service
-kubectl apply -f /opt/ga_chp/prediction/model_serving/ga_chp_kubernetes_deployment.yaml
-kubectl apply -f /opt/ga_chp/prediction/model_serving/ga_chp_kubernetes_service.yaml
-GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS=$(kubectl get service/ga-chp-service -o jsonpath='{.spec.clusterIP}')
-echo "export GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS=${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}" >> /home/airflow/.morphl_environment.sh
-
-# Init GA_CHP_BQ service
-kubectl apply -f /opt/ga_chp_bq/prediction/model_serving/ga_chp_bq_kubernetes_deployment.yaml
-kubectl apply -f /opt/ga_chp_bq/prediction/model_serving/ga_chp_bq_kubernetes_service.yaml
-GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS=$(kubectl get service/ga-chp-bq-service -o jsonpath='{.spec.clusterIP}')
-echo "export GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS=${GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS}" >> /home/airflow/.morphl_environment.sh
-
-# Init USI_CSV service
-kubectl apply -f /opt/usi_csv/prediction/model_serving/usi_csv_kubernetes_deployment.yaml
-kubectl apply -f /opt/usi_csv/prediction/model_serving/usi_csv_kubernetes_service.yaml
-USI_CSV_KUBERNETES_CLUSTER_IP_ADDRESS=$(kubectl get service/usi-csv-service -o jsonpath='{.spec.clusterIP}')
-echo "export USI_CSV_KUBERNETES_CLUSTER_IP_ADDRESS=${USI_CSV_KUBERNETES_CLUSTER_IP_ADDRESS}" >> /home/airflow/.morphl_environment.sh
-
-# Init GA_EPNA service
-kubectl apply -f /opt/ga_epna/prediction/model_serving/ga_epna_kubernetes_deployment.yaml
-kubectl apply -f /opt/ga_epna/prediction/model_serving/ga_epna_kubernetes_service.yaml
-GA_EPNA_KUBERNETES_CLUSTER_IP_ADDRESS=$(kubectl get service/ga-epna-service -o jsonpath='{.spec.clusterIP}')
-echo "export GA_EPNA_KUBERNETES_CLUSTER_IP_ADDRESS=${GA_EPNA_KUBERNETES_CLUSTER_IP_ADDRESS}" >> /home/airflow/.morphl_environment.sh
-
 sleep 30
 
 # Spin off nginx / API container
-echo 'Setting up public facing API ...'
+echo 'Setting up public facing API...'
 cp /opt/orchestrator/dockerbuilddirs/apicontainer/Dockerfile /opt/dockerbuilddirs/apicontainer/Dockerfile
 cp /opt/orchestrator/dockerbuilddirs/apicontainer/nginx.conf /opt/dockerbuilddirs/apicontainer/nginx.conf
 sed "s/API_DOMAIN/${API_DOMAIN}/g" /opt/orchestrator/dockerbuilddirs/apicontainer/api.conf.template > /opt/dockerbuilddirs/apicontainer/api.conf
@@ -224,22 +201,15 @@ sed "s/API_DOMAIN/${API_DOMAIN}/g" /opt/orchestrator/dockerbuilddirs/apicontaine
 cd /opt/dockerbuilddirs/apicontainer
 docker build \
            --build-arg AUTH_KUBERNETES_CLUSTER_IP_ADDRESS=${AUTH_KUBERNETES_CLUSTER_IP_ADDRESS} \
-           --build-arg GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS=${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS} \
-           --build-arg GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS=${GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS} \
-           --build-arg USI_CSV_KUBERNETES_CLUSTER_IP_ADDRESS=${USI_CSV_KUBERNETES_CLUSTER_IP_ADDRESS} \
-           --build-arg GA_EPNA_KUBERNETES_CLUSTER_IP_ADDRESS=${GA_EPNA_KUBERNETES_CLUSTER_IP_ADDRESS} \
            -t apinginx .
 
 docker run -d --name apicontainer   \
            -p 80:80 -p 443:443  \
            -v /opt/dockerbuilddirs/letsencryptvolume/etc/letsencrypt:/etc/letsencrypt \
+           -v /opt/dockerbuilddirs/apicontainervolume/etc/nginx:/etc/nginx/
            apinginx
 
 echo 'Testing Kubernetes prediction endpoints ...'
 
 echo 'Testing API ...'
 curl -s http://${AUTH_KUBERNETES_CLUSTER_IP_ADDRESS}
-curl -s http://${GA_CHP_KUBERNETES_CLUSTER_IP_ADDRESS}/churning
-curl -s http://${GA_CHP_BQ_KUBERNETES_CLUSTER_IP_ADDRESS}/churning-bq
-curl -s http://${USI_CSV_KUBERNETES_CLUSTER_IP_ADDRESS}/search-intent
-curl -s http://${GA_EPNA_KUBERNETES_CLUSTER_IP_ADDRESS}/shopping-stage

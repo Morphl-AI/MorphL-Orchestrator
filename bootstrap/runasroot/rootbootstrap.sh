@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 set -e
 
 apt -y install docker.io apt-transport-https curl
