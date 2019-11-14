@@ -197,19 +197,18 @@ echo 'Setting up public facing API...'
 cp /opt/orchestrator/dockerbuilddirs/apicontainer/Dockerfile /opt/dockerbuilddirs/apicontainer/Dockerfile
 cp /opt/orchestrator/dockerbuilddirs/apicontainer/nginx.conf /opt/dockerbuilddirs/apicontainer/nginx.conf
 sed "s/API_DOMAIN/${API_DOMAIN}/g" /opt/orchestrator/dockerbuilddirs/apicontainer/api.conf.template > /opt/dockerbuilddirs/apicontainer/api.conf
+sed "s/AUTH_KUBERNETES_CLUSTER_IP_ADDRESS/${AUTH_KUBERNETES_CLUSTER_IP_ADDRESS}/g" /opt/orchestrator/dockerbuilddirs/apicontainer/upstream.conf.template > /opt/dockerbuilddirs/apicontainer/upstream.conf
 
 cd /opt/dockerbuilddirs/apicontainer
 docker build \
-           --build-arg AUTH_KUBERNETES_CLUSTER_IP_ADDRESS=${AUTH_KUBERNETES_CLUSTER_IP_ADDRESS} \
            -t apinginx .
 
 docker run -d --name apicontainer   \
            -p 80:80 -p 443:443  \
            -v /opt/dockerbuilddirs/letsencryptvolume/etc/letsencrypt:/etc/letsencrypt \
-           -v /opt/dockerbuilddirs/apicontainervolume/etc/nginx:/etc/nginx/ \
+           -v /opt/dockerbuilddirs/apicontainer/api.conf:/etc/nginx/sites-available/api.conf \
+           -v /opt/dockerbuilddirs/apicontainer/upstream.conf:/etc/nginx/conf.d/upstream.conf \
            apinginx
-
-echo 'Testing Kubernetes prediction endpoints ...'
 
 echo 'Testing API ...'
 curl -s http://${AUTH_KUBERNETES_CLUSTER_IP_ADDRESS}

@@ -1,0 +1,3 @@
+upstream kubernetes-upstream-auth { server AUTH_KUBERNETES_CLUSTER_IP_ADDRESS; }
+
+### additional locations placeholder ###
