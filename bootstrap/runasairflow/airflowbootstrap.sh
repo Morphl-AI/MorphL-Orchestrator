@@ -213,6 +213,12 @@ kubectl apply -f /opt/ga_epna/prediction/model_serving/ga_epna_kubernetes_servic
 GA_EPNA_KUBERNETES_CLUSTER_IP_ADDRESS=$(kubectl get service/ga-epna-service -o jsonpath='{.spec.clusterIP}')
 echo "export GA_EPNA_KUBERNETES_CLUSTER_IP_ADDRESS=${GA_EPNA_KUBERNETES_CLUSTER_IP_ADDRESS}" >> /home/airflow/.morphl_environment.sh
 
+# Init GA_EPNA_BQ service
+kubectl apply -f /opt/ga_epna_bq/prediction/model_serving/ga_epna_bq_kubernetes_deployment.yaml
+kubectl apply -f /opt/ga_epna_bq/prediction/model_serving/ga_epna_bq_kubernetes_service.yaml
+GA_EPNA_BQ_KUBERNETES_CLUSTER_IP_ADDRESS=$(kubectl get service/ga-epna-bq-service -o jsonpath='{.spec.clusterIP}')
+echo "export GA_EPNA_BQ_KUBERNETES_CLUSTER_IP_ADDRESS=${GA_EPNA_BQ_KUBERNETES_CLUSTER_IP_ADDRESS}" >> /home/airflow/.morphl_environment.sh
+
 sleep 30
 
 # Spin off nginx / API container
